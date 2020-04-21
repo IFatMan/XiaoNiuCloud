@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Set;
 
 /**
  * Cookie 工具类
@@ -56,6 +57,18 @@ public class CookieUtil {
             result.put(cookie.getName(), cookie);
         }
         return result;
+    }
+
+    /**
+     * 获取所有Cookie
+     *
+     * @return java.util.Set<javax.servlet.http.Cookie>
+     * @author 孔明
+     * @date 2019-11-18 16:23:58
+     */
+    public static Set<Cookie> getCookieSet(HttpServletRequest request) {
+        Map<String, Cookie> cookies = CookieUtil.getAllCookie(request);
+        return MapUtil.getValues(cookies);
     }
 
     /**

@@ -14,4 +14,10 @@ import java.lang.annotation.*;
 @Inherited
 @Retention(RetentionPolicy.RUNTIME)
 public @interface PrintLog {
+
+    /**
+     * 方法描述
+     */
+    String description() default "";
+
 }
