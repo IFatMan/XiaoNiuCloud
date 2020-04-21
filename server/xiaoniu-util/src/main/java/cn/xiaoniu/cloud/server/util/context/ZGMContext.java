@@ -549,7 +549,7 @@ public class ZGMContext {
         }
 
         public Long getRequestStartMillis() {
-            return requestStartMillis;
+            return Objects.isNull(requestStartMillis) ? 0 : requestStartMillis;
         }
 
         public void setRequestStartMillis(Long requestStartMillis) {

@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
+import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurationSupport;
 
 
@@ -53,8 +54,15 @@ public class RegisterInterceptor extends WebMvcConfigurationSupport {
             registry.addInterceptor(logInterceptor()).addPathPatterns(logPath);
         }
         if (needContext) {
-            registry.addInterceptor(customerInterceptor()).addPathPatterns(contextPath);
+            registry.addInterceptor(customerInterceptor()).addPathPatterns(contextPath).excludePathPatterns("/favicon.ico", "/swagger-ui.html", "/v2/api-docs");
         }
         super.addInterceptors(registry);
+    }
+
+    @Override
+    protected void addResourceHandlers(ResourceHandlerRegistry registry) {
+        registry.addResourceHandler("swagger-ui.html").addResourceLocations("classpath:/META-INF/resources/");
+        registry.addResourceHandler("/webjars/**").addResourceLocations("classpath:/META-INF/resources/webjars/");
+        super.addResourceHandlers(registry);
     }
 }

@@ -5,7 +5,7 @@ package cn.xiaoniu.cloud.server.web.exception;
  *
  * @author 孔明
  * @date 2019/11/27 13:56
- * @description cn.xiaoniu.cloud.server.web.exception.CatchException
+ * @description cn.xiaoniu.cloud.server.web.exception.MustCatchException
  */
-public class CatchException extends Exception {
+public class MustCatchException extends Exception {
 }

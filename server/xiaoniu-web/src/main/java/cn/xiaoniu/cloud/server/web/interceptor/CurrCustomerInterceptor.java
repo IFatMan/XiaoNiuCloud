@@ -14,6 +14,7 @@ import org.springframework.web.servlet.HandlerInterceptor;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.Objects;
 
 /**
  * 获取当前登录者信息,并放入自定义上下文中
@@ -48,6 +49,9 @@ public class CurrCustomerInterceptor implements HandlerInterceptor {
         Log.info("请求TOKEN:{}", currAccessToken);
 
         // 获取缓存中用户信息
+        if (Objects.isNull(loginCacheDao)) {
+            return true;
+        }
         CacheCustomer customer = loginCacheDao.getCacheCustomer(currAccessToken);
         context.setCustomer(customer);
         Log.info("请求用户:{}", JsonUtil.toJson(customer));

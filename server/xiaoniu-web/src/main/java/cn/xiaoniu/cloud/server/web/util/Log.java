@@ -40,7 +40,10 @@ public class Log {
      * @date 2019-11-27 10:33:08
      */
     public static void debug(String format, Object... arguments) {
-        logger().debug(format(format), arguments);
+        Logger logger = logger();
+        if (logger.isDebugEnabled()) {
+            logger.debug(format(format), arguments);
+        }
     }
 
     // ======================================== ERROR 级别日志 ========================================
