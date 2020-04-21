@@ -1,10 +1,11 @@
 package cn.xiaoniu.cloud.server.web.util;
 
-import cn.xiaoniu.cloud.server.util.bean.BeanUtil;
 import cn.xiaoniu.cloud.server.util.constant.CommonConstant;
 import cn.xiaoniu.cloud.server.util.context.ZGMContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.util.Objects;
 
 /**
  * LogUtil 日志工具类
@@ -102,7 +103,7 @@ public class Log {
      */
     private static String format(String format) {
         ZGMContext.Context context = ZGMContext.getContext();
-        if (BeanUtil.isEmpty(context) || ZGMContext.getContext().getRequestId() == null) {
+        if (Objects.isNull(context) || ZGMContext.getContext().getRequestId() == null) {
             return format;
         }
         return String.format(CommonConstant.REQUEST_ID_LOG, ZGMContext.getContext().getRequestId(), format);
