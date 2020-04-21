@@ -1,7 +1,6 @@
 package cn.xiaoniu.cloud.server.web.log;
 
-import cn.hutool.core.collection.CollUtil;
-import cn.hutool.json.JSONObject;
+import cn.hutool.core.map.MapUtil;
 import cn.xiaoniu.cloud.server.util.AssertUtil;
 import cn.xiaoniu.cloud.server.util.JsonUtil;
 import cn.xiaoniu.cloud.server.util.constant.CommonConstant;
@@ -13,6 +12,8 @@ import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
 import org.aspectj.lang.annotation.Pointcut;
+import org.aspectj.lang.reflect.MethodSignature;
+import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 import org.springframework.web.multipart.MultipartFile;
@@ -20,6 +21,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.lang.reflect.Method;
+import java.util.Map;
 import java.util.Objects;
 
 /**
@@ -28,6 +30,7 @@ import java.util.Objects;
  * @description cn.xiaoniu.cloud.server.web.log.PrintLogAspect
  */
 @Aspect
+@Component
 public class PrintLogAspect {
 
     /**
@@ -61,7 +64,7 @@ public class PrintLogAspect {
             String targetMethod = joinPoint.getSignature().getName();
 
             // 获取@PrintLog注解的接口描述信息
-            PrintLog printLog = getPrintLogFromPoint(targetClass, targetMethod);
+            PrintLog printLog = getPrintLogFromPoint(targetClass, targetMethod, joinPoint.getArgs().length);
             if (StringUtils.isNotBlank(printLog.description())) {
                 Log.info("请求方法:{}", printLog.description());
             }
@@ -81,16 +84,50 @@ public class PrintLogAspect {
      * @return 描述信息
      * @throws Exception
      */
-    private PrintLog getPrintLogFromPoint(Class targetClass, String methodName) {
+    private PrintLog getPrintLogFromPoint(Class targetClass, String methodName, int paramSize) {
         AssertUtil.isNotNull(targetClass, "参数 targetClass 不能为null!");
         AssertUtil.isNotNull(methodName, "参数 methodName 不能为null!");
 
         try {
-            Method targetMethod = targetClass.getDeclaredMethod(methodName, targetClass);
-            return targetMethod.getAnnotation(PrintLog.class);
-        } catch (NoSuchMethodException ex) {
+            Method targetMethod = null;
+            Method[] methods = targetClass.getDeclaredMethods();
+            if (methods.length <= 0) {
+                Log.debug("类[{}]中没有方法！", targetClass.getName());
+                return null;
+            }
+            for (Method method : methods) {
+                if (methodName.equals(method.getName()) && method.getParameterTypes().length == paramSize) {
+                    targetMethod = method;
+                }
+            }
+            return targetMethod == null ? null : targetMethod.getAnnotation(PrintLog.class);
+        } catch (Exception ex) {
             throw new UtilException(ex, "获取切面注解的描述异常！");
         }
+
+    }
+
+    private Method getMethod(Class targetClass, String methodName, int paramSize) {
+        AssertUtil.isNotNull(targetClass, "参数 targetClass 不能为null!");
+        AssertUtil.isNotNull(methodName, "参数 methodName 不能为null!");
+
+        try {
+            Method[] methods = targetClass.getDeclaredMethods();
+            if (Objects.isNull(methods) || methods.length <= 0) {
+                Log.debug("类[{}]中没有方法！", targetClass.getName());
+                return null;
+            }
+            for (Method method : methods) {
+                if (methodName.equals(method.getName()) && method.getParameterTypes().length == paramSize) {
+                    return method;
+                }
+            }
+            Log.debug("类[{}]中没有方法[{}]！", targetClass.getName(), methodName);
+            return null;
+        } catch (Exception ex) {
+            throw new UtilException(ex, "获取切面注解的描述异常！");
+        }
+
     }
 
     /**
@@ -105,15 +142,23 @@ public class PrintLogAspect {
             return CommonConstant.CHAR_EMPTY;
         }
 
-        StringBuilder builder = new StringBuilder(args.length);
-        for (Object arg : args) {
+        MethodSignature methodSignature = (MethodSignature) joinPoint.getSignature();
+        String[] parameterNames = methodSignature.getParameterNames();
+        if (Objects.isNull(parameterNames) || args.length != parameterNames.length) {
+            return CommonConstant.CHAR_EMPTY;
+        }
+
+        Object arg;
+        Map<String, Object> params = MapUtil.newHashMap(args.length);
+        for (int i = 0; i < args.length; i++) {
+            arg = args[i];
             if ((arg instanceof HttpServletResponse) || (arg instanceof HttpServletRequest)
                     || (arg instanceof MultipartFile) || (arg instanceof MultipartFile[])) {
                 continue;
             }
-            builder.append(JsonUtil.toJson(arg));
+            params.put(parameterNames[i], arg);
         }
-        return builder.toString();
+        return JsonUtil.toJson(params);
     }
 
 }
