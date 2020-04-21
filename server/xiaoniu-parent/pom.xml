@@ -24,6 +24,7 @@
         <module>../xiaoniu-util</module>
         <module>../xiaoniu-web</module>
         <module>../xiaoniu-api</module>
+        <module>../xiaoniu-auto</module>
     </modules>
 
     <properties>
