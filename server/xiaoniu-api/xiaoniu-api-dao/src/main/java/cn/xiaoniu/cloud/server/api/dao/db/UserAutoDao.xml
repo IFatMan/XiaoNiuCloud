@@ -1,0 +1,389 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.xiaoniu.cloud.server.api.dao.db.UserAutoDao">
+
+    <!-- 保存数据 -->
+    <insert id="saveEntity">
+        INSERT INTO t_user
+        <trim suffixOverrides="," prefix="(" suffix=")">
+            <if test="entity.id != null">
+                id,
+            </if>
+            <if test="entity.del != null">
+                del,
+            </if>
+            <if test="entity.createTime != null">
+                create_time,
+            </if>
+            <if test="entity.updateTime != null">
+                update_time,
+            </if>
+            <if test="entity.name != null">
+                name,
+            </if>
+        </trim>
+        <trim suffixOverrides="," prefix="VALUES(" suffix=")">
+            <if test="entity.id != null">
+                #{entity.id},
+            </if>
+            <if test="entity.del != null">
+                #{entity.del},
+            </if>
+            <if test="entity.createTime != null">
+                #{entity.createTime},
+            </if>
+            <if test="entity.updateTime != null">
+                #{entity.updateTime},
+            </if>
+            <if test="entity.name != null">
+                #{entity.name},
+            </if>
+        </trim>
+    </insert>
+
+    <!-- 批量保存数据 -->
+    <insert id="saveEntities">
+        INSERT INTO t_user
+        <trim suffixOverrides="," prefix="(" suffix=")">
+            id,
+            del,
+            create_time,
+            update_time,
+            name,
+        </trim>
+        <foreach collection="entities" item="entity" index="index" separator=",">
+            <trim suffixOverrides="," prefix="(" suffix=")">
+                #{entity.id},
+                #{entity.del},
+                #{entity.createTime},
+                #{entity.updateTime},
+                #{entity.name},
+            </trim>
+        </foreach>
+    </insert>
+
+    <!-- 逻辑删除数据 -->
+    <update id="deleteById">
+        UPDATE t_user SET del=1 WHERE id=#{id}
+    </update>
+
+    <!-- 逻辑删除数据 -->
+    <update id="deleteByEntity">
+        UPDATE t_user SET del=1
+        <trim prefix="WHERE" prefixOverrides="AND">
+            <if test="entity.id != null">
+                AND id = #{entity.id}
+            </if>
+            <if test="entity.del != null">
+                AND del = #{entity.del}
+            </if>
+            <if test="entity.createTime != null">
+                AND create_time = #{entity.createTime}
+            </if>
+            <if test="entity.updateTime != null">
+                AND update_time = #{entity.updateTime}
+            </if>
+            <if test="entity.name != null">
+                AND name = #{entity.name}
+            </if>
+        </trim>
+    </update>
+
+    <!-- 物理删除数据 -->
+    <delete id="removeById">
+        DELETE FROM t_user WHERE id=#{id}
+    </delete>
+
+    <!-- 物理删除数据 -->
+    <delete id="removeByEntity">
+        DELETE FROM t_user
+        <trim prefix="WHERE" prefixOverrides="AND">
+            <if test="entity != null and entity.id != null">
+                AND id = #{entity.id}
+            </if>
+            <if test="entity != null and entity.del != null">
+                AND del = #{entity.del}
+            </if>
+            <if test="entity != null and entity.createTime != null">
+                AND create_time = #{entity.createTime}
+            </if>
+            <if test="entity != null and entity.updateTime != null">
+                AND update_time = #{entity.updateTime}
+            </if>
+            <if test="entity != null and entity.name != null">
+                AND name = #{entity.name}
+            </if>
+        </trim>
+    </delete>
+
+    <!-- 更新数据 -->
+    <update id="updateEntityById">
+        UPDATE t_user t
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="entity != null and entity.createTime != null">
+                t.create_time = #{entity.createTime},
+            </if>
+            <if test="entity != null and entity.updateTime != null">
+                t.update_time = #{entity.updateTime},
+            </if>
+            <if test="entity != null and entity.name != null">
+                t.name = #{entity.name},
+            </if>
+        </trim>
+        WHERE t.id=#{entity.id}
+    </update>
+
+    <!-- 更新数据 -->
+    <update id="updateEntityByPO">
+        UPDATE t_user t
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="entity.createTime != null">
+                t.create_time = #{entity.createTime},
+            </if>
+            <if test="entity.updateTime != null">
+                t.update_time = #{entity.updateTime},
+            </if>
+            <if test="entity.name != null">
+                t.name = #{entity.name},
+            </if>
+        </trim>
+        <trim prefix=" WHERE t.del=0 " prefixOverrides="AND" suffixOverrides=",">
+            <if test="record.id != null">
+                AND t.id = #{record.id}
+            </if>
+            <if test="record.del != null">
+                AND t.del = #{record.del}
+            </if>
+            <if test="record.createTime != null">
+                AND t.create_time = #{record.createTime}
+            </if>
+            <if test="record.updateTime != null">
+                AND t.update_time = #{record.updateTime}
+            </if>
+            <if test="record.name != null">
+                AND t.name = #{record.name}
+            </if>
+        </trim>
+    </update>
+
+    <!-- 获取数据 -->
+    <select id="findById" resultType="cn.xiaoniu.cloud.server.api.model.po.User">
+        SELECT
+            <trim suffixOverrides=",">
+                id,
+                del,
+                create_time,
+                update_time,
+                name,
+            </trim>
+        FROM t_user
+        WHERE id=#{id}
+    </select>
+
+    <!-- 获取一条数据 -->
+    <select id="findOne" resultType="cn.xiaoniu.cloud.server.api.model.po.User">
+        SELECT
+            <trim suffixOverrides=",">
+                id,
+                del,
+                create_time,
+                update_time,
+                name,
+            </trim>
+        FROM t_user
+        <trim prefix=" WHERE del=0 ">
+            <if test="entity != null and entity.id != null">
+                AND id = #{entity.id}
+            </if>
+            <if test="entity != null and entity.del != null">
+                AND del = #{entity.del}
+            </if>
+            <if test="entity != null and entity.createTime != null">
+                AND create_time = #{entity.createTime}
+            </if>
+            <if test="entity != null and entity.updateTime != null">
+                AND update_time = #{entity.updateTime}
+            </if>
+            <if test="entity != null and entity.name != null">
+                AND name = #{entity.name}
+            </if>
+        </trim>
+        <if test="entity != null and entity.orderBy !=null">
+            ORDER BY #{entity.orderBy}
+        </if>
+        LIMIT 1
+    </select>
+
+    <!-- 获取一条数据 -->
+    <select id="findLastOne" resultType="cn.xiaoniu.cloud.server.api.model.po.User">
+        SELECT
+        <trim suffixOverrides=",">
+                id,
+                del,
+                create_time,
+                update_time,
+                name,
+        </trim>
+        FROM t_user
+        <trim prefix=" WHERE del=0 ">
+                <if test="entity != null and entity.id != null">
+                    AND id = #{entity.id}
+                </if>
+                <if test="entity != null and entity.del != null">
+                    AND del = #{entity.del}
+                </if>
+                <if test="entity != null and entity.createTime != null">
+                    AND create_time = #{entity.createTime}
+                </if>
+                <if test="entity != null and entity.updateTime != null">
+                    AND update_time = #{entity.updateTime}
+                </if>
+                <if test="entity != null and entity.name != null">
+                    AND name = #{entity.name}
+                </if>
+        </trim>
+        ORDER BY id DESC LIMIT 1
+    </select>
+
+    <!-- 根据指定字段名和值获取数据 -->
+    <select id="findByFieldName" resultType="cn.xiaoniu.cloud.server.api.model.po.User">
+        SELECT
+        <trim suffixOverrides=",">
+                id,
+                del,
+                create_time,
+                update_time,
+                name,
+        </trim>
+        FROM t_user
+        <trim prefix=" WHERE del=0 ">
+            AND ${fieldName} = #{fieldValue}
+        </trim>
+    </select>
+
+    <!-- 根据指定字段名和值获取最后一条数据 -->
+    <select id="findLastOneByFieldName" resultType="cn.xiaoniu.cloud.server.api.model.po.User">
+        SELECT
+        <trim suffixOverrides=",">
+                id,
+                del,
+                create_time,
+                update_time,
+                name,
+        </trim>
+        FROM t_user
+        <trim prefix=" WHERE del=0 ">
+            AND ${fieldName} = #{fieldValue}
+        </trim>
+        ORDER BY id DESC LIMIT 1
+    </select>
+
+    <!-- 获取数量 -->
+    <select id="countByEntity" resultType="java.lang.Long">
+        SELECT COUNT(0) FROM t_user
+        <trim prefix=" WHERE del=0 ">
+            <if test="entity != null and entity.id != null">
+                AND id = #{entity.id}
+            </if>
+            <if test="entity != null and entity.del != null">
+                AND del = #{entity.del}
+            </if>
+            <if test="entity != null and entity.createTime != null">
+                AND create_time = #{entity.createTime}
+            </if>
+            <if test="entity != null and entity.updateTime != null">
+                AND update_time = #{entity.updateTime}
+            </if>
+            <if test="entity != null and entity.name != null">
+                AND name = #{entity.name}
+            </if>
+        </trim>
+    </select>
+
+    <!-- 批量获取通过ID -->
+    <select id="listByIdIn" parameterType="java.util.List" resultType="cn.xiaoniu.cloud.server.api.model.po.User">
+        SELECT
+        <trim suffixOverrides=",">
+                id,
+                del,
+                create_time,
+                update_time,
+                name,
+        </trim>
+        FROM t_user
+        <trim prefix=" WHERE del=0 ">
+            AND id IN
+            <foreach collection="ids" item="id" index="index" open="(" close=")" separator=",">
+                #{item}
+            </foreach>
+        </trim>
+    </select>
+
+    <!-- 获取数量 -->
+    <select id="listByEntity" resultType="cn.xiaoniu.cloud.server.api.model.po.User">
+        SELECT
+        <trim suffixOverrides=",">
+                id,
+                del,
+                create_time,
+                update_time,
+                name,
+        </trim>
+        FROM t_user
+        <trim prefix=" WHERE del=0 ">
+                <if test="entity != null and entity.id != null">
+                    AND id = #{entity.id}
+                </if>
+                <if test="entity != null and entity.del != null">
+                    AND del = #{entity.del}
+                </if>
+                <if test="entity != null and entity.createTime != null">
+                    AND create_time = #{entity.createTime}
+                </if>
+                <if test="entity != null and entity.updateTime != null">
+                    AND update_time = #{entity.updateTime}
+                </if>
+                <if test="entity != null and entity.name != null">
+                    AND name = #{entity.name}
+                </if>
+        </trim>
+        <if test="entity != null and entity.orderBy !=null">
+            ORDER BY #{entity.orderBy}
+        </if>
+    </select>
+
+    <!-- 分页获取数据 -->
+    <select id="pageByEntity" resultType="cn.xiaoniu.cloud.server.api.model.po.User">
+        SELECT
+            <trim suffixOverrides=",">
+                id,
+                del,
+                create_time,
+                update_time,
+                name,
+            </trim>
+        FROM t_user
+            <trim prefix=" WHERE del=0 ">
+            <if test="entity.id != null">
+                AND id = #{entity.id}
+            </if>
+            <if test="entity.del != null">
+                AND del = #{entity.del}
+            </if>
+            <if test="entity.createTime != null">
+                AND create_time = #{entity.createTime}
+            </if>
+            <if test="entity.updateTime != null">
+                AND update_time = #{entity.updateTime}
+            </if>
+            <if test="entity.name != null">
+                AND name = #{entity.name}
+            </if>
+            </trim>
+        <if test="entity.orderBy !=null">
+            ORDER BY #{entity.orderBy}
+        </if>
+        LIMIT #{entity.pageNo} , #{entity.pageSize}
+    </select>
+
+</mapper>

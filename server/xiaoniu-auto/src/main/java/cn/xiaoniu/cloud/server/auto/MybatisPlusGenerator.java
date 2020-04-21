@@ -16,19 +16,19 @@ public class MybatisPlusGenerator {
      */
     private final static String outPutDir = "E:\\autoGenJava\\";
 
-    private final static String DATABASE_URL = "jdbc:mysql://**.**.**.**:****/**********?useUnicode=true&characterEncoding=UTF-8&allowMultiQueries=true";
+    private final static String DATABASE_URL = "";
 
-    private final static String DATABASE_NAME="**********";
+    private final static String DATABASE_NAME="";
 
-    private final static String DATABASE_PASSWORD="**************";
+    private final static String DATABASE_PASSWORD="";
 
     /**
      * 基础包名
      */
-    private final static String basePackage = "cn.xiaoniu.zgm";
+    private final static String basePackage = "cn.xiaoniu.cloud.server.api";
     private final static boolean genAllTables = false;
-    private final static String superEntityClass = "cn.zhugeming.zgm.web.entity.BaseEntity";
-    private final static String[] tables = {"t_login_log"};
+    private final static String superEntityClass = "cn.xiaoniu.cloud.server.web.entity.BaseEntity";
+    private final static String[] tables = {"t_user"};
     private final static boolean isController = false;
     private final static boolean isService = false;
     private final static boolean isEntity = true;
@@ -52,10 +52,10 @@ public class MybatisPlusGenerator {
         PackageConfig packageConfig = new PackageConfig();
         packageConfig.setOutUseParentPackage(false);
         packageConfig.setParent(basePackage);
-        packageConfig.setController("nav.auto.controller");
-        packageConfig.setEntity("nav.auto.entity");
-        packageConfig.setMapper("nav.auto.dao");
-        packageConfig.setVo("nav.auto.vo");
+        packageConfig.setController("controller");
+        packageConfig.setEntity("model.po");
+        packageConfig.setMapper("dao.db");
+        packageConfig.setVo("model.vo");
         return packageConfig;
     }
 

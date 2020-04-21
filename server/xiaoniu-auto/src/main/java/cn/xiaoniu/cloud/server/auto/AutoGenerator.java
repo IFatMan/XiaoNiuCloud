@@ -7,6 +7,7 @@ package cn.xiaoniu.cloud.server.auto;
 
 import cn.xiaoniu.cloud.server.auto.config.*;
 import cn.xiaoniu.cloud.server.auto.config.builder.ConfigBuilder;
+import cn.xiaoniu.cloud.server.auto.config.po.TableField;
 import cn.xiaoniu.cloud.server.auto.config.po.TableInfo;
 import cn.xiaoniu.cloud.server.auto.engine.AbstractTemplateEngine;
 import cn.xiaoniu.cloud.server.auto.engine.VelocityTemplateEngine;

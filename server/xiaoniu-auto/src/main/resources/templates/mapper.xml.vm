@@ -1,0 +1,355 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="${package.Mapper}.${table.mapperName}">
+
+    <!-- 保存数据 -->
+    <insert id="saveEntity">
+        INSERT INTO ${table.name}
+        <trim suffixOverrides="," prefix="(" suffix=")">
+        #foreach($field in ${table.commonFields})
+            <if test="entity.$field.propertyName != null">
+                ${field.name},
+            </if>
+        #end
+        #foreach($field in ${table.fields})
+            <if test="entity.$field.propertyName != null">
+                ${field.name},
+            </if>
+        #end
+        </trim>
+        <trim suffixOverrides="," prefix="VALUES(" suffix=")">
+        #foreach($field in ${table.commonFields})
+            <if test="entity.$field.propertyName != null">
+                #{entity.${field.propertyName}},
+            </if>
+        #end
+        #foreach($field in ${table.fields})
+            <if test="entity.$field.propertyName != null">
+                #{entity.${field.propertyName}},
+            </if>
+        #end
+        </trim>
+    </insert>
+
+    <!-- 批量保存数据 -->
+    <insert id="saveEntities">
+        INSERT INTO ${table.name}
+        <trim suffixOverrides="," prefix="(" suffix=")">
+            #foreach($field in ${table.commonFields})
+            ${field.name},
+            #end
+            #foreach($field in ${table.fields})
+            ${field.name},
+            #end
+        </trim>
+        <foreach collection="entities" item="entity" index="index" separator=",">
+            <trim suffixOverrides="," prefix="(" suffix=")">
+            #foreach($field in ${table.commonFields})
+                #{entity.${field.propertyName}},
+            #end
+            #foreach($field in ${table.fields})
+                #{entity.${field.propertyName}},
+            #end
+            </trim>
+        </foreach>
+    </insert>
+
+    <!-- 逻辑删除数据 -->
+    <update id="deleteById">
+        UPDATE ${table.name} SET del=1 WHERE id=#{id}
+    </update>
+
+    <!-- 逻辑删除数据 -->
+    <update id="deleteByEntity">
+        UPDATE ${table.name} SET del=1
+        <trim prefix="WHERE" prefixOverrides="AND">
+        #foreach($field in ${table.commonFields})
+            <if test="entity.$field.propertyName != null">
+                AND ${field.name} = #{entity.${field.propertyName}}
+            </if>
+        #end
+        #foreach($field in ${table.fields})
+            <if test="entity.$field.propertyName != null">
+                AND ${field.name} = #{entity.${field.propertyName}}
+            </if>
+        #end
+        </trim>
+    </update>
+
+    <!-- 物理删除数据 -->
+    <delete id="removeById">
+        DELETE FROM ${table.name} WHERE id=#{id}
+    </delete>
+
+    <!-- 物理删除数据 -->
+    <delete id="removeByEntity">
+        DELETE FROM ${table.name}
+        <trim prefix="WHERE" prefixOverrides="AND">
+        #foreach($field in ${table.commonFields})
+            <if test="entity != null and entity.$field.propertyName != null">
+                AND ${field.name} = #{entity.${field.propertyName}}
+            </if>
+        #end
+        #foreach($field in ${table.fields})
+            <if test="entity != null and entity.$field.propertyName != null">
+                AND ${field.name} = #{entity.${field.propertyName}}
+            </if>
+        #end
+        </trim>
+    </delete>
+
+    <!-- 更新数据 -->
+    <update id="updateEntityById">
+        UPDATE ${table.name} t
+        <trim prefix="SET" suffixOverrides=",">
+        #foreach($field in ${table.commonFields})
+        #if(${field.name} != "id" && ${field.name} != "del")
+            <if test="entity != null and entity.$field.propertyName != null">
+                t.${field.name} = #{entity.${field.propertyName}},
+            </if>
+        #end
+        #end
+        #foreach($field in ${table.fields})
+            <if test="entity != null and entity.$field.propertyName != null">
+                t.${field.name} = #{entity.${field.propertyName}},
+            </if>
+        #end
+        </trim>
+        WHERE t.id=#{entity.id}
+    </update>
+
+    <!-- 更新数据 -->
+    <update id="updateEntityByPO">
+        UPDATE ${table.name} t
+        <trim prefix="SET" suffixOverrides=",">
+        #foreach($field in ${table.commonFields})
+        #if(${field.name} != "id" && ${field.name} != "del")
+            <if test="entity.$field.propertyName != null">
+                t.${field.name} = #{entity.${field.propertyName}},
+            </if>
+        #end
+        #end
+        #foreach($field in ${table.fields})
+            <if test="entity.$field.propertyName != null">
+                t.${field.name} = #{entity.${field.propertyName}},
+            </if>
+        #end
+        </trim>
+        <trim prefix=" WHERE t.del=0 " prefixOverrides="AND" suffixOverrides=",">
+        #foreach($field in ${table.commonFields})
+            <if test="record.$field.propertyName != null">
+                AND t.${field.name} = #{record.${field.propertyName}}
+            </if>
+        #end
+        #foreach($field in ${table.fields})
+            <if test="record.$field.propertyName != null">
+                AND t.${field.name} = #{record.${field.propertyName}}
+            </if>
+        #end
+        </trim>
+    </update>
+
+    <!-- 获取数据 -->
+    <select id="findById" resultType="${package.Entity}.${entity}">
+        SELECT
+            <trim suffixOverrides=",">
+            #foreach($field in ${table.commonFields})
+                ${field.name},
+            #end
+            #foreach($field in ${table.fields})
+                ${field.name},
+            #end
+            </trim>
+        FROM ${table.name}
+        WHERE id=#{id}
+    </select>
+
+    <!-- 获取一条数据 -->
+    <select id="findOne" resultType="${package.Entity}.${entity}">
+        SELECT
+            <trim suffixOverrides=",">
+            #foreach($field in ${table.commonFields})
+                ${field.name},
+            #end
+            #foreach($field in ${table.fields})
+                ${field.name},
+            #end
+            </trim>
+        FROM ${table.name}
+        <trim prefix=" WHERE del=0 ">
+            #foreach($field in ${table.commonFields})
+            <if test="entity != null and entity.$field.propertyName != null">
+                AND ${field.name} = #{entity.${field.propertyName}}
+            </if>
+            #end
+            #foreach($field in ${table.fields})
+            <if test="entity != null and entity.$field.propertyName != null">
+                AND ${field.name} = #{entity.${field.propertyName}}
+            </if>
+            #end
+        </trim>
+        <if test="entity != null and entity.orderBy !=null">
+            ORDER BY #{entity.orderBy}
+        </if>
+        LIMIT 1
+    </select>
+
+    <!-- 获取一条数据 -->
+    <select id="findLastOne" resultType="${package.Entity}.${entity}">
+        SELECT
+        <trim suffixOverrides=",">
+            #foreach($field in ${table.commonFields})
+                ${field.name},
+            #end
+            #foreach($field in ${table.fields})
+                ${field.name},
+            #end
+        </trim>
+        FROM ${table.name}
+        <trim prefix=" WHERE del=0 ">
+            #foreach($field in ${table.commonFields})
+                <if test="entity != null and entity.$field.propertyName != null">
+                    AND ${field.name} = #{entity.${field.propertyName}}
+                </if>
+            #end
+            #foreach($field in ${table.fields})
+                <if test="entity != null and entity.$field.propertyName != null">
+                    AND ${field.name} = #{entity.${field.propertyName}}
+                </if>
+            #end
+        </trim>
+        ORDER BY id DESC LIMIT 1
+    </select>
+
+    <!-- 根据指定字段名和值获取数据 -->
+    <select id="findByFieldName" resultType="${package.Entity}.${entity}">
+        SELECT
+        <trim suffixOverrides=",">
+            #foreach($field in ${table.commonFields})
+                ${field.name},
+            #end
+            #foreach($field in ${table.fields})
+                ${field.name},
+            #end
+        </trim>
+        FROM ${table.name}
+        <trim prefix=" WHERE del=0 ">
+            AND ${fieldName} = #{fieldValue}
+        </trim>
+    </select>
+
+    <!-- 根据指定字段名和值获取最后一条数据 -->
+    <select id="findLastOneByFieldName" resultType="${package.Entity}.${entity}">
+        SELECT
+        <trim suffixOverrides=",">
+            #foreach($field in ${table.commonFields})
+                ${field.name},
+            #end
+            #foreach($field in ${table.fields})
+                ${field.name},
+            #end
+        </trim>
+        FROM ${table.name}
+        <trim prefix=" WHERE del=0 ">
+            AND ${fieldName} = #{fieldValue}
+        </trim>
+        ORDER BY id DESC LIMIT 1
+    </select>
+
+    <!-- 获取数量 -->
+    <select id="countByEntity" resultType="java.lang.Long">
+        SELECT COUNT(0) FROM ${table.name}
+        <trim prefix=" WHERE del=0 ">
+            #foreach($field in ${table.commonFields})
+            <if test="entity != null and entity.$field.propertyName != null">
+                AND ${field.name} = #{entity.${field.propertyName}}
+            </if>
+            #end
+            #foreach($field in ${table.fields})
+            <if test="entity != null and entity.$field.propertyName != null">
+                AND ${field.name} = #{entity.${field.propertyName}}
+            </if>
+            #end
+        </trim>
+    </select>
+
+    <!-- 批量获取通过ID -->
+    <select id="listByIdIn" parameterType="java.util.List" resultType="${package.Entity}.${entity}">
+        SELECT
+        <trim suffixOverrides=",">
+            #foreach($field in ${table.commonFields})
+                ${field.name},
+            #end
+            #foreach($field in ${table.fields})
+                ${field.name},
+            #end
+        </trim>
+        FROM ${table.name}
+        <trim prefix=" WHERE del=0 ">
+            AND id IN
+            <foreach collection="ids" item="id" index="index" open="(" close=")" separator=",">
+                #{item}
+            </foreach>
+        </trim>
+    </select>
+
+    <!-- 获取数量 -->
+    <select id="listByEntity" resultType="${package.Entity}.${entity}">
+        SELECT
+        <trim suffixOverrides=",">
+            #foreach($field in ${table.commonFields})
+                ${field.name},
+            #end
+            #foreach($field in ${table.fields})
+                ${field.name},
+            #end
+        </trim>
+        FROM ${table.name}
+        <trim prefix=" WHERE del=0 ">
+            #foreach($field in ${table.commonFields})
+                <if test="entity != null and entity.$field.propertyName != null">
+                    AND ${field.name} = #{entity.${field.propertyName}}
+                </if>
+            #end
+            #foreach($field in ${table.fields})
+                <if test="entity != null and entity.$field.propertyName != null">
+                    AND ${field.name} = #{entity.${field.propertyName}}
+                </if>
+            #end
+        </trim>
+        <if test="entity != null and entity.orderBy !=null">
+            ORDER BY #{entity.orderBy}
+        </if>
+    </select>
+
+    <!-- 分页获取数据 -->
+    <select id="pageByEntity" resultType="${package.Entity}.${entity}">
+        SELECT
+            <trim suffixOverrides=",">
+            #foreach($field in ${table.commonFields})
+                ${field.name},
+            #end
+            #foreach($field in ${table.fields})
+                ${field.name},
+            #end
+            </trim>
+        FROM ${table.name}
+            <trim prefix=" WHERE del=0 ">
+            #foreach($field in ${table.commonFields})
+            <if test="entity.$field.propertyName != null">
+                AND ${field.name} = #{entity.${field.propertyName}}
+            </if>
+            #end
+            #foreach($field in ${table.fields})
+            <if test="entity.$field.propertyName != null">
+                AND ${field.name} = #{entity.${field.propertyName}}
+            </if>
+            #end
+            </trim>
+        <if test="entity.orderBy !=null">
+            ORDER BY #{entity.orderBy}
+        </if>
+        LIMIT #{entity.pageNo} , #{entity.pageSize}
+    </select>
+
+</mapper>

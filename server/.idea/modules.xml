@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/.idea/server.iml" filepath="$PROJECT_DIR$/.idea/server.iml" />
+      <module fileurl="file://$PROJECT_DIR$/xiaoniu-api/xiaoniu-api.iml" filepath="$PROJECT_DIR$/xiaoniu-api/xiaoniu-api.iml" />
+      <module fileurl="file://$PROJECT_DIR$/xiaoniu-api/xiaoniu-api-controller/xiaoniu-api-controller.iml" filepath="$PROJECT_DIR$/xiaoniu-api/xiaoniu-api-controller/xiaoniu-api-controller.iml" />
+      <module fileurl="file://$PROJECT_DIR$/xiaoniu-api/xiaoniu-api-dao/xiaoniu-api-dao.iml" filepath="$PROJECT_DIR$/xiaoniu-api/xiaoniu-api-dao/xiaoniu-api-dao.iml" />
+      <module fileurl="file://$PROJECT_DIR$/xiaoniu-api/xiaoniu-api-model/xiaoniu-api-model.iml" filepath="$PROJECT_DIR$/xiaoniu-api/xiaoniu-api-model/xiaoniu-api-model.iml" />
+      <module fileurl="file://$PROJECT_DIR$/xiaoniu-api/xiaoniu-api-service/xiaoniu-api-service.iml" filepath="$PROJECT_DIR$/xiaoniu-api/xiaoniu-api-service/xiaoniu-api-service.iml" />
+      <module fileurl="file://$PROJECT_DIR$/xiaoniu-auto/xiaoniu-auto.iml" filepath="$PROJECT_DIR$/xiaoniu-auto/xiaoniu-auto.iml" />
+      <module fileurl="file://$PROJECT_DIR$/xiaoniu-parent/xiaoniu-parent.iml" filepath="$PROJECT_DIR$/xiaoniu-parent/xiaoniu-parent.iml" />
+      <module fileurl="file://$PROJECT_DIR$/xiaoniu-util/xiaoniu-util.iml" filepath="$PROJECT_DIR$/xiaoniu-util/xiaoniu-util.iml" />
+      <module fileurl="file://$PROJECT_DIR$/xiaoniu-web/xiaoniu-web.iml" filepath="$PROJECT_DIR$/xiaoniu-web/xiaoniu-web.iml" />
+    </modules>
+  </component>
+</project>

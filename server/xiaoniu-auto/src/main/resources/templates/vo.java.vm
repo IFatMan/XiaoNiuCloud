@@ -1,0 +1,83 @@
+package ${package.Vo};
+
+import EntityUtil;
+import ${package.Entity}.${entity};
+import lombok.*;
+import lombok.experimental.Accessors;
+import org.springframework.beans.BeanUtils;
+
+import java.io.Serializable;
+
+/**
+ * <p>$!{table.comment} VO类</p>
+ * <p>创建时间:${date}</p>
+ * <p>公司信息:Developed By KongMing & ZhangQiang</p>
+ *
+ * @author ${author}
+ */
+@Getter
+@Setter
+@Accessors(chain = true)
+@Builder(toBuilder = true)
+@NoArgsConstructor
+@AllArgsConstructor
+public class ${table.voName} implements Serializable {
+
+    private static final long serialVersionUID = 1L;
+    #foreach($field in ${table.commonFields})
+
+    #if("$!field.comment" != "")
+    /**
+     * ${field.comment}
+     */
+    #end
+    private ${field.propertyType} ${field.propertyName};
+    #end
+    #foreach($field in ${table.fields})
+
+    #if("$!field.comment" != "")
+    /**
+     * ${field.comment}
+     */
+    #end
+    private ${field.propertyType} ${field.propertyName};
+    #end
+
+    /**
+     * 构造
+     */
+    public static ${table.voName} new${table.voName}() {
+        return new ${table.voName}();
+    }
+
+    /**
+     * 转为 PO
+     */
+    public ${entity} converTo${entity}() {
+        return new ${table.voName}Convert().doForward(this);
+    }
+
+    /**
+     * 转为 VO
+     */
+    public static ${table.voName} converFor(${entity} entity) {
+        return new ${table.voName}Convert().doBackWard(entity);
+    }
+
+    /**
+     * PO VO 自动转换工具类
+     */
+    private static class ${table.voName}Convert {
+        protected ${entity} doForward(${table.voName} entityVO) {
+            ${entity} entity = EntityUtil.newEntity(${entity}.class);
+            BeanUtils.copyProperties(entityVO, entity);
+            return entity;
+        }
+
+        protected ${table.voName} doBackWard(${entity} entity) {
+            ${table.voName} entityVO = ${table.voName}.new${table.voName}();
+            BeanUtils.copyProperties(entity, entityVO);
+            return entityVO;
+        }
+    }
+}
