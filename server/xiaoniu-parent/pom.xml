@@ -23,6 +23,7 @@
     <modules>
         <module>../xiaoniu-util</module>
         <module>../xiaoniu-web</module>
+        <module>../xiaoniu-api</module>
     </modules>
 
     <properties>
@@ -105,22 +106,9 @@
                 <filtering>true</filtering><!-- 所有的properties文件占位符替换 -->
                 <includes>
                     <include>**/*.properties</include>
-                </includes>
-            </resource>
-            <resource>
-                <directory>src/main/resources/</directory>
-                <filtering>true</filtering><!-- 所有的xml文件占位符替换 -->
-                <includes>
                     <include>**/*.xml</include>
+                    <include>**/*.txt</include>
                 </includes>
-            </resource>
-            <resource>
-                <directory>src/main/java</directory>
-                <includes>
-                    <include>**/*.properties</include>
-                    <include>**/*.xml</include>
-                </includes>
-                <filtering>false</filtering>
             </resource>
             <resource>
                 <directory>src/main/java</directory>
