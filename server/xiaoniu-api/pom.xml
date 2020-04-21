@@ -16,7 +16,7 @@
     <description>小牛云盘</description>
 
     <modules>
-        <module>xiaoniu-api-po</module>
+        <module>xiaoniu-api-model</module>
         <module>xiaoniu-api-dao</module>
         <module>xiaoniu-api-service</module>
         <module>xiaoniu-api-controller</module>

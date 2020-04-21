@@ -3,14 +3,31 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
-        <artifactId>xiaoniu-api</artifactId>
         <groupId>cn.xiaoniu.cloud.server</groupId>
-        <version>0.0.1-SNAPSHOT</version>
+        <artifactId>xiaoniu-api</artifactId>
+        <version>1.0-SNAPSHOT</version>
+        <relativePath>../../xiaoniu-api/pom.xml</relativePath>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>cn.xiaoniu.cloud.server.api</groupId>
     <artifactId>xiaoniu-api-service</artifactId>
 
+    <dependencies>
+
+        <dependency>
+            <groupId>cn.xiaoniu.cloud.server.api</groupId>
+            <artifactId>xiaoniu-api-model</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
+
+        <dependency>
+            <groupId>cn.xiaoniu.cloud.server.api</groupId>
+            <artifactId>xiaoniu-api-dao</artifactId>
+            <version>1.0-SNAPSHOT</version>
+            <scope>provided</scope>
+        </dependency>
+
+    </dependencies>
 
 </project>

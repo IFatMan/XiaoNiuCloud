@@ -5,12 +5,20 @@
     <parent>
         <groupId>cn.xiaoniu.cloud.server</groupId>
         <artifactId>xiaoniu-api</artifactId>
-        <version>0.0.1-SNAPSHOT</version>
+        <version>1.0-SNAPSHOT</version>
+        <relativePath>../../xiaoniu-api/pom.xml</relativePath>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>cn.xiaoniu.cloud.server.api</groupId>
     <artifactId>xiaoniu-api-dao</artifactId>
 
+    <dependencies>
+        <dependency>
+            <groupId>cn.xiaoniu.cloud.server.api</groupId>
+            <artifactId>xiaoniu-api-model</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
+    </dependencies>
 
 </project>
