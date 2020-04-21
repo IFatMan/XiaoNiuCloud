@@ -22,6 +22,7 @@
     <!-- 子项目 -->
     <modules>
         <module>../xiaoniu-util</module>
+        <module>../xiaoniu-web</module>
     </modules>
 
     <properties>
