@@ -38,9 +38,6 @@ public class Swagger2Config {
     @Bean
     public Docket createRestApi() {
         Docket docket = new Docket(DocumentationType.SWAGGER_2);
-        if (Objects.isNull(properties)) {
-            return docket;
-        }
         docket.enable(properties.getEnable());
         docket.globalOperationParameters(builderHeader());
         docket.apiInfo(buildApiInfo());
