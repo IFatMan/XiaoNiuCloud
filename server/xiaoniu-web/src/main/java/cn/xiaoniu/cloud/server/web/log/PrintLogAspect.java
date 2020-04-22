@@ -9,6 +9,8 @@ import cn.xiaoniu.cloud.server.web.util.HttpServletRequestUtil;
 import cn.xiaoniu.cloud.server.web.util.Log;
 import org.apache.commons.lang3.StringUtils;
 import org.aspectj.lang.JoinPoint;
+import org.aspectj.lang.ProceedingJoinPoint;
+import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
 import org.aspectj.lang.annotation.Pointcut;
@@ -74,6 +76,22 @@ public class PrintLogAspect {
         } catch (Exception ex) {
             throw new UtilException(ex, "使用AOP打印请求参数异常！");
         }
+    }
+
+    /**
+     * 切点环绕织入
+     *
+     * @param proceedingJoinPoint
+     * @return
+     * @throws Throwable
+     */
+    @Around("printLog()")
+    public Object doAround(ProceedingJoinPoint proceedingJoinPoint) throws Throwable {
+        long startTime = System.currentTimeMillis();
+        Object result = proceedingJoinPoint.proceed();
+        Log.info("请求返回:{}", JsonUtil.toJson(result));
+        Log.info("请求耗时:{}", System.currentTimeMillis() - startTime);
+        return result;
     }
 
     /**
