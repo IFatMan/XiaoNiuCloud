@@ -6,9 +6,9 @@
         <groupId>cn.xiaoniu.cloud.server</groupId>
         <artifactId>xiaoniu-api</artifactId>
         <version>1.0-SNAPSHOT</version>
-        <relativePath>../../xiaoniu-api/pom.xml</relativePath>
+        <relativePath>../pom.xml</relativePath>
     </parent>
-    <artifactId>xiaoniu-api</artifactId>
+    <artifactId>xiaoniu-api-controller</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>xiaoniu-api-controller</name>
     <description>小牛云盘</description>

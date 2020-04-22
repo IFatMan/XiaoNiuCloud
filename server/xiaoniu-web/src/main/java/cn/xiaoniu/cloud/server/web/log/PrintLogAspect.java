@@ -65,7 +65,7 @@ public class PrintLogAspect {
 
             // 获取@PrintLog注解的接口描述信息
             PrintLog printLog = getPrintLogFromPoint(targetClass, targetMethod, joinPoint.getArgs().length);
-            if (StringUtils.isNotBlank(printLog.description())) {
+            if (printLog != null && StringUtils.isNotBlank(printLog.description())) {
                 Log.info("请求方法:{}", printLog.description());
             }
             Log.info("请求方法路径:{}.{}()", targetClass.getName(), targetMethod);
