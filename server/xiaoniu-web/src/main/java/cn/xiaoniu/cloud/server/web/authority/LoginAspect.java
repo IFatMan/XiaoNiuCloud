@@ -34,7 +34,7 @@ import java.util.Objects;
 @Component
 public class LoginAspect implements Ordered {
 
-    @Autowired
+    @Autowired(required = false)
     private LoginCacheDao loginCacheDao;
 
     /**
