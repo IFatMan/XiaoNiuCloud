@@ -32,6 +32,7 @@ import java.util.Objects;
  */
 @Aspect
 @Component
+//@ConditionalOnBean(LoginCacheDao.class)
 public class LoginAspect implements Ordered {
 
     @Autowired(required = false)
@@ -91,6 +92,7 @@ public class LoginAspect implements Ordered {
                 throw new UtilException("权限验证Aspect未获取到@Login注解！");
             }
 
+            String token = HttpServletRequestUtil.getHeaderIgnoreCase(request, "");
 
 
         } catch (Exception ex) {
