@@ -1,6 +1,5 @@
 package cn.xiaoniu.cloud.server.web.config;
 
-import cn.xiaoniu.cloud.server.web.interceptor.RequestFilter;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
@@ -29,12 +28,5 @@ public class Beans {
         config.addAllowedMethod("PATCH");
         source.registerCorsConfiguration("/**", config);
         return new CorsFilter(source);
-    }
-
-    public static FilterRegistrationBean filterRegistrationBean() {
-        FilterRegistrationBean bean = new FilterRegistrationBean();
-        bean.setFilter(new RequestFilter());
-        bean.addUrlPatterns("/*");
-        return bean;
     }
 }

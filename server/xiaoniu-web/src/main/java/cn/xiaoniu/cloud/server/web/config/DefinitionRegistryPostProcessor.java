@@ -18,7 +18,6 @@ public class DefinitionRegistryPostProcessor implements BeanDefinitionRegistryPo
     @Override
     public void postProcessBeanFactory(ConfigurableListableBeanFactory beanFactory) throws BeansException {
         beanFactory.registerSingleton("corsFilter", Beans.getCorsFilter());
-        beanFactory.registerSingleton("filterRegistrationBean", Beans.filterRegistrationBean());
     }
 
     @Override
