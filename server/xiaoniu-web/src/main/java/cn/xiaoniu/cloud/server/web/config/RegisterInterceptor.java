@@ -38,9 +38,9 @@ public class RegisterInterceptor extends WebMvcConfigurationSupport {
 
     @Override
     protected void addInterceptors(InterceptorRegistry registry) {
-//        if (needContext) {
-//            registry.addInterceptor(customerInterceptor()).addPathPatterns(contextPath).excludePathPatterns("/favicon.ico", "/swagger-ui.html", "/v2/api-docs");
-//        }
+        if (needContext) {
+            registry.addInterceptor(customerInterceptor()).addPathPatterns(contextPath);
+        }
         super.addInterceptors(registry);
     }
 

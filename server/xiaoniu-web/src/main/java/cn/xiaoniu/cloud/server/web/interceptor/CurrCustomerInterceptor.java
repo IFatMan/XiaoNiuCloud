@@ -4,7 +4,7 @@ import cn.xiaoniu.cloud.server.util.JsonUtil;
 import cn.xiaoniu.cloud.server.util.character.StringUtil;
 import cn.xiaoniu.cloud.server.util.context.CacheCustomer;
 import cn.xiaoniu.cloud.server.util.context.ZGMContext;
-import cn.xiaoniu.cloud.server.web.annotation.Login;
+import cn.xiaoniu.cloud.server.web.authority.Login;
 import cn.xiaoniu.cloud.server.web.dao.LoginCacheDao;
 import cn.xiaoniu.cloud.server.web.exception.OAuthException;
 import cn.xiaoniu.cloud.server.web.util.Log;

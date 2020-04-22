@@ -1,4 +1,4 @@
-package cn.xiaoniu.cloud.server.web.annotation;
+package cn.xiaoniu.cloud.server.web.authority;
 
 import java.lang.annotation.*;
 

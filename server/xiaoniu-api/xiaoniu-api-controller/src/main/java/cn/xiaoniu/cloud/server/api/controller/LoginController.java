@@ -1,6 +1,7 @@
 package cn.xiaoniu.cloud.server.api.controller;
 
-import cn.xiaoniu.cloud.server.web.annotation.HideData;
+import cn.xiaoniu.cloud.server.web.authority.Login;
+import cn.xiaoniu.cloud.server.web.log.HideData;
 import cn.xiaoniu.cloud.server.web.log.PrintLog;
 import cn.xiaoniu.cloud.server.web.response.Result;
 import io.swagger.annotations.Api;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class LoginController {
 
+    @Login
     @PutMapping("/login")
     @ApiOperation(value = "登录接口")
     @PrintLog(description = "登录接口")

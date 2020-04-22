@@ -5,9 +5,9 @@ import cn.xiaoniu.cloud.server.util.JsonUtil;
 import cn.xiaoniu.cloud.server.util.RegexUtil;
 import cn.xiaoniu.cloud.server.util.constant.CommonConstant;
 import cn.xiaoniu.cloud.server.util.exception.UtilException;
-import cn.xiaoniu.cloud.server.web.annotation.HideData;
 import cn.xiaoniu.cloud.server.web.util.HttpServletRequestUtil;
 import cn.xiaoniu.cloud.server.web.util.Log;
+import cn.xiaoniu.cloud.server.web.util.MethodUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.ProceedingJoinPoint;
@@ -16,6 +16,7 @@ import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
 import org.aspectj.lang.annotation.Pointcut;
 import org.aspectj.lang.reflect.MethodSignature;
+import org.springframework.core.Ordered;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
@@ -35,7 +36,17 @@ import java.util.Objects;
  */
 @Aspect
 @Component
-public class PrintLogAspect {
+public class PrintLogAspect implements Ordered {
+
+    /**
+     * 执行顺序
+     *
+     * @return
+     */
+    @Override
+    public int getOrder() {
+        return 1;
+    }
 
     /**
      * 以自定义 @PrintLog 注解为切点
@@ -78,7 +89,7 @@ public class PrintLogAspect {
             }
 
             Log.info("请求方法路径:{}.{}()", targetClass.getName(), method.getName());
-            Log.info("请求参数:{}", getParams(methodSignature, joinPoint.getArgs()));
+            Log.info("请求参数:{}", MethodUtil.getInstance().getJSONParams(methodSignature, joinPoint.getArgs()));
 
         } catch (Exception ex) {
             throw new UtilException(ex, "使用AOP打印请求参数异常！");
@@ -100,58 +111,4 @@ public class PrintLogAspect {
         Log.info("请求耗时:{}\n", System.currentTimeMillis() - startTime);
         return result;
     }
-
-    /**
-     * 获取
-     *
-     * @param methodSignature
-     * @return
-     */
-    private String getParams(MethodSignature methodSignature, Object[] args) {
-        if (Objects.isNull(args) || args.length <= 0) {
-            return CommonConstant.CHAR_EMPTY;
-        }
-
-        String[] parameterNames = methodSignature.getParameterNames();
-        Parameter[] parameters = methodSignature.getMethod().getParameters();
-        if (Objects.isNull(parameterNames) || args.length != parameterNames.length || parameterNames.length != parameters.length) {
-            return CommonConstant.CHAR_EMPTY;
-        }
-
-        Object arg;
-        Map<String, Object> params = MapUtil.newHashMap(args.length);
-        for (int i = 0; i < args.length; i++) {
-            arg = args[i];
-            if (isIgnoreByParamType(arg)) {
-                continue;
-            }
-            if (isIgnoreByAnnotation(parameters[i])) {
-                arg = RegexUtil.hideData(arg);
-            }
-            params.put(parameterNames[i], arg);
-        }
-        return JsonUtil.toJson(params);
-    }
-
-    /**
-     * 是否根据参数类型忽略日志打印
-     *
-     * @param arg
-     * @return
-     */
-    private boolean isIgnoreByParamType(Object arg) {
-        return (arg instanceof HttpServletResponse) || (arg instanceof HttpServletRequest) || (arg instanceof MultipartFile) || (arg instanceof MultipartFile[]);
-    }
-
-    /**
-     * 是否根据注解隐藏值 注解@HideData生效
-     *
-     * @param parameter
-     * @return
-     */
-    private boolean isIgnoreByAnnotation(Parameter parameter) {
-        return Objects.nonNull(parameter.getAnnotation(HideData.class));
-    }
-
-
 }
