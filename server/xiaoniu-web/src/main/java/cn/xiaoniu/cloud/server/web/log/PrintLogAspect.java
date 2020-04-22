@@ -1,10 +1,11 @@
 package cn.xiaoniu.cloud.server.web.log;
 
 import cn.hutool.core.map.MapUtil;
-import cn.xiaoniu.cloud.server.util.AssertUtil;
 import cn.xiaoniu.cloud.server.util.JsonUtil;
+import cn.xiaoniu.cloud.server.util.RegexUtil;
 import cn.xiaoniu.cloud.server.util.constant.CommonConstant;
 import cn.xiaoniu.cloud.server.util.exception.UtilException;
+import cn.xiaoniu.cloud.server.web.annotation.HideData;
 import cn.xiaoniu.cloud.server.web.util.HttpServletRequestUtil;
 import cn.xiaoniu.cloud.server.web.util.Log;
 import org.apache.commons.lang3.StringUtils;
@@ -23,6 +24,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.lang.reflect.Method;
+import java.lang.reflect.Parameter;
 import java.util.Map;
 import java.util.Objects;
 
@@ -40,6 +42,7 @@ public class PrintLogAspect {
      */
     @Pointcut("@annotation(cn.xiaoniu.cloud.server.web.log.PrintLog)")
     public void printLog() {
+        // 定义切点不需要方法体
     }
 
     /**
@@ -62,16 +65,20 @@ public class PrintLogAspect {
             // 目标Class
             Class targetClass = joinPoint.getTarget().getClass();
 
+            // 目标方法签名
+            MethodSignature methodSignature = (MethodSignature) joinPoint.getSignature();
+
             // 目标方法
-            String targetMethod = joinPoint.getSignature().getName();
+            Method method = methodSignature.getMethod();
 
             // 获取@PrintLog注解的接口描述信息
-            PrintLog printLog = getPrintLogFromPoint(targetClass, targetMethod, joinPoint.getArgs().length);
+            PrintLog printLog = method.getAnnotation(PrintLog.class);
             if (printLog != null && StringUtils.isNotBlank(printLog.description())) {
                 Log.info("请求方法:{}", printLog.description());
             }
-            Log.info("请求方法路径:{}.{}()", targetClass.getName(), targetMethod);
-            Log.info("请求参数:{}", getParams(joinPoint));
+
+            Log.info("请求方法路径:{}.{}()", targetClass.getName(), method.getName());
+            Log.info("请求参数:{}", getParams(methodSignature, joinPoint.getArgs()));
 
         } catch (Exception ex) {
             throw new UtilException(ex, "使用AOP打印请求参数异常！");
@@ -90,79 +97,24 @@ public class PrintLogAspect {
         long startTime = System.currentTimeMillis();
         Object result = proceedingJoinPoint.proceed();
         Log.info("请求返回:{}", JsonUtil.toJson(result));
-        Log.info("请求耗时:{}", System.currentTimeMillis() - startTime);
+        Log.info("请求耗时:{}\n", System.currentTimeMillis() - startTime);
         return result;
-    }
-
-    /**
-     * 获取切面注解的描述
-     *
-     * @param targetClass 目标CLass
-     * @param methodName  目标方法
-     * @return 描述信息
-     * @throws Exception
-     */
-    private PrintLog getPrintLogFromPoint(Class targetClass, String methodName, int paramSize) {
-        AssertUtil.isNotNull(targetClass, "参数 targetClass 不能为null!");
-        AssertUtil.isNotNull(methodName, "参数 methodName 不能为null!");
-
-        try {
-            Method targetMethod = null;
-            Method[] methods = targetClass.getDeclaredMethods();
-            if (methods.length <= 0) {
-                Log.debug("类[{}]中没有方法！", targetClass.getName());
-                return null;
-            }
-            for (Method method : methods) {
-                if (methodName.equals(method.getName()) && method.getParameterTypes().length == paramSize) {
-                    targetMethod = method;
-                }
-            }
-            return targetMethod == null ? null : targetMethod.getAnnotation(PrintLog.class);
-        } catch (Exception ex) {
-            throw new UtilException(ex, "获取切面注解的描述异常！");
-        }
-
-    }
-
-    private Method getMethod(Class targetClass, String methodName, int paramSize) {
-        AssertUtil.isNotNull(targetClass, "参数 targetClass 不能为null!");
-        AssertUtil.isNotNull(methodName, "参数 methodName 不能为null!");
-
-        try {
-            Method[] methods = targetClass.getDeclaredMethods();
-            if (Objects.isNull(methods) || methods.length <= 0) {
-                Log.debug("类[{}]中没有方法！", targetClass.getName());
-                return null;
-            }
-            for (Method method : methods) {
-                if (methodName.equals(method.getName()) && method.getParameterTypes().length == paramSize) {
-                    return method;
-                }
-            }
-            Log.debug("类[{}]中没有方法[{}]！", targetClass.getName(), methodName);
-            return null;
-        } catch (Exception ex) {
-            throw new UtilException(ex, "获取切面注解的描述异常！");
-        }
-
     }
 
     /**
      * 获取
      *
-     * @param joinPoint
+     * @param methodSignature
      * @return
      */
-    private String getParams(JoinPoint joinPoint) {
-        Object[] args = joinPoint.getArgs();
+    private String getParams(MethodSignature methodSignature, Object[] args) {
         if (Objects.isNull(args) || args.length <= 0) {
             return CommonConstant.CHAR_EMPTY;
         }
 
-        MethodSignature methodSignature = (MethodSignature) joinPoint.getSignature();
         String[] parameterNames = methodSignature.getParameterNames();
-        if (Objects.isNull(parameterNames) || args.length != parameterNames.length) {
+        Parameter[] parameters = methodSignature.getMethod().getParameters();
+        if (Objects.isNull(parameterNames) || args.length != parameterNames.length || parameterNames.length != parameters.length) {
             return CommonConstant.CHAR_EMPTY;
         }
 
@@ -170,13 +122,36 @@ public class PrintLogAspect {
         Map<String, Object> params = MapUtil.newHashMap(args.length);
         for (int i = 0; i < args.length; i++) {
             arg = args[i];
-            if ((arg instanceof HttpServletResponse) || (arg instanceof HttpServletRequest)
-                    || (arg instanceof MultipartFile) || (arg instanceof MultipartFile[])) {
+            if (isIgnoreByParamType(arg)) {
                 continue;
+            }
+            if (isIgnoreByAnnotation(parameters[i])) {
+                arg = RegexUtil.hideData(arg);
             }
             params.put(parameterNames[i], arg);
         }
         return JsonUtil.toJson(params);
     }
+
+    /**
+     * 是否根据参数类型忽略日志打印
+     *
+     * @param arg
+     * @return
+     */
+    private boolean isIgnoreByParamType(Object arg) {
+        return (arg instanceof HttpServletResponse) || (arg instanceof HttpServletRequest) || (arg instanceof MultipartFile) || (arg instanceof MultipartFile[]);
+    }
+
+    /**
+     * 是否根据注解隐藏值 注解@HideData生效
+     *
+     * @param parameter
+     * @return
+     */
+    private boolean isIgnoreByAnnotation(Parameter parameter) {
+        return Objects.nonNull(parameter.getAnnotation(HideData.class));
+    }
+
 
 }
