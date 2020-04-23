@@ -94,4 +94,9 @@ public final class CommonConstant {
      */
     public static final String CHAR_RIGHT_BRACKETS = ")";
 
+    /**
+     * '*' 星号
+     */
+    public static final String CHAR_ASTERIASK = "*";
+
 }

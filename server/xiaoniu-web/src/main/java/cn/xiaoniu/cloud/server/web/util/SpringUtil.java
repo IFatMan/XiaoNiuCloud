@@ -3,14 +3,12 @@ package cn.xiaoniu.cloud.server.web.util;
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
-import org.springframework.stereotype.Component;
 
 /**
  * @author 孔明
  * @date 2019/11/22 17:00
  * @description cn.xiaoniu.cloud.server.common.util.SpringUtil
  */
-@Component
 public class SpringUtil implements ApplicationContextAware {
 
     private static ApplicationContext applicationContext;

@@ -7,7 +7,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
-import org.springframework.stereotype.Component;
 import springfox.documentation.builders.ApiInfoBuilder;
 import springfox.documentation.builders.ParameterBuilder;
 import springfox.documentation.builders.PathSelectors;
@@ -28,7 +27,6 @@ import java.util.Objects;
  * @date 2020/4/22 15:32
  * @description cn.xiaoniu.cloud.server.web.swagger.Swagger2Config
  */
-@Component
 @EnableConfigurationProperties(Swagger2Properties.class)
 public class Swagger2Config {
 

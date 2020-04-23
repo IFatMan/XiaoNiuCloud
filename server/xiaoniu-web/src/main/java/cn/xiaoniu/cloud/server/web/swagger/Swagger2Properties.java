@@ -14,7 +14,7 @@ import java.util.List;
  * @description cn.xiaoniu.cloud.server.web.properties.Swagger2Properties
  */
 @ConfigurationProperties(prefix = "swagger2")
-public class Swagger2Properties {
+class Swagger2Properties {
 
     /**
      * 是否开启Swagger2
