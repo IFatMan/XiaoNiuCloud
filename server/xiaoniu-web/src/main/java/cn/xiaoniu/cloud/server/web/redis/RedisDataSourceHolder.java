@@ -145,7 +145,7 @@ public class RedisDataSourceHolder implements InitializingBean {
         return redisTemplate;
     }
 
-    interface RedisHolder<T> {
+    public interface RedisHolder<T> {
 
         T execute(RedisUtil util);
 

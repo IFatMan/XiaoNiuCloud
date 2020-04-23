@@ -9,15 +9,15 @@ import java.lang.annotation.*;
  * @date 2019/12/19 11:15
  * @description cn.xiaoniu.cloud.server.web.annotation.PrintLog
  */
+@Inherited
 @Documented
 @Target(ElementType.METHOD)
-@Inherited
 @Retention(RetentionPolicy.RUNTIME)
 public @interface PrintLog {
 
     /**
      * 方法描述
      */
-    String description() default "";
+    String value() default "";
 
 }

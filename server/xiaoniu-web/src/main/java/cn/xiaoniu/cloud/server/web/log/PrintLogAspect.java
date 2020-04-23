@@ -1,9 +1,6 @@
 package cn.xiaoniu.cloud.server.web.log;
 
-import cn.hutool.core.map.MapUtil;
 import cn.xiaoniu.cloud.server.util.JsonUtil;
-import cn.xiaoniu.cloud.server.util.RegexUtil;
-import cn.xiaoniu.cloud.server.util.constant.CommonConstant;
 import cn.xiaoniu.cloud.server.util.exception.UtilException;
 import cn.xiaoniu.cloud.server.web.util.HttpServletRequestUtil;
 import cn.xiaoniu.cloud.server.web.util.Log;
@@ -20,14 +17,9 @@ import org.springframework.core.Ordered;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
-import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.lang.reflect.Method;
-import java.lang.reflect.Parameter;
-import java.util.Map;
-import java.util.Objects;
 
 /**
  * @author 孔明
@@ -84,8 +76,8 @@ public class PrintLogAspect implements Ordered {
 
             // 获取@PrintLog注解的接口描述信息
             PrintLog printLog = method.getAnnotation(PrintLog.class);
-            if (printLog != null && StringUtils.isNotBlank(printLog.description())) {
-                Log.info("请求方法:{}", printLog.description());
+            if (printLog != null && StringUtils.isNotBlank(printLog.value())) {
+                Log.info("请求方法:{}", printLog.value());
             }
 
             Log.info("请求方法路径:{}.{}()", targetClass.getName(), method.getName());
