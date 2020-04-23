@@ -3,7 +3,6 @@ package cn.xiaoniu.cloud.server.web.redis;
 import cn.xiaoniu.cloud.server.util.AssertUtil;
 import cn.xiaoniu.cloud.server.util.exception.UtilException;
 import cn.xiaoniu.cloud.server.web.util.Log;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.connection.DataType;
 import org.springframework.data.redis.core.RedisTemplate;
 
@@ -22,8 +21,7 @@ public class RedisUtil {
 
     private RedisTemplate<String, Object> redis;
 
-    @Autowired
-    public void setRedis(RedisTemplate<String, Object> redisTemplate) {
+    public RedisUtil(RedisTemplate<String, Object> redisTemplate) {
         this.redis = redisTemplate;
     }
 
@@ -354,7 +352,7 @@ public class RedisUtil {
      * @author 孔明
      * @date 2019-12-16 10:15:17
      */
-    public Boolean set(String key, Object value) {
+    public <T> Boolean set(String key, T value) {
         Log.debug("RedisUtil: 设置指定KEY的值! key[{}] , value[{}]", key, value);
         try {
             AssertUtil.isNotNull(key, "RedisUtil : 设置指定KEY的值异常 -> key is null !");
@@ -377,7 +375,7 @@ public class RedisUtil {
      * @author 孔明
      * @date 2019-12-16 16:15:36
      */
-    public Boolean set(String key, Object value, long milli) {
+    public <T> Boolean set(String key, T value, long milli) {
         Log.debug("RedisUtil: 设置指定KEY的值! key[{}] , value[{}], seconds:[{}]", key, value, milli);
         try {
             AssertUtil.isNotNull(key, "RedisUtil : 设置指定KEY的值异常 -> key is null !");
@@ -457,7 +455,7 @@ public class RedisUtil {
      * @author 孔明
      * @date 2019-12-16 10:36:13
      */
-    public <T> T getAndSet(String key, Object value) {
+    public <T> T getAndSet(String key, T value) {
         Log.debug("RedisUtil: 设置Key的值为value,并返回旧值! KEY:[{}] , value:[{}]", key, value);
         try {
             AssertUtil.isNotNull(key, "设置Key的值为value,并返回旧值异常 -> Key is null !");
