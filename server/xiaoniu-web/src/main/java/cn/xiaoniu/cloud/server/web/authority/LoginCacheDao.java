@@ -1,4 +1,4 @@
-package cn.xiaoniu.cloud.server.web.dao;
+package cn.xiaoniu.cloud.server.web.authority;
 
 import cn.xiaoniu.cloud.server.util.context.CacheCustomer;
 

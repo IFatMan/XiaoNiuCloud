@@ -1,6 +1,7 @@
 package cn.xiaoniu.cloud.server.web.exception;
 
 import cn.hutool.core.collection.CollUtil;
+import cn.xiaoniu.cloud.server.util.JsonUtil;
 import cn.xiaoniu.cloud.server.util.RegexUtil;
 import cn.xiaoniu.cloud.server.util.exception.UtilException;
 import cn.xiaoniu.cloud.server.web.response.Result;
@@ -111,8 +112,9 @@ public class GlobalExceptionResolver {
      */
     @ExceptionHandler(OAuthException.class)
     public Result handlerOAuthException(OAuthException e) {
-        Log.error("用户权限异常:", e);
-        return Result.fail(ResultStatus.ERROR_OAUTH, e.getMessage());
+        Result result = Result.fail(e.getStatus(), e.getMessage());
+        Log.error("权限异常，返回:{}", JsonUtil.toJson(result));
+        return result;
     }
 
     /**

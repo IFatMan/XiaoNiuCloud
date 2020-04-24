@@ -18,6 +18,6 @@ public @interface PrintLog {
     /**
      * 方法描述
      */
-    String value() default "";
+    String value();
 
 }

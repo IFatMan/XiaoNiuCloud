@@ -9,9 +9,9 @@ import java.lang.annotation.*;
  * @date 2019/12/19 11:15
  * @description cn.xiaoniu.cloud.server.web.annotation.Login
  */
-@Documented
-@Target(ElementType.METHOD)
 @Inherited
+@Documented
 @Retention(RetentionPolicy.RUNTIME)
+@Target({ElementType.ANNOTATION_TYPE, ElementType.METHOD})
 public @interface Login {
 }

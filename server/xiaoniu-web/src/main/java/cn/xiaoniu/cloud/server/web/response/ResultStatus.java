@@ -42,6 +42,11 @@ public enum ResultStatus {
     ERROR_OAUTH_REFRESH_TOKEN_OVERDUW(6003),
 
     /**
+     * 权限异常-没有接口权限等
+     */
+    ERROR_OAUTH_NO_PERMISSION(6004),
+
+    /**
      * 特殊状态值 1
      */
     ERROR_SPECIAL_ONE(7000),

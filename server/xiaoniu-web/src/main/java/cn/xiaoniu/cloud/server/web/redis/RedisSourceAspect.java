@@ -1,14 +1,13 @@
 package cn.xiaoniu.cloud.server.web.redis;
 
 import cn.xiaoniu.cloud.server.util.exception.UtilException;
+import cn.xiaoniu.cloud.server.web.XNAspect;
 import cn.xiaoniu.cloud.server.web.util.Log;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
-import org.aspectj.lang.annotation.Pointcut;
 import org.aspectj.lang.reflect.MethodSignature;
 import org.springframework.context.annotation.Import;
-import org.springframework.core.Ordered;
 
 import java.lang.reflect.Method;
 
@@ -19,19 +18,11 @@ import java.lang.reflect.Method;
  */
 @Aspect
 @Import(RedisDataSourceHolder.class)
-public class RedisSourceAspect implements Ordered {
+public class RedisSourceAspect implements XNAspect {
 
     @Override
     public int getOrder() {
-        return 3;
-    }
-
-    /**
-     * 以自定义 @RedisSource 注解为切点
-     */
-    @Pointcut("@annotation(cn.xiaoniu.cloud.server.web.redis.RedisSource)")
-    public void redisSource() {
-        // 定义切点不需要方法体
+        return 4;
     }
 
     /**
