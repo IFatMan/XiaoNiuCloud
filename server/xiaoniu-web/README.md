@@ -108,7 +108,7 @@
     authority.login-token-name=AccessToken
 ```
 **第四步：** 在需要登录权限的接口标注\@Login注解
-```
+```java
     @Login
     @GetMapping("/testLoginPermission")
     @ApiOperation("测试接口")
