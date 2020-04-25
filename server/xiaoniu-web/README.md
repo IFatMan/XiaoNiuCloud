@@ -39,33 +39,103 @@
 
 2.  接口返回代码6002，表示登录已失效，即令牌过期
 
-3.  接口返回代码6004，表示没有接口权限
-
 #### 使用步骤：
 
 **第一步：** 通过登录接口登录成功后，将令牌加载到缓存
-
-<img width="450" height="300" src="https://github.com/qionggit/XiaoNiuCloud/blob/master/server/xiaoniu-document/sources/images/d19155d37ccb260cc92a7dd13cab9bc7.png?raw=true" />
-
+```java
+    /**
+     * @author 孔明
+     * @date 2020/4/21 16:20
+     * @description cn.xiaoniu.cloud.server.api.controller.LoginController
+     */
+    @Api("登录接口")
+    @RestController
+    public class LoginController {
+    
+        @PutMapping("/login")
+        @RedisSource("api")
+        @ApiOperation("登录接口")
+        public Result login(@RequestParam("account") String account, @HideData @RequestParam("password") String password) {
+            // 1。验证账户密码
+            // 省略.......
+    
+            // 2. 创建缓存对象
+            CacheCustomer cacheCustomer = new CacheCustomer();
+            List<String> permission = Lists.newArrayList("ABABC");
+            cacheCustomer.setPermissions(permission);
+    
+            // 3. 生成Token
+            String token = "DDD";
+    
+            // 4. 以token为Key，将缓存对象缓存到Redis
+            RedisDataSourceHolder.execute(redisUtil -> redisUtil.set("DDD", cacheCustomer));
+    
+            // 5. 返回令牌
+            return Result.success();
+        }
+    
+        @Permission("ABABC")
+        @GetMapping("/testPermission")
+        @ApiOperation("测试接口")
+        public Result testPermission() {
+            return Result.success();
+        }
+    
+        @Login
+        @GetMapping("/testLoginPermission")
+        @ApiOperation("测试接口")
+        public Result testLoginPermission() {
+            return Result.success();
+        }
+    
+    }
+```
 **第二步：** 配置LoginAspect.class
-
-<img width="450" height="300" src="https://github.com/qionggit/XiaoNiuCloud/blob/master/server/xiaoniu-document/sources/images/dc6a900b9df12ea8feb727147f86848b.png?raw=true" />
-
+```java
+    /**
+     * @author 孔明
+     * @date 2020/4/23 11:52
+     * @description cn.xiaoniu.cloud.server.api.config.ImportConfig
+     */
+    @Component
+    @Import({LoginAspect.class})
+    public class ImportConfig {
+    }
+```
 **第三步：** 在application.properties中配置登录令牌在Request Header中的名称
-
-<img width="450" height="300" src="https://github.com/qionggit/XiaoNiuCloud/blob/master/server/xiaoniu-document/sources/images/a441085ec6eb8ca1bb6249ae0e2f7504.png" />
-
+```properties
+    # 登录令牌在Request Header中的名称
+    authority.login-token-name=AccessToken
+```
 **第四步：** 在需要登录权限的接口标注\@Login注解
-
-<img width="450" height="300" src="https://github.com/qionggit/XiaoNiuCloud/blob/master/server/xiaoniu-document/sources/images/c5efd8c3053d1686ffa715dfc12ac4de.png" />
-
+```
+    @Login
+    @GetMapping("/testLoginPermission")
+    @ApiOperation("测试接口")
+    public Result testLoginPermission() {
+        return Result.success();
+    }
+```
 **第五步：** 实现LoginCacheDao接口
 
-**说明：** LoginCacheDao接口全路径是cn.xiaoniu.cloud.server.web.authority.
+说明： LoginCacheDao接口全路径是cn.xiaoniu.cloud.server.web.authority.
 LoginCacheDao，作用是通过getCacheCustomer方法取出用户详细信息
-
-<img width="450" height="300" src="https://github.com/qionggit/XiaoNiuCloud/blob/master/server/xiaoniu-document/sources/images/35418b59c02f00808061c0e32330884e.png" />
-
+```java
+    /**
+     * @author 孔明
+     * @date 2020/4/24 15:56
+     * @description cn.xiaoniu.cloud.server.api.controller.LoginDao
+     */
+    @Component
+    public class LoginDao implements LoginCacheDao {
+    
+        @Override
+        @RedisSource("api")
+        public CacheCustomer getCacheCustomer(String accessToken) {
+            return RedisDataSourceHolder.execute(redisUtil -> redisUtil.get(accessToken));
+        }
+    }
+```
 **第六步：** 权限验证
 
 <div style="float: left;">
@@ -73,10 +143,20 @@ LoginCacheDao，作用是通过getCacheCustomer方法取出用户详细信息
     <img width="150" height="150" src="https://github.com/qionggit/XiaoNiuCloud/blob/master/server/xiaoniu-document/sources/images/2d2f72eac592fd6ea389ac093fa154ce.png" />
     <img width="150" height="150" src="https://github.com/qionggit/XiaoNiuCloud/blob/master/server/xiaoniu-document/sources/images/a8e50d92bd321e9493410d8d7e48d8b4.png" />
 </div>
+
 接口权限验证使用
 ----------------
 
 接口使用者，必定已经登录，即接口使用了\@Permission注解，便不需要使用\@Login注解
+
+#### 返回代码使用
+ 接口返回代码6004，表示没有接口权限
+ 
+#### 使用步骤：
+
+**第一步：** 配置PermissionAspect.class
+
+<img width="450" height="300" src="https://github.com/qionggit/XiaoNiuCloud/blob/master/server/xiaoniu-document/sources/images/a8e50d92bd321e9493410d8d7e48d8b5.jpg" />
 
 1.  CORS
 
