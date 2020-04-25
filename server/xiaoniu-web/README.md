@@ -155,9 +155,17 @@ LoginCacheDao，作用是通过getCacheCustomer方法取出用户详细信息
 #### 使用步骤：
 
 **第一步：** 配置PermissionAspect.class
-
-<img width="450" height="300" src="https://github.com/qionggit/XiaoNiuCloud/blob/master/server/xiaoniu-document/sources/images/a8e50d92bd321e9493410d8d7e48d8b5.jpg" />
-
+```java
+    /**
+     * @author 孔明
+     * @date 2020/4/23 11:52
+     * @description cn.xiaoniu.cloud.server.api.config.ImportConfig
+     */
+    @Component
+    @Import({PermissionAspect.class})
+    public class ImportConfig {
+    }
+```
 1.  CORS
 
 2.  DB
