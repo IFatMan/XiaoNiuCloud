@@ -50,22 +50,22 @@
 
 ![](../xiaoniu-document/sources/images/dc6a900b9df12ea8feb727147f86848b.png)
 
-**第三步：**在application.properties中配置登录令牌在Request Header中的名称
+**第三步：** 在application.properties中配置登录令牌在Request Header中的名称
 
 ![](../xiaoniu-document/sources/images/a441085ec6eb8ca1bb6249ae0e2f7504.png)
 
-**第四步：**在需要登录权限的接口标注\@Login注解
+**第四步：** 在需要登录权限的接口标注\@Login注解
 
 ![](../xiaoniu-document/sources/images/c5efd8c3053d1686ffa715dfc12ac4de.png)
 
-**第五步：**实现LoginCacheDao接口
+**第五步：** 实现LoginCacheDao接口
 
-**说明：**LoginCacheDao接口全路径是cn.xiaoniu.cloud.server.web.authority.
+**说明：** LoginCacheDao接口全路径是cn.xiaoniu.cloud.server.web.authority.
 LoginCacheDao，作用是通过getCacheCustomer方法取出用户详细信息
 
 ![](../xiaoniu-document/sources/images/35418b59c02f00808061c0e32330884e.png)
 
-**第六步：**权限验证
+**第六步：** 权限验证
 
 ![](../xiaoniu-document/sources/images/7e82cf8ed8f87bf07ca3830d660e91eb.png)
 
