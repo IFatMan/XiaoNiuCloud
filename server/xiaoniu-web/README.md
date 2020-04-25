@@ -179,8 +179,8 @@ LoginCacheDao，作用是通过getCacheCustomer方法取出用户详细信息
 
 **第三步：** 功能测试
 <div style="float: left;">
-    <img width="150" height="150" src="https://github.com/qionggit/XiaoNiuCloud/blob/master/server/xiaoniu-document/sources/images/d.png" /> 
-    <img width="150" height="150" src="https://github.com/qionggit/XiaoNiuCloud/blob/master/server/xiaoniu-document/sources/images/e.png" />
+    <img width="150" height="150" src="https://github.com/qionggit/XiaoNiuCloud/blob/master/server/xiaoniu-document/sources/images/d.jpg" /> 
+    <img width="150" height="150" src="https://github.com/qionggit/XiaoNiuCloud/blob/master/server/xiaoniu-document/sources/images/e.jpg" />
 </div>
 
 1.  CORS
