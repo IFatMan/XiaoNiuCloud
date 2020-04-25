@@ -44,7 +44,7 @@
 #### 使用步骤：
 
 **第一步：** 通过登录接口登录成功后，将令牌加载到缓存
-![avatar][login-one] 
+![image][login-one] 
 
 **第二步：** 配置LoginAspect.class
 
