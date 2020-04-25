@@ -45,35 +45,34 @@
 
 **第一步：** 通过登录接口登录成功后，将令牌加载到缓存
 
-<img width="500" height="300" src="https://github.com/qionggit/XiaoNiuCloud/blob/master/server/xiaoniu-document/sources/images/d19155d37ccb260cc92a7dd13cab9bc7.png?raw=true" />
+<img width="450" height="300" src="https://github.com/qionggit/XiaoNiuCloud/blob/master/server/xiaoniu-document/sources/images/d19155d37ccb260cc92a7dd13cab9bc7.png?raw=true" />
 
 **第二步：** 配置LoginAspect.class
 
-<img width="500" height="300" src="https://github.com/qionggit/XiaoNiuCloud/blob/master/server/xiaoniu-document/sources/images/dc6a900b9df12ea8feb727147f86848b.png?raw=true" />
+<img width="450" height="300" src="https://github.com/qionggit/XiaoNiuCloud/blob/master/server/xiaoniu-document/sources/images/dc6a900b9df12ea8feb727147f86848b.png?raw=true" />
 
 **第三步：** 在application.properties中配置登录令牌在Request Header中的名称
 
-<img width="500" height="300" src="https://github.com/qionggit/XiaoNiuCloud/blob/master/server/xiaoniu-document/sources/images/a441085ec6eb8ca1bb6249ae0e2f7504.png" />
+<img width="450" height="300" src="https://github.com/qionggit/XiaoNiuCloud/blob/master/server/xiaoniu-document/sources/images/a441085ec6eb8ca1bb6249ae0e2f7504.png" />
 
 **第四步：** 在需要登录权限的接口标注\@Login注解
 
-<img width="500" height="300" src="https://github.com/qionggit/XiaoNiuCloud/blob/master/server/xiaoniu-document/sources/images/c5efd8c3053d1686ffa715dfc12ac4de.png" />
+<img width="450" height="300" src="https://github.com/qionggit/XiaoNiuCloud/blob/master/server/xiaoniu-document/sources/images/c5efd8c3053d1686ffa715dfc12ac4de.png" />
 
 **第五步：** 实现LoginCacheDao接口
 
 **说明：** LoginCacheDao接口全路径是cn.xiaoniu.cloud.server.web.authority.
 LoginCacheDao，作用是通过getCacheCustomer方法取出用户详细信息
 
-<img width="500" height="300" src="https://github.com/qionggit/XiaoNiuCloud/blob/master/server/xiaoniu-document/sources/images/35418b59c02f00808061c0e32330884e.png" />
+<img width="450" height="300" src="https://github.com/qionggit/XiaoNiuCloud/blob/master/server/xiaoniu-document/sources/images/35418b59c02f00808061c0e32330884e.png" />
 
 **第六步：** 权限验证
 
-<img width="500" height="300" src="https://github.com/qionggit/XiaoNiuCloud/blob/master/server/xiaoniu-document/sources/images/7e82cf8ed8f87bf07ca3830d660e91eb.png" />
-
-<img width="500" height="300" src="https://github.com/qionggit/XiaoNiuCloud/blob/master/server/xiaoniu-document/sources/images/2d2f72eac592fd6ea389ac093fa154ce.png" />
-
-<img width="500" height="300" src="https://github.com/qionggit/XiaoNiuCloud/blob/master/server/xiaoniu-document/sources/images/a8e50d92bd321e9493410d8d7e48d8b4.png" />
-
+<div style="float: left;">
+    <img width="150" height="150" src="https://github.com/qionggit/XiaoNiuCloud/blob/master/server/xiaoniu-document/sources/images/7e82cf8ed8f87bf07ca3830d660e91eb.png" /> 
+    <img width="150" height="150" src="https://github.com/qionggit/XiaoNiuCloud/blob/master/server/xiaoniu-document/sources/images/2d2f72eac592fd6ea389ac093fa154ce.png" />
+    <img width="150" height="150" src="https://github.com/qionggit/XiaoNiuCloud/blob/master/server/xiaoniu-document/sources/images/a8e50d92bd321e9493410d8d7e48d8b4.png" />
+</div>
 接口权限验证使用
 ----------------
 
