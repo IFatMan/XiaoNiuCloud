@@ -44,7 +44,8 @@
 #### 使用步骤：
 
 **第一步：** 通过登录接口登录成功后，将令牌加载到缓存
-![](../xiaoniu-document/sources/images/d19155d37ccb260cc92a7dd13cab9bc7.png)
+
+<img width="300" height="200" src="https://github.com/qionggit/XiaoNiuCloud/blob/master/server/xiaoniu-document/sources/images/d19155d37ccb260cc92a7dd13cab9bc7.png?raw=true" />
 
 **第二步：** 配置LoginAspect.class
 
