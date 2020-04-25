@@ -183,7 +183,43 @@ LoginCacheDao，作用是通过getCacheCustomer方法取出用户详细信息
     <img width="150" height="150" src="https://github.com/qionggit/XiaoNiuCloud/blob/master/server/xiaoniu-document/sources/images/e.jpg" />
 </div>
 
-1.  CORS
+CORS
+--------
+ CORS跨域功能
+ 
+### 使用步骤
+**第一步：** 配置CorsConfig.class
+```java
+    /**
+     * @author 孔明
+     * @date 2020/4/23 11:52
+     * @description cn.xiaoniu.cloud.server.api.config.ImportConfig
+     */
+    @Component
+    @Import({CorsConfig.class})
+    public class ImportConfig {
+    }
+```
+
+**第二步：** 配置跨域参数
+```properties
+    # =================== CORS ===================
+    # 是否允许Cookies跨域
+    cors.allowed-credential=true
+    # 预检请求的缓存时间（秒），即在这个时间段里，对于相同的跨域请求不会再预检了
+    cors.max-age=1800
+    # 允许跨域路径
+    cors.path=/**
+    # 允许域名访问
+    cors.allowed-origin[0]=*
+    # 允许请求头访问
+    cors.allowed-header[0]=*
+    # 允许提交的Http方法
+    cors.allowed-method[0]=GET
+    cors.allowed-method[1]=PUT
+    cors.allowed-method[2]=POST
+    cors.allowed-method[3]=DELETE
+```
 
 2.  DB
 
