@@ -223,16 +223,215 @@ CORS
     cors.allowed-method[3]=DELETE
 ```
 
-2.  DB
+DB 之 Druid
+--------
+ Druid配置，包括连接池配置，监控页面配置
+ 
+### 使用步骤
+**第一步：** 配置DruidConfig.class
+```java
+    /**
+     * @author 孔明
+     * @date 2020/4/23 11:52
+     * @description cn.xiaoniu.cloud.server.api.config.ImportConfig
+     */
+    @Component
+    @Import({DruidConfig.class})
+    public class ImportConfig {
+    }
+```
 
-3.  POJO
+**第三步：** 配置参数
 
-4.  异常
+备注：详细配置信息请参考Druid文档
+```properties
+    # =================== 数据源配置 ===================
+    spring.datasource.name=XiaoNiuCloudServer
+    spring.datasource.url=
+    spring.datasource.username=
+    spring.datasource.password=
+    spring.datasource.type=com.alibaba.druid.pool.DruidDataSource
+    spring.datasource.driver-class-name=com.mysql.cj.jdbc.Driver
+    spring.datasource.filters=stat,wall
+    spring.datasource.maxActive=20
+    spring.datasource.initialSize=5
+    spring.datasource.maxWait=60000
+    spring.datasource.minIdle=1
+    spring.datasource.timeBetweenEvictionRunsMillis=60000
+    spring.datasource.minEvictableIdleTimeMillis=300000
+    spring.datasource.validationQuery=select 'x'
+    spring.datasource.testWhileIdle=true
+    spring.datasource.testOnBorrow=false
+    spring.datasource.testOnReturn=false
+    spring.datasource.poolPreparedStatements=true
+    spring.datasource.maxOpenPreparedStatements=20
+    
+    # 添加IP白名单
+    spring.datasource.init-param.servlet.allow=127.0.0.1
+    # 添加IP黑名单，黑名单优先级更高
+    #spring.datasource.init-param.servlet.deny=127.0.0.1
+    # 添加控制台管理用户名称
+    spring.datasource.init-param.servlet.loginUsername=
+    # 添加控制台管理用户密码
+    spring.datasource.init-param.servlet.loginPassword=
+    # 是否能够重置数据
+    spring.datasource.init-param.servlet.resetEnable=false
+    # 拦截器路径过滤规则
+    spring.datasource.init-param.filter-patterns=/*
+    # 拦截器路径忽略过滤格式
+    spring.datasource.init-param.filter.exclusions=*.js,*.gif,*.jpg,*.png,*.css,*.ico,/druid/*,
+```
 
-5.  日志
+POJO
+------
+详细信息可参考源码
 
-6.  redis
+异常
+------
+详细信息可参考源码
 
-7.  response
+日志
+-------
+如果使用了@Login或者@Permission可不 使用@PrintLog
+### 使用步骤：
+**第一步：** 配置PrintLotAspect.
+```java 
+    /**
+     * @author 孔明
+     * @date 2020/4/23 11:52
+     * @description cn.xiaoniu.cloud.server.api.config.ImportConfig
+     */
+    @Component
+    @Import({PrintLog.class})
+    public class ImportConfig {
+    }
+```
 
-8.  swagger2
+**第二步：** @PrintLog , @HideData使用
+
+@HideData 可隐藏参数值不在日志中打印
+```java
+    @PutMapping("/login")
+    @RedisSource("api")
+    @PrintLog("登录接口")
+    @ApiOperation("登录接口")
+    public Result login(@RequestParam("account") String account, @HideData @RequestParam("password") String password) {
+        // 1。验证账户密码
+        // 省略.......
+
+        // 2. 创建缓存对象
+        CacheCustomer cacheCustomer = new CacheCustomer();
+        List<String> permission = Lists.newArrayList("ABABC");
+        cacheCustomer.setPermissions(permission);
+
+        // 3. 生成Token
+        String token = "DDD";
+
+        // 4. 以token为Key，将缓存对象缓存到Redis
+        RedisDataSourceHolder.execute(redisUtil -> redisUtil.set("DDD", cacheCustomer));
+
+        // 5. 返回令牌
+        return Result.success();
+    }
+```
+
+**第四部：** 打印结果
+```
+2020-04-25 20:23:29.620  INFO 2968 --- [nio-8080-exec-7] c.x.cloud.server.web.log.PrintLogAspect  : -------------------- 请求日志 --------------------
+2020-04-25 20:23:29.624  INFO 2968 --- [nio-8080-exec-7] c.x.cloud.server.web.log.PrintLogAspect  : 请求IP:192.168.2.1
+2020-04-25 20:23:29.625  INFO 2968 --- [nio-8080-exec-7] c.x.cloud.server.web.log.PrintLogAspect  : 请求地址:/login
+2020-04-25 20:23:29.627  INFO 2968 --- [nio-8080-exec-7] c.x.cloud.server.web.log.PrintLogAspect  : 请求方式:PUT
+2020-04-25 20:23:29.628  INFO 2968 --- [nio-8080-exec-7] c.x.cloud.server.web.log.PrintLogAspect  : 请求方法:登录接口
+2020-04-25 20:23:29.630  INFO 2968 --- [nio-8080-exec-7] c.x.cloud.server.web.log.PrintLogAspect  : 请求方法路径:cn.xiaoniu.cloud.server.api.controller.LoginController.login()
+2020-04-25 20:23:29.658  INFO 2968 --- [nio-8080-exec-7] c.x.cloud.server.web.log.PrintLogAspect  : 请求参数:{"account":"123","password":"*****"}
+2020-04-25 20:23:29.659 DEBUG 2968 --- [nio-8080-exec-7] c.x.c.s.web.redis.RedisSourceAspect      : 当前Redis数据源切换至：api
+2020-04-25 20:23:29.669 DEBUG 2968 --- [nio-8080-exec-7] c.x.cloud.server.web.redis.RedisUtil     : RedisUtil: 设置指定KEY的值! key[DDD] , value[cn.xiaoniu.cloud.server.util.context.CacheCustomer@638979c3]
+2020-04-25 20:23:29.919  INFO 2968 --- [nio-8080-exec-7] io.lettuce.core.EpollProvider            : Starting without optional epoll library
+2020-04-25 20:23:29.923  INFO 2968 --- [nio-8080-exec-7] io.lettuce.core.KqueueProvider           : Starting without optional kqueue library
+2020-04-25 20:23:30.439  INFO 2968 --- [nio-8080-exec-7] c.x.cloud.server.web.log.PrintLogAspect  : 请求返回:{"status":2000,"msg":"SUCCESS"}
+2020-04-25 20:23:30.439  INFO 2968 --- [nio-8080-exec-7] c.x.cloud.server.web.log.PrintLogAspect  : 请求耗时:826
+```
+
+redis
+-------
+支持多数据源配置
+### 使用步骤
+**第一步：** 配置RedisSourceAspect.class
+```java 
+    /**
+     * @author 孔明
+     * @date 2020/4/23 11:52
+     * @description cn.xiaoniu.cloud.server.api.config.ImportConfig
+     */
+    @Component
+    @Import({RedisSourceAspect.class})
+    public class ImportConfig {
+    }
+```
+
+**第二步：** 配置名为**api**的数据源
+```properties
+    # ================================== REDIS API =======================================
+    spring.redis.sources.api.host=39.104.186.167
+    spring.redis.sources.api.port=6677
+    spring.redis.sources.api.database=6
+    spring.redis.sources.api.password=KM@REDIS
+    spring.redis.sources.api.timeout.seconds=5
+    spring.redis.sources.api.ssl=true
+    
+    # ================================== REDIS POOL =======================================
+    spring.redis.sources.api.lettuce.pool.max-active=20
+    spring.redis.sources.api.lettuce.pool.max-wait.seconds=-1
+    spring.redis.sources.api.lettuce.pool.max-idle=10
+    spring.redis.sources.api.lettuce.pool.min-idle=0
+```
+
+**第三步：** 代码中使用
+```java
+    @RedisSource("api")
+    @GetMapping("/testPermission")
+    @ApiOperation("测试接口")
+    public Result testPermission() {
+        RedisDataSourceHolder.execute(redisUtil -> redisUtil.set("DDD", "TEST"));
+        return Result.success();
+    }
+```
+
+response
+---------
+详细信息可参考源码
+
+swagger2
+--------
+### 使用步骤
+**第一步：** 引入Swagger2Config.class
+```java 
+    /**
+     * @author 孔明
+     * @date 2020/4/23 11:52
+     * @description cn.xiaoniu.cloud.server.api.config.ImportConfig
+     */
+    @Component
+    @Import({Swagger2Config.class})
+    public class ImportConfig {
+    }
+```
+
+**第二步：** Swagger2 配置
+```properties
+    # =================== Swagger2 ===================
+    swagger2.enable=true
+    swagger2.base-package=
+    swagger2.title=小牛云盘API接口
+    swagger2.description=小牛云盘API接口
+    swagger2.version=v1.0
+    swagger2.concat-name=孔明
+    swagger2.concat-email=
+    swagger2.header[0].name=AccessToken
+    swagger2.header[0].description=权限Token,登录返回
+    swagger2.header[0].required=false
+```
+
+**效果图：**
+
+<img width="450" height="300" src="https://github.com/qionggit/XiaoNiuCloud/blob/master/server/xiaoniu-document/sources/images/f.jpg" />
