@@ -29,6 +29,7 @@ public class LoginController {
 
     @PutMapping("/login")
     @RedisSource("api")
+    @PrintLog("登录接口")
     @ApiOperation("登录接口")
     public Result login(@RequestParam("account") String account, @HideData @RequestParam("password") String password) {
         // 1。验证账户密码
@@ -49,16 +50,14 @@ public class LoginController {
         return Result.success();
     }
 
-    @Permission("ABABC")
     @GetMapping("/testPermission")
     @ApiOperation("测试接口")
     public Result testPermission() {
         return Result.success();
     }
 
-    @Login
-    @GetMapping("/testLoginPermission")
     @ApiOperation("测试接口")
+    @GetMapping("/testLoginPermission")
     public Result testLoginPermission() {
         return Result.success();
     }
