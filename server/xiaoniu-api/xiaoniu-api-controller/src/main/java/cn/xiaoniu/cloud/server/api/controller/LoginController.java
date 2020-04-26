@@ -57,6 +57,7 @@ public class LoginController {
         return Result.success();
     }
 
+    @Permission("1234567@163.com")
     @ApiOperation("测试接口")
     @GetMapping("/testLoginPermission")
     public Result testLoginPermission() {
