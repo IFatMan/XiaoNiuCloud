@@ -1,4 +1,4 @@
-package cn.xiaoniu.cloud.server.api.controller;
+package cn.xiaoniu.cloud.server.api.dao.cache;
 
 import cn.xiaoniu.cloud.server.util.context.CacheCustomer;
 import cn.xiaoniu.cloud.server.web.authority.LoginCacheDao;
