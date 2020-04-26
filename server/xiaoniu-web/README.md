@@ -126,7 +126,7 @@ LoginCacheDao，作用是通过getCacheCustomer方法取出用户详细信息
     /**
      * @author 孔明
      * @date 2020/4/24 15:56
-     * @description cn.xiaoniu.cloud.server.api.controller.LoginDao
+     * @description cn.xiaoniu.cloud.server.api.dao.cache.LoginDao
      */
     @Component
     public class LoginDao implements LoginCacheDao {
