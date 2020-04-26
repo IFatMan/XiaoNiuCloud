@@ -27,6 +27,12 @@
             <version>3.5.0</version>
             <scope>provided</scope>
         </dependency>
+
+        <dependency>
+            <groupId>cn.xiaoniu.cloud.server</groupId>
+            <artifactId>xiaoniu-api-common</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
     </dependencies>
 
 </project>

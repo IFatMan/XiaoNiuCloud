@@ -1,5 +1,6 @@
 package cn.xiaoniu.cloud.server.api.controller;
 
+import cn.xiaoniu.cloud.server.api.common.RedisSourceName;
 import cn.xiaoniu.cloud.server.util.context.CacheCustomer;
 import cn.xiaoniu.cloud.server.web.authority.Login;
 import cn.xiaoniu.cloud.server.web.authority.Permission;
@@ -28,9 +29,9 @@ import java.util.List;
 public class LoginController {
 
     @PutMapping("/login")
-    @RedisSource("api")
     @PrintLog("登录接口")
     @ApiOperation("登录接口")
+    @RedisSource(RedisSourceName.API)
     public Result login(@RequestParam("account") String account, @HideData @RequestParam("password") String password) {
         // 1。验证账户密码
         // 省略.......
