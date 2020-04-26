@@ -20,6 +20,7 @@
         <module>xiaoniu-api-dao</module>
         <module>xiaoniu-api-service</module>
         <module>xiaoniu-api-controller</module>
+        <module>xiaoniu-api-common</module>
     </modules>
 
     <properties>
