@@ -1,6 +1,8 @@
 package cn.xiaoniu.cloud.server.api.controller;
 
+import cn.xiaoniu.cloud.server.service.LoginService;
 import cn.xiaoniu.cloud.server.util.context.CacheCustomer;
+import cn.xiaoniu.cloud.server.util.id.IdUtil;
 import cn.xiaoniu.cloud.server.web.authority.Login;
 import cn.xiaoniu.cloud.server.web.authority.Permission;
 import cn.xiaoniu.cloud.server.web.log.HideData;
@@ -8,9 +10,13 @@ import cn.xiaoniu.cloud.server.web.log.PrintLog;
 import cn.xiaoniu.cloud.server.web.redis.RedisDataSourceHolder;
 import cn.xiaoniu.cloud.server.web.redis.RedisSource;
 import cn.xiaoniu.cloud.server.web.response.Result;
+import cn.xiaoniu.cloud.server.web.response.ResultStatus;
+import cn.xiaoniu.cloud.server.web.util.Log;
+import cn.xiaoniu.cloud.server.web.util.SpringUtil;
 import com.google.common.collect.Lists;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -23,31 +29,25 @@ import java.util.List;
  * @date 2020/4/21 16:20
  * @description cn.xiaoniu.cloud.server.api.controller.LoginController
  */
-@Api("登录接口")
+@Api
 @RestController
 public class LoginController {
-
+    @Autowired
+    private LoginService loginService;
     @PutMapping("/login")
     @RedisSource("api")
-    @PrintLog("登录接口")
-    @ApiOperation("登录接口")
+    @ApiOperation(value = "登录接口")
     public Result login(@RequestParam("account") String account, @HideData @RequestParam("password") String password) {
-        // 1。验证账户密码
-        // 省略.......
+        try {
 
-        // 2. 创建缓存对象
-        CacheCustomer cacheCustomer = new CacheCustomer();
-        List<String> permission = Lists.newArrayList("ABABC");
-        cacheCustomer.setPermissions(permission);
 
-        // 3. 生成Token
-        String token = "DDD";
 
-        // 4. 以token为Key，将缓存对象缓存到Redis
-        RedisDataSourceHolder.execute(redisUtil -> redisUtil.set("DDD", cacheCustomer));
+            return loginService.login(account,password);
+        }catch (Exception ex) {
+            Log.error("打印Error信息！" , ex);
+            return Result.fail(ResultStatus.ERROR_SYSTEM,"系统异常！") ;
+        }
 
-        // 5. 返回令牌
-        return Result.success();
     }
 
     @GetMapping("/testPermission")
@@ -62,4 +62,32 @@ public class LoginController {
         return Result.success();
     }
 
+    @PutMapping("/register")
+    @ApiOperation(value = "注册接口")
+    public Result register(@RequestParam("name") String name,@RequestParam("account") String account, @HideData @RequestParam("password") String password, @HideData @RequestParam("agapassword") String agapassword) {
+        try {
+            if(password.equals(agapassword)) {
+
+            }
+            return loginService.register(name, account,password,agapassword);
+        }catch (Exception ex) {
+            Log.error("打印Error信息！" , ex);
+//            return Result.fail(ResultStatus.ERROR_SYSTEM,ex.getMessage()) ;
+            return Result.fail(ResultStatus.ERROR_SYSTEM,"系统异常！") ;
+        }
+    }
+
+
+    @Login
+    @PutMapping("/updatePwd")
+    @ApiOperation(value = "修改密码")
+    public Result updatePwd(@HideData @RequestParam("oldPwd") String oldpsd, @HideData @RequestParam("password") String agapassword) {
+        try {
+
+            return loginService.updatePwd(oldpsd,agapassword);
+        }catch (Exception ex) {
+            Log.error("打印Error信息！" , ex);
+            return Result.fail(ResultStatus.ERROR_SYSTEM,"系统异常！") ;
+        }
+    }
 }

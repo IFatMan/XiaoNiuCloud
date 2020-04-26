@@ -6,7 +6,7 @@ import lombok.experimental.Accessors;
 
 /**
  * <p> 实体类</p>
- * <p>创建时间:2020-04-21</p>
+ * <p>创建时间:2020-04-26</p>
  * <p>公司信息:Developed By KongMing </p>
  *
  * @author auto generator
@@ -26,4 +26,16 @@ public class User extends BaseEntity {
      * 用户名
      */
     private String name;
+    /**
+     * 密码
+     */
+    private String password;
+    /**
+     * 账户
+     */
+    private String account;
+    /**
+     * token
+     */
+    private String token;
 }

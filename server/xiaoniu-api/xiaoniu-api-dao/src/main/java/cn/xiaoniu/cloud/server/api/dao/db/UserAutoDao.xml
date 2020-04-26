@@ -21,6 +21,15 @@
             <if test="entity.name != null">
                 name,
             </if>
+            <if test="entity.password != null">
+                password,
+            </if>
+            <if test="entity.account != null">
+                account,
+            </if>
+            <if test="entity.token != null">
+                token,
+            </if>
         </trim>
         <trim suffixOverrides="," prefix="VALUES(" suffix=")">
             <if test="entity.id != null">
@@ -38,6 +47,15 @@
             <if test="entity.name != null">
                 #{entity.name},
             </if>
+            <if test="entity.password != null">
+                #{entity.password},
+            </if>
+            <if test="entity.account != null">
+                #{entity.account},
+            </if>
+            <if test="entity.token != null">
+                #{entity.token},
+            </if>
         </trim>
     </insert>
 
@@ -50,6 +68,9 @@
             create_time,
             update_time,
             name,
+            password,
+            account,
+            token,
         </trim>
         <foreach collection="entities" item="entity" index="index" separator=",">
             <trim suffixOverrides="," prefix="(" suffix=")">
@@ -58,6 +79,9 @@
                 #{entity.createTime},
                 #{entity.updateTime},
                 #{entity.name},
+                #{entity.password},
+                #{entity.account},
+                #{entity.token},
             </trim>
         </foreach>
     </insert>
@@ -86,6 +110,15 @@
             <if test="entity.name != null">
                 AND name = #{entity.name}
             </if>
+            <if test="entity.password != null">
+                AND password = #{entity.password}
+            </if>
+            <if test="entity.account != null">
+                AND account = #{entity.account}
+            </if>
+            <if test="entity.token != null">
+                AND token = #{entity.token}
+            </if>
         </trim>
     </update>
 
@@ -113,6 +146,15 @@
             <if test="entity != null and entity.name != null">
                 AND name = #{entity.name}
             </if>
+            <if test="entity != null and entity.password != null">
+                AND password = #{entity.password}
+            </if>
+            <if test="entity != null and entity.account != null">
+                AND account = #{entity.account}
+            </if>
+            <if test="entity != null and entity.token != null">
+                AND token = #{entity.token}
+            </if>
         </trim>
     </delete>
 
@@ -128,6 +170,15 @@
             </if>
             <if test="entity != null and entity.name != null">
                 t.name = #{entity.name},
+            </if>
+            <if test="entity != null and entity.password != null">
+                t.password = #{entity.password},
+            </if>
+            <if test="entity != null and entity.account != null">
+                t.account = #{entity.account},
+            </if>
+            <if test="entity != null and entity.token != null">
+                t.token = #{entity.token},
             </if>
         </trim>
         WHERE t.id=#{entity.id}
@@ -146,6 +197,15 @@
             <if test="entity.name != null">
                 t.name = #{entity.name},
             </if>
+            <if test="entity.password != null">
+                t.password = #{entity.password},
+            </if>
+            <if test="entity.account != null">
+                t.account = #{entity.account},
+            </if>
+            <if test="entity.token != null">
+                t.token = #{entity.token},
+            </if>
         </trim>
         <trim prefix=" WHERE t.del=0 " prefixOverrides="AND" suffixOverrides=",">
             <if test="record.id != null">
@@ -163,6 +223,15 @@
             <if test="record.name != null">
                 AND t.name = #{record.name}
             </if>
+            <if test="record.password != null">
+                AND t.password = #{record.password}
+            </if>
+            <if test="record.account != null">
+                AND t.account = #{record.account}
+            </if>
+            <if test="record.token != null">
+                AND t.token = #{record.token}
+            </if>
         </trim>
     </update>
 
@@ -175,6 +244,9 @@
                 create_time,
                 update_time,
                 name,
+                password,
+                account,
+                token,
             </trim>
         FROM t_user
         WHERE id=#{id}
@@ -189,6 +261,9 @@
                 create_time,
                 update_time,
                 name,
+                password,
+                account,
+                token,
             </trim>
         FROM t_user
         <trim prefix=" WHERE del=0 ">
@@ -207,6 +282,15 @@
             <if test="entity != null and entity.name != null">
                 AND name = #{entity.name}
             </if>
+            <if test="entity != null and entity.password != null">
+                AND password = #{entity.password}
+            </if>
+            <if test="entity != null and entity.account != null">
+                AND account = #{entity.account}
+            </if>
+            <if test="entity != null and entity.token != null">
+                AND token = #{entity.token}
+            </if>
         </trim>
         <if test="entity != null and entity.orderBy !=null">
             ORDER BY #{entity.orderBy}
@@ -223,6 +307,9 @@
                 create_time,
                 update_time,
                 name,
+                password,
+                account,
+                token,
         </trim>
         FROM t_user
         <trim prefix=" WHERE del=0 ">
@@ -241,6 +328,15 @@
                 <if test="entity != null and entity.name != null">
                     AND name = #{entity.name}
                 </if>
+                <if test="entity != null and entity.password != null">
+                    AND password = #{entity.password}
+                </if>
+                <if test="entity != null and entity.account != null">
+                    AND account = #{entity.account}
+                </if>
+                <if test="entity != null and entity.token != null">
+                    AND token = #{entity.token}
+                </if>
         </trim>
         ORDER BY id DESC LIMIT 1
     </select>
@@ -254,6 +350,9 @@
                 create_time,
                 update_time,
                 name,
+                password,
+                account,
+                token,
         </trim>
         FROM t_user
         <trim prefix=" WHERE del=0 ">
@@ -270,6 +369,9 @@
                 create_time,
                 update_time,
                 name,
+                password,
+                account,
+                token,
         </trim>
         FROM t_user
         <trim prefix=" WHERE del=0 ">
@@ -297,6 +399,15 @@
             <if test="entity != null and entity.name != null">
                 AND name = #{entity.name}
             </if>
+            <if test="entity != null and entity.password != null">
+                AND password = #{entity.password}
+            </if>
+            <if test="entity != null and entity.account != null">
+                AND account = #{entity.account}
+            </if>
+            <if test="entity != null and entity.token != null">
+                AND token = #{entity.token}
+            </if>
         </trim>
     </select>
 
@@ -309,6 +420,9 @@
                 create_time,
                 update_time,
                 name,
+                password,
+                account,
+                token,
         </trim>
         FROM t_user
         <trim prefix=" WHERE del=0 ">
@@ -328,6 +442,9 @@
                 create_time,
                 update_time,
                 name,
+                password,
+                account,
+                token,
         </trim>
         FROM t_user
         <trim prefix=" WHERE del=0 ">
@@ -346,6 +463,15 @@
                 <if test="entity != null and entity.name != null">
                     AND name = #{entity.name}
                 </if>
+                <if test="entity != null and entity.password != null">
+                    AND password = #{entity.password}
+                </if>
+                <if test="entity != null and entity.account != null">
+                    AND account = #{entity.account}
+                </if>
+                <if test="entity != null and entity.token != null">
+                    AND token = #{entity.token}
+                </if>
         </trim>
         <if test="entity != null and entity.orderBy !=null">
             ORDER BY #{entity.orderBy}
@@ -361,6 +487,9 @@
                 create_time,
                 update_time,
                 name,
+                password,
+                account,
+                token,
             </trim>
         FROM t_user
             <trim prefix=" WHERE del=0 ">
@@ -378,6 +507,15 @@
             </if>
             <if test="entity.name != null">
                 AND name = #{entity.name}
+            </if>
+            <if test="entity.password != null">
+                AND password = #{entity.password}
+            </if>
+            <if test="entity.account != null">
+                AND account = #{entity.account}
+            </if>
+            <if test="entity.token != null">
+                AND token = #{entity.token}
             </if>
             </trim>
         <if test="entity.orderBy !=null">
