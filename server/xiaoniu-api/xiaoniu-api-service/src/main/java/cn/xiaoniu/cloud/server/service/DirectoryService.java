@@ -42,6 +42,10 @@ public class DirectoryService {
      */
     public Result<DirectoryVO> findDirectory(Long parentDirectoryId) {
         CacheUser cacheUser = AuthorityUtil.getCurrCustomer();
+        if (Objects.isNull(parentDirectoryId)) {
+            parentDirectoryId = cacheUser.getRootDirectoryId();
+        }
+
         Directory directory = EntityUtil.select(Directory.class);
         directory.setUserId(cacheUser.getId());
         directory.setParentId(parentDirectoryId);
@@ -69,7 +73,7 @@ public class DirectoryService {
         CacheUser cacheUser = AuthorityUtil.getCurrCustomer();
 
         // 父级目录是否存在
-        Directory parentDirectory = findByUserIdAndDirectoryID(cacheUser.getId(), Directory.isRoot(parentId) ? cacheUser.getId() : parentId);
+        Directory parentDirectory = findByUserIdAndDirectoryID(cacheUser.getId(), Directory.isRoot(parentId) ? cacheUser.getRootDirectoryId() : parentId);
         if (Objects.isNull(parentDirectory)) {
             return Result.fail(ResultStatus.ERROR_REQUEST, "未获取到父文件夹信息！");
         }
