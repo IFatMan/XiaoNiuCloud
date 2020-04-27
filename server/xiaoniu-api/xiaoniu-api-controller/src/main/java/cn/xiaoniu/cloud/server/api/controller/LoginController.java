@@ -1,5 +1,6 @@
 package cn.xiaoniu.cloud.server.api.controller;
 
+import cn.xiaoniu.cloud.server.api.common.CacheUser;
 import cn.xiaoniu.cloud.server.service.LoginService;
 import cn.xiaoniu.cloud.server.web.authority.Login;
 import cn.xiaoniu.cloud.server.web.log.HideData;
@@ -19,9 +20,10 @@ import org.springframework.web.bind.annotation.RestController;
  * @date 2020/4/21 16:20
  * @description cn.xiaoniu.cloud.server.api.controller.LoginController
  */
-@Api
+@Api(value = "登陆" , tags = "登陆")
 @RestController
 public class LoginController {
+
     @Autowired
     private LoginService loginService;
 
@@ -38,7 +40,7 @@ public class LoginController {
             @ApiImplicitParam(name = "account", value = "账户", required = true, paramType = "query"),
             @ApiImplicitParam(name = "password", value = "password", required = true, paramType = "query")
     })
-    public Result login(@RequestParam("account") String account, @HideData @RequestParam("password") String password) {
+    public Result<CacheUser> login(@RequestParam("account") String account, @HideData @RequestParam("password") String password) {
         try {
             return loginService.login(account,password);
         }catch (Exception ex) {

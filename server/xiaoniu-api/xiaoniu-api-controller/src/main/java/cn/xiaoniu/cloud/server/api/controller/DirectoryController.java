@@ -1,5 +1,6 @@
 package cn.xiaoniu.cloud.server.api.controller;
 
+import cn.xiaoniu.cloud.server.api.model.vo.DirectoryVO;
 import cn.xiaoniu.cloud.server.service.DirectoryService;
 import cn.xiaoniu.cloud.server.web.authority.Login;
 import cn.xiaoniu.cloud.server.web.response.Result;
@@ -38,7 +39,7 @@ public class DirectoryController {
             @ApiImplicitParam(name = "AccessToken", value = "登录令牌", required = true, paramType = "header"),
             @ApiImplicitParam(name = "parentDirectoryId", value = "父级文件夹ID", paramType = "query")
     })
-    public Result findDirectory(@RequestParam(name = "parentDirectoryId", defaultValue = "0") Long parentDirectoryId) {
+    public Result<DirectoryVO> findDirectory(@RequestParam(name = "parentDirectoryId", defaultValue = "0") Long parentDirectoryId) {
         try {
             return directoryService.findDirectory(parentDirectoryId);
         } catch (Exception ex) {

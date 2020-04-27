@@ -1,10 +1,8 @@
 package cn.xiaoniu.cloud.server.api.model.po;
 
-import cn.xiaoniu.cloud.server.api.model.vo.DirectoryVO;
 import cn.xiaoniu.cloud.server.web.entity.BaseEntity;
 import lombok.*;
 import lombok.experimental.Accessors;
-import org.springframework.beans.BeanUtils;
 
 /**
  * <p>用户目录 实体类</p>
@@ -57,15 +55,4 @@ public class Directory extends BaseEntity {
      */
     private String fileName;
 
-    /**
-     * 转换
-     *
-     * @param directory
-     * @return
-     */
-    public static DirectoryVO convertFromEntity(Directory directory) {
-        DirectoryVO vo = new DirectoryVO();
-        BeanUtils.copyProperties(directory, vo);
-        return vo;
-    }
 }

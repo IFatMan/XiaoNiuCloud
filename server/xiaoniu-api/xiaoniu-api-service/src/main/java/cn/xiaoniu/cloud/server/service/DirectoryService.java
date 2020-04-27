@@ -35,7 +35,7 @@ public class DirectoryService {
      * @author 孔明
      * @date 2020-04-27 10:31:00
      */
-    public Result findDirectory(Long parentDirectoryId) {
+    public Result<DirectoryVO> findDirectory(Long parentDirectoryId) {
         CacheUser cacheUser = AuthorityUtil.getCurrCustomer();
         if (Objects.isNull(cacheUser)) {
             return Result.fail(ResultStatus.ERROR_OAUTH_NOT_LOGIN, "您还未登录");
@@ -49,7 +49,7 @@ public class DirectoryService {
             return Result.success();
         }
 
-        List<DirectoryVO> vos = directories.stream().map(Directory::convertFromEntity).collect(Collectors.toList());
+        List<DirectoryVO> vos = directories.stream().map(DirectoryVO::convertFromEntity).collect(Collectors.toList());
         return Result.success(vos);
     }
 }

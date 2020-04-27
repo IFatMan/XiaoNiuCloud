@@ -36,7 +36,7 @@ public class LoginService {
      * @param pwd
      * @return
      */
-    public Result login(String account, String pwd) {
+    public Result<CacheUser> login(String account, String pwd) {
         // 1. 验证账户名密码
         User user = findUserByAccountOrPrimary(account, null);
         String password = user.getPassword();
