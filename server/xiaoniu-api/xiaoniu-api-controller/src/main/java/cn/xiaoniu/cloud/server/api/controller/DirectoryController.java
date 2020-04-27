@@ -3,7 +3,6 @@ package cn.xiaoniu.cloud.server.api.controller;
 import cn.xiaoniu.cloud.server.service.DirectoryService;
 import cn.xiaoniu.cloud.server.web.authority.Login;
 import cn.xiaoniu.cloud.server.web.response.Result;
-import cn.xiaoniu.cloud.server.web.response.ResultStatus;
 import cn.xiaoniu.cloud.server.web.util.Log;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
@@ -44,7 +43,23 @@ public class DirectoryController {
             return directoryService.findDirectory(parentDirectoryId);
         } catch (Exception ex) {
             Log.error("获取文件夹下文件及文件夹异常", ex);
-            return Result.fail(ResultStatus.ERROR_SYSTEM, "系统异常！");
+            return Result.errorSystem();
+        }
+    }
+
+    /**
+     * 新增文件夹
+     *
+     * @return Result
+     * @author 孔明
+     * @date
+     */
+    public Result createDirectory() {
+        try {
+            return Result.success();
+        } catch (Exception ex) {
+            Log.error("新增文件夹异常：", ex);
+            return Result.errorSystem();
         }
     }
 }

@@ -130,6 +130,15 @@ public class Result<T extends Serializable> implements Serializable {
         return new Result<>(type, msg);
     }
 
+    /**
+     * 新建系统异常返回
+     *
+     * @return
+     */
+    public static <T extends Serializable> Result<T> errorSystem() {
+        return new Result<>(ResultStatus.ERROR_SYSTEM, "系统异常！");
+    }
+
     // ------------------------------------------------ Getter/Setter方法 ------------------------------------------------
     public Integer getStatus() {
         return status;
