@@ -110,6 +110,31 @@ public class EntityUtil {
     }
 
     /**
+     * 主键查找
+     *
+     * @param id
+     * @param tClass
+     * @param <T>
+     * @return
+     */
+    public static <T extends BaseEntity> T selectByPrimary(Long id, Class<T> tClass) {
+        T t = createEntity(tClass);
+        t.setId(id);
+        return t;
+    }
+
+    /**
+     * 普通查询
+     *
+     * @param tClass
+     * @param <T>
+     * @return
+     */
+    public static <T extends BaseEntity> T select(Class<T> tClass) {
+        return createEntity(tClass);
+    }
+
+    /**
      * 创建一个Entity
      *
      * @param clazz 类 Class

@@ -7,7 +7,7 @@ import cn.xiaoniu.cloud.server.util.context.CacheCustomer;
  * @date 2019/12/19 9:47
  * @description cn.xiaoniu.cloud.server.web.dao.LoginCacheDao
  */
-public interface LoginCacheDao {
+public interface LoginCacheDao<T extends CacheCustomer> {
 
     /**
      * 根据AccessToken获取用户信息
@@ -17,5 +17,5 @@ public interface LoginCacheDao {
      * @author 孔明
      * @date 2019-12-19 09:47:46
      */
-    CacheCustomer getCacheCustomer(String accessToken);
+    T getCacheCustomer(String accessToken);
 }

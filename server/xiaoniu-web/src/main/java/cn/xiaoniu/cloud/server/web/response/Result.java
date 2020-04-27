@@ -1,11 +1,12 @@
 package cn.xiaoniu.cloud.server.web.response;
 
 import java.io.Serializable;
+import java.util.Collection;
 
 /**
  * 返回模型
  */
-public class Result implements Serializable {
+public class Result<T extends Serializable> implements Serializable {
 
     private static final long serialVersionUID = -8538212854484724851L;
     /**
@@ -21,7 +22,12 @@ public class Result implements Serializable {
     /**
      * 返回数据
      */
-    private Object data;
+    private T data;
+
+    /**
+     * 多条数据返回
+     */
+    private Collection<T> collection;
 
     // ------------------------------------------------ 构造方法 ------------------------------------------------
 
@@ -31,7 +37,7 @@ public class Result implements Serializable {
      * @param type 状态类型
      */
     public Result(ResultStatus type) {
-        this(type, null);
+        this(type, (T) null);
     }
 
     /**
@@ -41,7 +47,7 @@ public class Result implements Serializable {
      * @param msg  提示信息
      */
     public Result(ResultStatus type, String msg) {
-        this(type, msg, null);
+        this(type.getCode(), msg, null, null);
     }
 
     /**
@@ -50,7 +56,7 @@ public class Result implements Serializable {
      * @param type 状态类型
      * @param data 数据
      */
-    public Result(ResultStatus type, Object data) {
+    public Result(ResultStatus type, T data) {
         this(type, null, data);
     }
 
@@ -61,8 +67,12 @@ public class Result implements Serializable {
      * @param msg  提示信息
      * @param data 数据
      */
-    public Result(ResultStatus type, String msg, Object data) {
-        this(type.getCode(), msg, data);
+    public Result(ResultStatus type, String msg, T data) {
+        this(type.getCode(), msg, data, null);
+    }
+
+    public Result(ResultStatus type, String msg, Collection<T> collection) {
+        this(type.getCode(), msg, null, collection);
     }
 
     /**
@@ -72,10 +82,11 @@ public class Result implements Serializable {
      * @param msg    提示信息
      * @param data   数据
      */
-    protected Result(Integer status, String msg, Object data) {
+    protected Result(Integer status, String msg, T data, Collection<T> collection) {
         this.status = status;
         this.msg = msg;
         this.data = data;
+        this.collection = collection;
     }
 
     // ------------------------------------------------ 静态方法 ------------------------------------------------
@@ -86,8 +97,8 @@ public class Result implements Serializable {
      * @param data 返回数据
      * @return
      */
-    public static Result success(Object data) {
-        return new Result(ResultStatus.SUCCESS, ResultStatus.SUCCESS.name(), data);
+    public static <T extends Serializable> Result<T> success(T data) {
+        return new Result<>(ResultStatus.SUCCESS, ResultStatus.SUCCESS.name(), data);
     }
 
     /**
@@ -95,8 +106,17 @@ public class Result implements Serializable {
      *
      * @return
      */
-    public static Result success() {
-        return new Result(ResultStatus.SUCCESS, ResultStatus.SUCCESS.name());
+    public static <T extends Serializable> Result<T> success() {
+        return new Result<>(ResultStatus.SUCCESS, ResultStatus.SUCCESS.name());
+    }
+
+    /**
+     * 成功返回静态方法
+     *
+     * @return
+     */
+    public static <T extends Serializable> Result<T> success(Collection<T> collection) {
+        return new Result<>(ResultStatus.SUCCESS, ResultStatus.SUCCESS.name(), collection);
     }
 
     /**
@@ -106,8 +126,8 @@ public class Result implements Serializable {
      * @param msg  提示信息
      * @return
      */
-    public static Result fail(ResultStatus type, String msg) {
-        return new Result(type, msg);
+    public static <T extends Serializable> Result<T> fail(ResultStatus type, String msg) {
+        return new Result<>(type, msg);
     }
 
     // ------------------------------------------------ Getter/Setter方法 ------------------------------------------------
@@ -127,11 +147,19 @@ public class Result implements Serializable {
         this.msg = msg;
     }
 
-    public Object getData() {
+    public T getData() {
         return data;
     }
 
-    public void setData(Object data) {
+    public void setData(T data) {
         this.data = data;
+    }
+
+    public Collection<T> getCollection() {
+        return collection;
+    }
+
+    public void setCollection(Collection<T> collection) {
+        this.collection = collection;
     }
 }

@@ -29,7 +29,7 @@ public final class AuthorityUtil {
      *
      * @param currCustomer
      */
-    public static void setCurrCustomer(CacheCustomer currCustomer) {
+    public static <T extends CacheCustomer> void setCurrCustomer(T currCustomer) {
         CUSTOMER_THREAD_LOCAL.set(currCustomer);
     }
 
@@ -38,8 +38,9 @@ public final class AuthorityUtil {
      *
      * @return
      */
-    public static CacheCustomer getCurrCustomer() {
-        return CUSTOMER_THREAD_LOCAL.get();
+    @SuppressWarnings("unchecked")
+    public static <T extends CacheCustomer> T getCurrCustomer() {
+        return (T) CUSTOMER_THREAD_LOCAL.get();
     }
 
     /**

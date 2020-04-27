@@ -1,0 +1,619 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.xiaoniu.cloud.server.api.dao.db.FileAutoDao">
+
+    <!-- 保存数据 -->
+    <insert id="saveEntity">
+        INSERT INTO t_file
+        <trim suffixOverrides="," prefix="(" suffix=")">
+            <if test="entity.id != null">
+                id,
+            </if>
+            <if test="entity.del != null">
+                del,
+            </if>
+            <if test="entity.createTime != null">
+                create_time,
+            </if>
+            <if test="entity.updateTime != null">
+                update_time,
+            </if>
+            <if test="entity.md5 != null">
+                md5,
+            </if>
+            <if test="entity.md5Code != null">
+                md5_code,
+            </if>
+            <if test="entity.mime != null">
+                mime,
+            </if>
+            <if test="entity.storagePath != null">
+                storage_path,
+            </if>
+            <if test="entity.size != null">
+                size,
+            </if>
+            <if test="entity.state != null">
+                state,
+            </if>
+        </trim>
+        <trim suffixOverrides="," prefix="VALUES(" suffix=")">
+            <if test="entity.id != null">
+                #{entity.id},
+            </if>
+            <if test="entity.del != null">
+                #{entity.del},
+            </if>
+            <if test="entity.createTime != null">
+                #{entity.createTime},
+            </if>
+            <if test="entity.updateTime != null">
+                #{entity.updateTime},
+            </if>
+            <if test="entity.md5 != null">
+                #{entity.md5},
+            </if>
+            <if test="entity.md5Code != null">
+                #{entity.md5Code},
+            </if>
+            <if test="entity.mime != null">
+                #{entity.mime},
+            </if>
+            <if test="entity.storagePath != null">
+                #{entity.storagePath},
+            </if>
+            <if test="entity.size != null">
+                #{entity.size},
+            </if>
+            <if test="entity.state != null">
+                #{entity.state},
+            </if>
+        </trim>
+    </insert>
+
+    <!-- 批量保存数据 -->
+    <insert id="saveEntities">
+        INSERT INTO t_file
+        <trim suffixOverrides="," prefix="(" suffix=")">
+            id,
+            del,
+            create_time,
+            update_time,
+            md5,
+            md5_code,
+            mime,
+            storage_path,
+            size,
+            state,
+        </trim>
+        <foreach collection="entities" item="entity" index="index" separator=",">
+            <trim suffixOverrides="," prefix="(" suffix=")">
+                #{entity.id},
+                #{entity.del},
+                #{entity.createTime},
+                #{entity.updateTime},
+                #{entity.md5},
+                #{entity.md5Code},
+                #{entity.mime},
+                #{entity.storagePath},
+                #{entity.size},
+                #{entity.state},
+            </trim>
+        </foreach>
+    </insert>
+
+    <!-- 逻辑删除数据 -->
+    <update id="deleteById">
+        UPDATE t_file SET del=1 WHERE id=#{id}
+    </update>
+
+    <!-- 逻辑删除数据 -->
+    <update id="deleteByEntity">
+        UPDATE t_file SET del=1
+        <trim prefix="WHERE" prefixOverrides="AND">
+            <if test="entity.id != null">
+                AND id = #{entity.id}
+            </if>
+            <if test="entity.del != null">
+                AND del = #{entity.del}
+            </if>
+            <if test="entity.createTime != null">
+                AND create_time = #{entity.createTime}
+            </if>
+            <if test="entity.updateTime != null">
+                AND update_time = #{entity.updateTime}
+            </if>
+            <if test="entity.md5 != null">
+                AND md5 = #{entity.md5}
+            </if>
+            <if test="entity.md5Code != null">
+                AND md5_code = #{entity.md5Code}
+            </if>
+            <if test="entity.mime != null">
+                AND mime = #{entity.mime}
+            </if>
+            <if test="entity.storagePath != null">
+                AND storage_path = #{entity.storagePath}
+            </if>
+            <if test="entity.size != null">
+                AND size = #{entity.size}
+            </if>
+            <if test="entity.state != null">
+                AND state = #{entity.state}
+            </if>
+        </trim>
+    </update>
+
+    <!-- 物理删除数据 -->
+    <delete id="removeById">
+        DELETE FROM t_file WHERE id=#{id}
+    </delete>
+
+    <!-- 物理删除数据 -->
+    <delete id="removeByEntity">
+        DELETE FROM t_file
+        <trim prefix="WHERE" prefixOverrides="AND">
+            <if test="entity != null and entity.id != null">
+                AND id = #{entity.id}
+            </if>
+            <if test="entity != null and entity.del != null">
+                AND del = #{entity.del}
+            </if>
+            <if test="entity != null and entity.createTime != null">
+                AND create_time = #{entity.createTime}
+            </if>
+            <if test="entity != null and entity.updateTime != null">
+                AND update_time = #{entity.updateTime}
+            </if>
+            <if test="entity != null and entity.md5 != null">
+                AND md5 = #{entity.md5}
+            </if>
+            <if test="entity != null and entity.md5Code != null">
+                AND md5_code = #{entity.md5Code}
+            </if>
+            <if test="entity != null and entity.mime != null">
+                AND mime = #{entity.mime}
+            </if>
+            <if test="entity != null and entity.storagePath != null">
+                AND storage_path = #{entity.storagePath}
+            </if>
+            <if test="entity != null and entity.size != null">
+                AND size = #{entity.size}
+            </if>
+            <if test="entity != null and entity.state != null">
+                AND state = #{entity.state}
+            </if>
+        </trim>
+    </delete>
+
+    <!-- 更新数据 -->
+    <update id="updateEntityById">
+        UPDATE t_file t
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="entity != null and entity.createTime != null">
+                t.create_time = #{entity.createTime},
+            </if>
+            <if test="entity != null and entity.updateTime != null">
+                t.update_time = #{entity.updateTime},
+            </if>
+            <if test="entity != null and entity.md5 != null">
+                t.md5 = #{entity.md5},
+            </if>
+            <if test="entity != null and entity.md5Code != null">
+                t.md5_code = #{entity.md5Code},
+            </if>
+            <if test="entity != null and entity.mime != null">
+                t.mime = #{entity.mime},
+            </if>
+            <if test="entity != null and entity.storagePath != null">
+                t.storage_path = #{entity.storagePath},
+            </if>
+            <if test="entity != null and entity.size != null">
+                t.size = #{entity.size},
+            </if>
+            <if test="entity != null and entity.state != null">
+                t.state = #{entity.state},
+            </if>
+        </trim>
+        WHERE t.id=#{entity.id}
+    </update>
+
+    <!-- 更新数据 -->
+    <update id="updateEntityByPO">
+        UPDATE t_file t
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="entity.createTime != null">
+                t.create_time = #{entity.createTime},
+            </if>
+            <if test="entity.updateTime != null">
+                t.update_time = #{entity.updateTime},
+            </if>
+            <if test="entity.md5 != null">
+                t.md5 = #{entity.md5},
+            </if>
+            <if test="entity.md5Code != null">
+                t.md5_code = #{entity.md5Code},
+            </if>
+            <if test="entity.mime != null">
+                t.mime = #{entity.mime},
+            </if>
+            <if test="entity.storagePath != null">
+                t.storage_path = #{entity.storagePath},
+            </if>
+            <if test="entity.size != null">
+                t.size = #{entity.size},
+            </if>
+            <if test="entity.state != null">
+                t.state = #{entity.state},
+            </if>
+        </trim>
+        <trim prefix=" WHERE t.del=0 " prefixOverrides="AND" suffixOverrides=",">
+            <if test="record.id != null">
+                AND t.id = #{record.id}
+            </if>
+            <if test="record.del != null">
+                AND t.del = #{record.del}
+            </if>
+            <if test="record.createTime != null">
+                AND t.create_time = #{record.createTime}
+            </if>
+            <if test="record.updateTime != null">
+                AND t.update_time = #{record.updateTime}
+            </if>
+            <if test="record.md5 != null">
+                AND t.md5 = #{record.md5}
+            </if>
+            <if test="record.md5Code != null">
+                AND t.md5_code = #{record.md5Code}
+            </if>
+            <if test="record.mime != null">
+                AND t.mime = #{record.mime}
+            </if>
+            <if test="record.storagePath != null">
+                AND t.storage_path = #{record.storagePath}
+            </if>
+            <if test="record.size != null">
+                AND t.size = #{record.size}
+            </if>
+            <if test="record.state != null">
+                AND t.state = #{record.state}
+            </if>
+        </trim>
+    </update>
+
+    <!-- 获取数据 -->
+    <select id="findById" resultType="cn.xiaoniu.cloud.server.api.model.po.File">
+        SELECT
+            <trim suffixOverrides=",">
+                id,
+                del,
+                create_time,
+                update_time,
+                md5,
+                md5_code,
+                mime,
+                storage_path,
+                size,
+                state,
+            </trim>
+        FROM t_file
+        WHERE id=#{id}
+    </select>
+
+    <!-- 获取一条数据 -->
+    <select id="findOne" resultType="cn.xiaoniu.cloud.server.api.model.po.File">
+        SELECT
+            <trim suffixOverrides=",">
+                id,
+                del,
+                create_time,
+                update_time,
+                md5,
+                md5_code,
+                mime,
+                storage_path,
+                size,
+                state,
+            </trim>
+        FROM t_file
+        <trim prefix=" WHERE del=0 ">
+            <if test="entity != null and entity.id != null">
+                AND id = #{entity.id}
+            </if>
+            <if test="entity != null and entity.del != null">
+                AND del = #{entity.del}
+            </if>
+            <if test="entity != null and entity.createTime != null">
+                AND create_time = #{entity.createTime}
+            </if>
+            <if test="entity != null and entity.updateTime != null">
+                AND update_time = #{entity.updateTime}
+            </if>
+            <if test="entity != null and entity.md5 != null">
+                AND md5 = #{entity.md5}
+            </if>
+            <if test="entity != null and entity.md5Code != null">
+                AND md5_code = #{entity.md5Code}
+            </if>
+            <if test="entity != null and entity.mime != null">
+                AND mime = #{entity.mime}
+            </if>
+            <if test="entity != null and entity.storagePath != null">
+                AND storage_path = #{entity.storagePath}
+            </if>
+            <if test="entity != null and entity.size != null">
+                AND size = #{entity.size}
+            </if>
+            <if test="entity != null and entity.state != null">
+                AND state = #{entity.state}
+            </if>
+        </trim>
+        <if test="entity != null and entity.orderBy !=null">
+            ORDER BY #{entity.orderBy}
+        </if>
+        LIMIT 1
+    </select>
+
+    <!-- 获取一条数据 -->
+    <select id="findLastOne" resultType="cn.xiaoniu.cloud.server.api.model.po.File">
+        SELECT
+        <trim suffixOverrides=",">
+                id,
+                del,
+                create_time,
+                update_time,
+                md5,
+                md5_code,
+                mime,
+                storage_path,
+                size,
+                state,
+        </trim>
+        FROM t_file
+        <trim prefix=" WHERE del=0 ">
+                <if test="entity != null and entity.id != null">
+                    AND id = #{entity.id}
+                </if>
+                <if test="entity != null and entity.del != null">
+                    AND del = #{entity.del}
+                </if>
+                <if test="entity != null and entity.createTime != null">
+                    AND create_time = #{entity.createTime}
+                </if>
+                <if test="entity != null and entity.updateTime != null">
+                    AND update_time = #{entity.updateTime}
+                </if>
+                <if test="entity != null and entity.md5 != null">
+                    AND md5 = #{entity.md5}
+                </if>
+                <if test="entity != null and entity.md5Code != null">
+                    AND md5_code = #{entity.md5Code}
+                </if>
+                <if test="entity != null and entity.mime != null">
+                    AND mime = #{entity.mime}
+                </if>
+                <if test="entity != null and entity.storagePath != null">
+                    AND storage_path = #{entity.storagePath}
+                </if>
+                <if test="entity != null and entity.size != null">
+                    AND size = #{entity.size}
+                </if>
+                <if test="entity != null and entity.state != null">
+                    AND state = #{entity.state}
+                </if>
+        </trim>
+        ORDER BY id DESC LIMIT 1
+    </select>
+
+    <!-- 根据指定字段名和值获取数据 -->
+    <select id="findByFieldName" resultType="cn.xiaoniu.cloud.server.api.model.po.File">
+        SELECT
+        <trim suffixOverrides=",">
+                id,
+                del,
+                create_time,
+                update_time,
+                md5,
+                md5_code,
+                mime,
+                storage_path,
+                size,
+                state,
+        </trim>
+        FROM t_file
+        <trim prefix=" WHERE del=0 ">
+            AND ${fieldName} = #{fieldValue}
+        </trim>
+    </select>
+
+    <!-- 根据指定字段名和值获取最后一条数据 -->
+    <select id="findLastOneByFieldName" resultType="cn.xiaoniu.cloud.server.api.model.po.File">
+        SELECT
+        <trim suffixOverrides=",">
+                id,
+                del,
+                create_time,
+                update_time,
+                md5,
+                md5_code,
+                mime,
+                storage_path,
+                size,
+                state,
+        </trim>
+        FROM t_file
+        <trim prefix=" WHERE del=0 ">
+            AND ${fieldName} = #{fieldValue}
+        </trim>
+        ORDER BY id DESC LIMIT 1
+    </select>
+
+    <!-- 获取数量 -->
+    <select id="countByEntity" resultType="java.lang.Long">
+        SELECT COUNT(0) FROM t_file
+        <trim prefix=" WHERE del=0 ">
+            <if test="entity != null and entity.id != null">
+                AND id = #{entity.id}
+            </if>
+            <if test="entity != null and entity.del != null">
+                AND del = #{entity.del}
+            </if>
+            <if test="entity != null and entity.createTime != null">
+                AND create_time = #{entity.createTime}
+            </if>
+            <if test="entity != null and entity.updateTime != null">
+                AND update_time = #{entity.updateTime}
+            </if>
+            <if test="entity != null and entity.md5 != null">
+                AND md5 = #{entity.md5}
+            </if>
+            <if test="entity != null and entity.md5Code != null">
+                AND md5_code = #{entity.md5Code}
+            </if>
+            <if test="entity != null and entity.mime != null">
+                AND mime = #{entity.mime}
+            </if>
+            <if test="entity != null and entity.storagePath != null">
+                AND storage_path = #{entity.storagePath}
+            </if>
+            <if test="entity != null and entity.size != null">
+                AND size = #{entity.size}
+            </if>
+            <if test="entity != null and entity.state != null">
+                AND state = #{entity.state}
+            </if>
+        </trim>
+    </select>
+
+    <!-- 批量获取通过ID -->
+    <select id="listByIdIn" parameterType="java.util.List" resultType="cn.xiaoniu.cloud.server.api.model.po.File">
+        SELECT
+        <trim suffixOverrides=",">
+                id,
+                del,
+                create_time,
+                update_time,
+                md5,
+                md5_code,
+                mime,
+                storage_path,
+                size,
+                state,
+        </trim>
+        FROM t_file
+        <trim prefix=" WHERE del=0 ">
+            AND id IN
+            <foreach collection="ids" item="id" index="index" open="(" close=")" separator=",">
+                #{item}
+            </foreach>
+        </trim>
+    </select>
+
+    <!-- 获取数量 -->
+    <select id="listByEntity" resultType="cn.xiaoniu.cloud.server.api.model.po.File">
+        SELECT
+        <trim suffixOverrides=",">
+                id,
+                del,
+                create_time,
+                update_time,
+                md5,
+                md5_code,
+                mime,
+                storage_path,
+                size,
+                state,
+        </trim>
+        FROM t_file
+        <trim prefix=" WHERE del=0 ">
+                <if test="entity != null and entity.id != null">
+                    AND id = #{entity.id}
+                </if>
+                <if test="entity != null and entity.del != null">
+                    AND del = #{entity.del}
+                </if>
+                <if test="entity != null and entity.createTime != null">
+                    AND create_time = #{entity.createTime}
+                </if>
+                <if test="entity != null and entity.updateTime != null">
+                    AND update_time = #{entity.updateTime}
+                </if>
+                <if test="entity != null and entity.md5 != null">
+                    AND md5 = #{entity.md5}
+                </if>
+                <if test="entity != null and entity.md5Code != null">
+                    AND md5_code = #{entity.md5Code}
+                </if>
+                <if test="entity != null and entity.mime != null">
+                    AND mime = #{entity.mime}
+                </if>
+                <if test="entity != null and entity.storagePath != null">
+                    AND storage_path = #{entity.storagePath}
+                </if>
+                <if test="entity != null and entity.size != null">
+                    AND size = #{entity.size}
+                </if>
+                <if test="entity != null and entity.state != null">
+                    AND state = #{entity.state}
+                </if>
+        </trim>
+        <if test="entity != null and entity.orderBy !=null">
+            ORDER BY #{entity.orderBy}
+        </if>
+    </select>
+
+    <!-- 分页获取数据 -->
+    <select id="pageByEntity" resultType="cn.xiaoniu.cloud.server.api.model.po.File">
+        SELECT
+            <trim suffixOverrides=",">
+                id,
+                del,
+                create_time,
+                update_time,
+                md5,
+                md5_code,
+                mime,
+                storage_path,
+                size,
+                state,
+            </trim>
+        FROM t_file
+            <trim prefix=" WHERE del=0 ">
+            <if test="entity.id != null">
+                AND id = #{entity.id}
+            </if>
+            <if test="entity.del != null">
+                AND del = #{entity.del}
+            </if>
+            <if test="entity.createTime != null">
+                AND create_time = #{entity.createTime}
+            </if>
+            <if test="entity.updateTime != null">
+                AND update_time = #{entity.updateTime}
+            </if>
+            <if test="entity.md5 != null">
+                AND md5 = #{entity.md5}
+            </if>
+            <if test="entity.md5Code != null">
+                AND md5_code = #{entity.md5Code}
+            </if>
+            <if test="entity.mime != null">
+                AND mime = #{entity.mime}
+            </if>
+            <if test="entity.storagePath != null">
+                AND storage_path = #{entity.storagePath}
+            </if>
+            <if test="entity.size != null">
+                AND size = #{entity.size}
+            </if>
+            <if test="entity.state != null">
+                AND state = #{entity.state}
+            </if>
+            </trim>
+        <if test="entity.orderBy !=null">
+            ORDER BY #{entity.orderBy}
+        </if>
+        LIMIT #{entity.pageNo} , #{entity.pageSize}
+    </select>
+
+</mapper>

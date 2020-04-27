@@ -16,11 +16,11 @@ public class MybatisPlusGenerator {
      */
     private final static String outPutDir = "E:\\autoGenJava\\";
 
-    private final static String DATABASE_URL = "";
+    private final static String DATABASE_URL = "jdbc:mysql://39.104.186.167:3506/xiaoniu-cloud?useUnicode=true&characterEncoding=UTF8&useSSL=false";
 
-    private final static String DATABASE_NAME="";
+    private final static String DATABASE_NAME="root";
 
-    private final static String DATABASE_PASSWORD="";
+    private final static String DATABASE_PASSWORD="KongMing8@";
 
     /**
      * 基础包名
@@ -28,7 +28,7 @@ public class MybatisPlusGenerator {
     private final static String basePackage = "cn.xiaoniu.cloud.server.api";
     private final static boolean genAllTables = false;
     private final static String superEntityClass = "cn.xiaoniu.cloud.server.web.entity.BaseEntity";
-    private final static String[] tables = {"t_user"};
+    private final static String[] tables = {"t_directory"};
     private final static boolean isController = false;
     private final static boolean isService = false;
     private final static boolean isEntity = true;
