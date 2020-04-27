@@ -4,13 +4,14 @@ import cn.xiaoniu.cloud.server.api.common.CacheUser;
 import cn.xiaoniu.cloud.server.service.LoginService;
 import cn.xiaoniu.cloud.server.web.authority.Login;
 import cn.xiaoniu.cloud.server.web.log.HideData;
+import cn.xiaoniu.cloud.server.web.log.PrintLog;
 import cn.xiaoniu.cloud.server.web.response.Result;
-import cn.xiaoniu.cloud.server.web.util.Log;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -34,6 +35,7 @@ public class LoginController {
      * @param password 密码
      * @return
      */
+    @PrintLog
     @PutMapping("/login")
     @ApiOperation(value = "登录接口")
     @ApiImplicitParams(value = {
@@ -41,13 +43,7 @@ public class LoginController {
             @ApiImplicitParam(name = "password", value = "password", required = true, paramType = "query")
     })
     public Result<CacheUser> login(@RequestParam("account") String account, @HideData @RequestParam("password") String password) {
-        try {
-            return loginService.login(account,password);
-        }catch (Exception ex) {
-            Log.error("登录接口异常:", ex);
-            return Result.errorSystem();
-        }
-
+        return loginService.login(account, password);
     }
 
     /**
@@ -58,7 +54,8 @@ public class LoginController {
      * @param password 密码
      * @return
      */
-    @PutMapping("/register")
+    @PrintLog
+    @PostMapping("/register")
     @ApiOperation(value = "注册接口")
     @ApiImplicitParams(value = {
             @ApiImplicitParam(name = "name", value = "用戶名", required = true, paramType = "query"),
@@ -67,12 +64,7 @@ public class LoginController {
     })
     public Result register(@RequestParam("name") String name, @RequestParam("account") String account,
                            @HideData @RequestParam("password") String password) {
-        try {
-            return loginService.register(name, account, password);
-        }catch (Exception ex) {
-            Log.error("注册接口异常：", ex);
-            return Result.errorSystem();
-        }
+        return loginService.register(name, account, password);
     }
 
 
@@ -92,11 +84,6 @@ public class LoginController {
             @ApiImplicitParam(name = "newPwd", value = "新密码", required = true, paramType = "query"),
     })
     public Result updatePwd(@HideData @RequestParam("oldPwd") String oldPwd, @HideData @RequestParam("newPwd") String newPwd) {
-        try {
-            return loginService.updatePwd(oldPwd, newPwd);
-        }catch (Exception ex) {
-            Log.error("修改密码异常：", ex);
-            return Result.errorSystem();
-        }
+        return loginService.updatePwd(oldPwd, newPwd);
     }
 }

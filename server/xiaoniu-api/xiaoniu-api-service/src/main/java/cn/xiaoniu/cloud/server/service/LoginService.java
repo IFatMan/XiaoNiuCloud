@@ -3,7 +3,9 @@ package cn.xiaoniu.cloud.server.service;
 import cn.hutool.core.collection.CollUtil;
 import cn.xiaoniu.cloud.server.api.common.CacheUser;
 import cn.xiaoniu.cloud.server.api.dao.cache.LoginDao;
+import cn.xiaoniu.cloud.server.api.dao.db.DirectoryAutoDao;
 import cn.xiaoniu.cloud.server.api.dao.db.UserAutoDao;
+import cn.xiaoniu.cloud.server.api.model.po.Directory;
 import cn.xiaoniu.cloud.server.api.model.po.User;
 import cn.xiaoniu.cloud.server.util.context.CacheCustomer;
 import cn.xiaoniu.cloud.server.util.id.IdUtil;
@@ -16,12 +18,16 @@ import com.google.common.collect.Lists;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Objects;
 
 @Service
 public class LoginService {
+
+    @Autowired
+    private DirectoryAutoDao directoryAutoDao;
 
     @Autowired
     private UserAutoDao userDao;
@@ -36,6 +42,7 @@ public class LoginService {
      * @param pwd
      * @return
      */
+    @Transactional
     public Result<CacheUser> login(String account, String pwd) {
         // 1. 验证账户名密码
         User user = findUserByAccountOrPrimary(account, null);
@@ -73,17 +80,31 @@ public class LoginService {
      * @param pwd
      * @return
      */
+    @Transactional
     public Result register(String name, String account, String pwd) {
         List<User> userList = userDao.findByFieldName("account", account);
-        if(CollUtil.isEmpty(userList)){
+        if (CollUtil.isNotEmpty(userList)) {
             return Result.fail(ResultStatus.ERROR_REQUEST , "账号已存在！");
         }
 
+        // 创建用户信息
         User user = EntityUtil.newEntity(User.class);
         user.setAccount(account);
         user.setName(name);
         user.setPassword(pwd);
         userDao.saveEntity(user);
+
+        // 创建用户根目录
+        Directory directory = EntityUtil.newEntity(Directory.class, user.getId());
+        directory.setUserId(user.getId());
+        directory.setType(Directory.Type.DIRECTORY);
+        directory.setName(Directory.Constant.ROOT_NAME);
+        directory.setParentId(Directory.Constant.ROOT_PARENT_ID);
+        directory.setLevel(Directory.Constant.ROOT_LEVEL);
+        directory.setLeftNo(Directory.Constant.LEFT);
+        directory.setRightNo(Directory.Constant.RIGHT);
+        directoryAutoDao.saveEntity(directory);
+
         return Result.success();
     }
 
@@ -95,6 +116,7 @@ public class LoginService {
      * @param newPwd 新密码
      * @return
      */
+    @Transactional
     public Result updatePwd(String oldPwd, String newPwd) {
         CacheCustomer customer = AuthorityUtil.getCurrCustomer();
         User  user = userDao.findById(customer.getId());

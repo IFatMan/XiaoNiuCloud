@@ -21,17 +21,11 @@
             <if test="entity.userId != null">
                 user_id,
             </if>
-            <if test="entity.level != null">
-                level,
-            </if>
             <if test="entity.type != null">
                 type,
             </if>
             <if test="entity.name != null">
                 name,
-            </if>
-            <if test="entity.parentId != null">
-                parent_id,
             </if>
             <if test="entity.fileType != null">
                 file_type,
@@ -41,6 +35,18 @@
             </if>
             <if test="entity.fileName != null">
                 file_name,
+            </if>
+            <if test="entity.parentId != null">
+                parent_id,
+            </if>
+            <if test="entity.level != null">
+                level,
+            </if>
+            <if test="entity.leftNo != null">
+                left_no,
+            </if>
+            <if test="entity.rightNo != null">
+                right_no,
             </if>
         </trim>
         <trim suffixOverrides="," prefix="VALUES(" suffix=")">
@@ -59,17 +65,11 @@
             <if test="entity.userId != null">
                 #{entity.userId},
             </if>
-            <if test="entity.level != null">
-                #{entity.level},
-            </if>
             <if test="entity.type != null">
                 #{entity.type},
             </if>
             <if test="entity.name != null">
                 #{entity.name},
-            </if>
-            <if test="entity.parentId != null">
-                #{entity.parentId},
             </if>
             <if test="entity.fileType != null">
                 #{entity.fileType},
@@ -79,6 +79,18 @@
             </if>
             <if test="entity.fileName != null">
                 #{entity.fileName},
+            </if>
+            <if test="entity.parentId != null">
+                #{entity.parentId},
+            </if>
+            <if test="entity.level != null">
+                #{entity.level},
+            </if>
+            <if test="entity.leftNo != null">
+                #{entity.leftNo},
+            </if>
+            <if test="entity.rightNo != null">
+                #{entity.rightNo},
             </if>
         </trim>
     </insert>
@@ -92,13 +104,15 @@
             create_time,
             update_time,
             user_id,
-            level,
             type,
             name,
-            parent_id,
             file_type,
             file_id,
             file_name,
+            parent_id,
+            level,
+            left_no,
+            right_no,
         </trim>
         <foreach collection="entities" item="entity" index="index" separator=",">
             <trim suffixOverrides="," prefix="(" suffix=")">
@@ -107,13 +121,15 @@
                 #{entity.createTime},
                 #{entity.updateTime},
                 #{entity.userId},
-                #{entity.level},
                 #{entity.type},
                 #{entity.name},
-                #{entity.parentId},
                 #{entity.fileType},
                 #{entity.fileId},
                 #{entity.fileName},
+                #{entity.parentId},
+                #{entity.level},
+                #{entity.leftNo},
+                #{entity.rightNo},
             </trim>
         </foreach>
     </insert>
@@ -142,17 +158,11 @@
             <if test="entity.userId != null">
                 AND user_id = #{entity.userId}
             </if>
-            <if test="entity.level != null">
-                AND level = #{entity.level}
-            </if>
             <if test="entity.type != null">
                 AND type = #{entity.type}
             </if>
             <if test="entity.name != null">
                 AND name = #{entity.name}
-            </if>
-            <if test="entity.parentId != null">
-                AND parent_id = #{entity.parentId}
             </if>
             <if test="entity.fileType != null">
                 AND file_type = #{entity.fileType}
@@ -162,6 +172,18 @@
             </if>
             <if test="entity.fileName != null">
                 AND file_name = #{entity.fileName}
+            </if>
+            <if test="entity.parentId != null">
+                AND parent_id = #{entity.parentId}
+            </if>
+            <if test="entity.level != null">
+                AND level = #{entity.level}
+            </if>
+            <if test="entity.leftNo != null">
+                AND left_no = #{entity.leftNo}
+            </if>
+            <if test="entity.rightNo != null">
+                AND right_no = #{entity.rightNo}
             </if>
         </trim>
     </update>
@@ -190,17 +212,11 @@
             <if test="entity != null and entity.userId != null">
                 AND user_id = #{entity.userId}
             </if>
-            <if test="entity != null and entity.level != null">
-                AND level = #{entity.level}
-            </if>
             <if test="entity != null and entity.type != null">
                 AND type = #{entity.type}
             </if>
             <if test="entity != null and entity.name != null">
                 AND name = #{entity.name}
-            </if>
-            <if test="entity != null and entity.parentId != null">
-                AND parent_id = #{entity.parentId}
             </if>
             <if test="entity != null and entity.fileType != null">
                 AND file_type = #{entity.fileType}
@@ -210,6 +226,18 @@
             </if>
             <if test="entity != null and entity.fileName != null">
                 AND file_name = #{entity.fileName}
+            </if>
+            <if test="entity != null and entity.parentId != null">
+                AND parent_id = #{entity.parentId}
+            </if>
+            <if test="entity != null and entity.level != null">
+                AND level = #{entity.level}
+            </if>
+            <if test="entity != null and entity.leftNo != null">
+                AND left_no = #{entity.leftNo}
+            </if>
+            <if test="entity != null and entity.rightNo != null">
+                AND right_no = #{entity.rightNo}
             </if>
         </trim>
     </delete>
@@ -227,17 +255,11 @@
             <if test="entity != null and entity.userId != null">
                 t.user_id = #{entity.userId},
             </if>
-            <if test="entity != null and entity.level != null">
-                t.level = #{entity.level},
-            </if>
             <if test="entity != null and entity.type != null">
                 t.type = #{entity.type},
             </if>
             <if test="entity != null and entity.name != null">
                 t.name = #{entity.name},
-            </if>
-            <if test="entity != null and entity.parentId != null">
-                t.parent_id = #{entity.parentId},
             </if>
             <if test="entity != null and entity.fileType != null">
                 t.file_type = #{entity.fileType},
@@ -247,6 +269,18 @@
             </if>
             <if test="entity != null and entity.fileName != null">
                 t.file_name = #{entity.fileName},
+            </if>
+            <if test="entity != null and entity.parentId != null">
+                t.parent_id = #{entity.parentId},
+            </if>
+            <if test="entity != null and entity.level != null">
+                t.level = #{entity.level},
+            </if>
+            <if test="entity != null and entity.leftNo != null">
+                t.left_no = #{entity.leftNo},
+            </if>
+            <if test="entity != null and entity.rightNo != null">
+                t.right_no = #{entity.rightNo},
             </if>
         </trim>
         WHERE t.id=#{entity.id}
@@ -265,17 +299,11 @@
             <if test="entity.userId != null">
                 t.user_id = #{entity.userId},
             </if>
-            <if test="entity.level != null">
-                t.level = #{entity.level},
-            </if>
             <if test="entity.type != null">
                 t.type = #{entity.type},
             </if>
             <if test="entity.name != null">
                 t.name = #{entity.name},
-            </if>
-            <if test="entity.parentId != null">
-                t.parent_id = #{entity.parentId},
             </if>
             <if test="entity.fileType != null">
                 t.file_type = #{entity.fileType},
@@ -285,6 +313,18 @@
             </if>
             <if test="entity.fileName != null">
                 t.file_name = #{entity.fileName},
+            </if>
+            <if test="entity.parentId != null">
+                t.parent_id = #{entity.parentId},
+            </if>
+            <if test="entity.level != null">
+                t.level = #{entity.level},
+            </if>
+            <if test="entity.leftNo != null">
+                t.left_no = #{entity.leftNo},
+            </if>
+            <if test="entity.rightNo != null">
+                t.right_no = #{entity.rightNo},
             </if>
         </trim>
         <trim prefix=" WHERE t.del=0 " prefixOverrides="AND" suffixOverrides=",">
@@ -303,17 +343,11 @@
             <if test="record.userId != null">
                 AND t.user_id = #{record.userId}
             </if>
-            <if test="record.level != null">
-                AND t.level = #{record.level}
-            </if>
             <if test="record.type != null">
                 AND t.type = #{record.type}
             </if>
             <if test="record.name != null">
                 AND t.name = #{record.name}
-            </if>
-            <if test="record.parentId != null">
-                AND t.parent_id = #{record.parentId}
             </if>
             <if test="record.fileType != null">
                 AND t.file_type = #{record.fileType}
@@ -323,6 +357,18 @@
             </if>
             <if test="record.fileName != null">
                 AND t.file_name = #{record.fileName}
+            </if>
+            <if test="record.parentId != null">
+                AND t.parent_id = #{record.parentId}
+            </if>
+            <if test="record.level != null">
+                AND t.level = #{record.level}
+            </if>
+            <if test="record.leftNo != null">
+                AND t.left_no = #{record.leftNo}
+            </if>
+            <if test="record.rightNo != null">
+                AND t.right_no = #{record.rightNo}
             </if>
         </trim>
     </update>
@@ -336,13 +382,15 @@
                 create_time,
                 update_time,
                 user_id,
-                level,
                 type,
                 name,
-                parent_id,
                 file_type,
                 file_id,
                 file_name,
+                parent_id,
+                level,
+                left_no,
+                right_no,
             </trim>
         FROM t_directory
         WHERE id=#{id}
@@ -357,13 +405,15 @@
                 create_time,
                 update_time,
                 user_id,
-                level,
                 type,
                 name,
-                parent_id,
                 file_type,
                 file_id,
                 file_name,
+                parent_id,
+                level,
+                left_no,
+                right_no,
             </trim>
         FROM t_directory
         <trim prefix=" WHERE del=0 ">
@@ -382,17 +432,11 @@
             <if test="entity != null and entity.userId != null">
                 AND user_id = #{entity.userId}
             </if>
-            <if test="entity != null and entity.level != null">
-                AND level = #{entity.level}
-            </if>
             <if test="entity != null and entity.type != null">
                 AND type = #{entity.type}
             </if>
             <if test="entity != null and entity.name != null">
                 AND name = #{entity.name}
-            </if>
-            <if test="entity != null and entity.parentId != null">
-                AND parent_id = #{entity.parentId}
             </if>
             <if test="entity != null and entity.fileType != null">
                 AND file_type = #{entity.fileType}
@@ -402,6 +446,18 @@
             </if>
             <if test="entity != null and entity.fileName != null">
                 AND file_name = #{entity.fileName}
+            </if>
+            <if test="entity != null and entity.parentId != null">
+                AND parent_id = #{entity.parentId}
+            </if>
+            <if test="entity != null and entity.level != null">
+                AND level = #{entity.level}
+            </if>
+            <if test="entity != null and entity.leftNo != null">
+                AND left_no = #{entity.leftNo}
+            </if>
+            <if test="entity != null and entity.rightNo != null">
+                AND right_no = #{entity.rightNo}
             </if>
         </trim>
         <if test="entity != null and entity.orderBy !=null">
@@ -419,13 +475,15 @@
                 create_time,
                 update_time,
                 user_id,
-                level,
                 type,
                 name,
-                parent_id,
                 file_type,
                 file_id,
                 file_name,
+                parent_id,
+                level,
+                left_no,
+                right_no,
         </trim>
         FROM t_directory
         <trim prefix=" WHERE del=0 ">
@@ -444,17 +502,11 @@
                 <if test="entity != null and entity.userId != null">
                     AND user_id = #{entity.userId}
                 </if>
-                <if test="entity != null and entity.level != null">
-                    AND level = #{entity.level}
-                </if>
                 <if test="entity != null and entity.type != null">
                     AND type = #{entity.type}
                 </if>
                 <if test="entity != null and entity.name != null">
                     AND name = #{entity.name}
-                </if>
-                <if test="entity != null and entity.parentId != null">
-                    AND parent_id = #{entity.parentId}
                 </if>
                 <if test="entity != null and entity.fileType != null">
                     AND file_type = #{entity.fileType}
@@ -464,6 +516,18 @@
                 </if>
                 <if test="entity != null and entity.fileName != null">
                     AND file_name = #{entity.fileName}
+                </if>
+                <if test="entity != null and entity.parentId != null">
+                    AND parent_id = #{entity.parentId}
+                </if>
+                <if test="entity != null and entity.level != null">
+                    AND level = #{entity.level}
+                </if>
+                <if test="entity != null and entity.leftNo != null">
+                    AND left_no = #{entity.leftNo}
+                </if>
+                <if test="entity != null and entity.rightNo != null">
+                    AND right_no = #{entity.rightNo}
                 </if>
         </trim>
         ORDER BY id DESC LIMIT 1
@@ -478,13 +542,15 @@
                 create_time,
                 update_time,
                 user_id,
-                level,
                 type,
                 name,
-                parent_id,
                 file_type,
                 file_id,
                 file_name,
+                parent_id,
+                level,
+                left_no,
+                right_no,
         </trim>
         FROM t_directory
         <trim prefix=" WHERE del=0 ">
@@ -501,13 +567,15 @@
                 create_time,
                 update_time,
                 user_id,
-                level,
                 type,
                 name,
-                parent_id,
                 file_type,
                 file_id,
                 file_name,
+                parent_id,
+                level,
+                left_no,
+                right_no,
         </trim>
         FROM t_directory
         <trim prefix=" WHERE del=0 ">
@@ -535,17 +603,11 @@
             <if test="entity != null and entity.userId != null">
                 AND user_id = #{entity.userId}
             </if>
-            <if test="entity != null and entity.level != null">
-                AND level = #{entity.level}
-            </if>
             <if test="entity != null and entity.type != null">
                 AND type = #{entity.type}
             </if>
             <if test="entity != null and entity.name != null">
                 AND name = #{entity.name}
-            </if>
-            <if test="entity != null and entity.parentId != null">
-                AND parent_id = #{entity.parentId}
             </if>
             <if test="entity != null and entity.fileType != null">
                 AND file_type = #{entity.fileType}
@@ -555,6 +617,18 @@
             </if>
             <if test="entity != null and entity.fileName != null">
                 AND file_name = #{entity.fileName}
+            </if>
+            <if test="entity != null and entity.parentId != null">
+                AND parent_id = #{entity.parentId}
+            </if>
+            <if test="entity != null and entity.level != null">
+                AND level = #{entity.level}
+            </if>
+            <if test="entity != null and entity.leftNo != null">
+                AND left_no = #{entity.leftNo}
+            </if>
+            <if test="entity != null and entity.rightNo != null">
+                AND right_no = #{entity.rightNo}
             </if>
         </trim>
     </select>
@@ -568,13 +642,15 @@
                 create_time,
                 update_time,
                 user_id,
-                level,
                 type,
                 name,
-                parent_id,
                 file_type,
                 file_id,
                 file_name,
+                parent_id,
+                level,
+                left_no,
+                right_no,
         </trim>
         FROM t_directory
         <trim prefix=" WHERE del=0 ">
@@ -594,13 +670,15 @@
                 create_time,
                 update_time,
                 user_id,
-                level,
                 type,
                 name,
-                parent_id,
                 file_type,
                 file_id,
                 file_name,
+                parent_id,
+                level,
+                left_no,
+                right_no,
         </trim>
         FROM t_directory
         <trim prefix=" WHERE del=0 ">
@@ -619,17 +697,11 @@
                 <if test="entity != null and entity.userId != null">
                     AND user_id = #{entity.userId}
                 </if>
-                <if test="entity != null and entity.level != null">
-                    AND level = #{entity.level}
-                </if>
                 <if test="entity != null and entity.type != null">
                     AND type = #{entity.type}
                 </if>
                 <if test="entity != null and entity.name != null">
                     AND name = #{entity.name}
-                </if>
-                <if test="entity != null and entity.parentId != null">
-                    AND parent_id = #{entity.parentId}
                 </if>
                 <if test="entity != null and entity.fileType != null">
                     AND file_type = #{entity.fileType}
@@ -639,6 +711,18 @@
                 </if>
                 <if test="entity != null and entity.fileName != null">
                     AND file_name = #{entity.fileName}
+                </if>
+                <if test="entity != null and entity.parentId != null">
+                    AND parent_id = #{entity.parentId}
+                </if>
+                <if test="entity != null and entity.level != null">
+                    AND level = #{entity.level}
+                </if>
+                <if test="entity != null and entity.leftNo != null">
+                    AND left_no = #{entity.leftNo}
+                </if>
+                <if test="entity != null and entity.rightNo != null">
+                    AND right_no = #{entity.rightNo}
                 </if>
         </trim>
         <if test="entity != null and entity.orderBy !=null">
@@ -655,13 +739,15 @@
                 create_time,
                 update_time,
                 user_id,
-                level,
                 type,
                 name,
-                parent_id,
                 file_type,
                 file_id,
                 file_name,
+                parent_id,
+                level,
+                left_no,
+                right_no,
             </trim>
         FROM t_directory
             <trim prefix=" WHERE del=0 ">
@@ -680,17 +766,11 @@
             <if test="entity.userId != null">
                 AND user_id = #{entity.userId}
             </if>
-            <if test="entity.level != null">
-                AND level = #{entity.level}
-            </if>
             <if test="entity.type != null">
                 AND type = #{entity.type}
             </if>
             <if test="entity.name != null">
                 AND name = #{entity.name}
-            </if>
-            <if test="entity.parentId != null">
-                AND parent_id = #{entity.parentId}
             </if>
             <if test="entity.fileType != null">
                 AND file_type = #{entity.fileType}
@@ -700,6 +780,18 @@
             </if>
             <if test="entity.fileName != null">
                 AND file_name = #{entity.fileName}
+            </if>
+            <if test="entity.parentId != null">
+                AND parent_id = #{entity.parentId}
+            </if>
+            <if test="entity.level != null">
+                AND level = #{entity.level}
+            </if>
+            <if test="entity.leftNo != null">
+                AND left_no = #{entity.leftNo}
+            </if>
+            <if test="entity.rightNo != null">
+                AND right_no = #{entity.rightNo}
             </if>
             </trim>
         <if test="entity.orderBy !=null">

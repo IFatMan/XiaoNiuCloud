@@ -17,7 +17,6 @@ public class CacheUser extends CacheCustomer {
      */
     private String token;
 
-
     /**
      * 转换
      *

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="cn.xiaoniu.cloud.server.api.dao.db.DirectoryDao">
+    <update id="updateLeftAndRight">
+        UPDATE t_directory td
+        SET td.left_no  = td.left_no + 2,
+            td.right_no = td.right_no + 2
+        WHERE td.user_id = #{parent.userId}
+          AND td.left_no > #{parent.rightNo}
+    </update>
+
+    <update id="updateRight">
+        UPDATE t_directory td
+        SET td.right_no = td.right_no + 2
+        WHERE td.user_id = #{parent.userId}
+          AND td.left_no <![CDATA[<= ]]> #{parent.leftNo}
+          AND td.right_no >= #{parent.rightNo}
+    </update>
+
+</mapper>
