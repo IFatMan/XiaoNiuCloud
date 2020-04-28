@@ -10,9 +10,29 @@ import org.apache.ibatis.annotations.Param;
  */
 public interface DirectoryDao {
 
+    /**
+     * 修改其他节点左右值
+     *
+     * @param parent
+     * @return
+     */
     int updateLeftAndRight(@Param("parent") Directory parent);
 
+    /**
+     * 修改父节点右值
+     *
+     * @param parent
+     * @return
+     */
     int updateRight(@Param("parent") Directory parent);
+
+    /**
+     * 删除当前节点及子节点
+     *
+     * @param entity
+     * @return
+     */
+    int delete(@Param("entity") Directory entity);
 
 
 }

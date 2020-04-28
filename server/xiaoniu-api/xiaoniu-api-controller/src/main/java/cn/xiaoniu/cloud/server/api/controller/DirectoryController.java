@@ -87,4 +87,20 @@ public class DirectoryController {
         }
         return directoryService.updateDirectoryName(directoryId, directoryName);
     }
+
+    /**
+     * 删除文件夹/文件
+     *
+     * @param directoryId 目录ID
+     * @return
+     */
+    @Login
+    @DeleteMapping("/deleteDirectory")
+    @ApiImplicitParams(value = {
+            @ApiImplicitParam(name = "AccessToken", value = "登录令牌", required = true, paramType = "header"),
+            @ApiImplicitParam(name = "directoryId", value = "文件夹ID", required = true, paramType = "query")
+    })
+    public Result deleteDirectory(@RequestParam(name = "directoryId") Long directoryId) {
+        return directoryService.deleteDirectory(directoryId);
+    }
 }

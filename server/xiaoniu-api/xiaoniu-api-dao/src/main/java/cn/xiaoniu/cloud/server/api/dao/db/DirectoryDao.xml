@@ -8,6 +8,7 @@
             td.right_no = td.right_no + 2
         WHERE td.user_id = #{parent.userId}
           AND td.left_no > #{parent.rightNo}
+          AND td.del = ${@cn.xiaoniu.cloud.server.util.constant.CommonConstant@NO}
     </update>
 
     <update id="updateRight">
@@ -16,6 +17,16 @@
         WHERE td.user_id = #{parent.userId}
           AND td.left_no <![CDATA[<= ]]> #{parent.leftNo}
           AND td.right_no >= #{parent.rightNo}
+          AND td.del = ${@cn.xiaoniu.cloud.server.util.constant.CommonConstant@NO}
+    </update>
+
+    <update id="delete">
+        UPDATE t_directory td
+        SET td.del = ${@cn.xiaoniu.cloud.server.util.constant.CommonConstant@YES}
+        WHERE td.user_id = #{entity.userId}
+          AND td.del = ${@cn.xiaoniu.cloud.server.util.constant.CommonConstant@NO}
+          AND td.left_no >= #{entity.left_no}
+          AND td.right_no <![CDATA[ <= ]]> #{entity.right.no}
     </update>
 
 </mapper>

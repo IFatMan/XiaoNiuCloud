@@ -134,6 +134,24 @@ public class DirectoryService {
     }
 
     /**
+     * 文件夹删除
+     *
+     * @param directoryId 目录ID
+     * @return
+     */
+    public Result deleteDirectory(Long directoryId) {
+        CacheUser cacheUser = AuthorityUtil.getCurrCustomer();
+        Directory directory = findByUserIdAndDirectoryID(cacheUser.getId(), directoryId);
+        if (Objects.isNull(directory)) {
+            return Result.fail(ResultStatus.ERROR_REQUEST, "未获取到目录信息！");
+        }
+
+        directoryDao.delete(directory);
+
+        return null;
+    }
+
+    /**
      * 通过用户ID和目录ID获取目录信息
      *
      * @param userId      用户ID
