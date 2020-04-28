@@ -73,4 +73,13 @@ public class DateUtil {
         cale.set(Calendar.DAY_OF_MONTH, 0);
         return cale.getMaximum(Calendar.DAY_OF_MONTH);
     }
+
+    /**
+     * 获取当前时间戳
+     *
+     * @return
+     */
+    public static long getCurrMillis() {
+        return System.currentTimeMillis();
+    }
 }

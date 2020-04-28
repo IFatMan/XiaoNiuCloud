@@ -6,6 +6,7 @@ import cn.xiaoniu.cloud.server.api.dao.db.DirectoryAutoDao;
 import cn.xiaoniu.cloud.server.api.dao.db.DirectoryDao;
 import cn.xiaoniu.cloud.server.api.model.po.Directory;
 import cn.xiaoniu.cloud.server.api.model.vo.DirectoryVO;
+import cn.xiaoniu.cloud.server.util.DateUtil;
 import cn.xiaoniu.cloud.server.web.authority.AuthorityUtil;
 import cn.xiaoniu.cloud.server.web.entity.EntityUtil;
 import cn.xiaoniu.cloud.server.web.response.Result;
@@ -101,8 +102,8 @@ public class DirectoryService {
         directoryAutoDao.saveEntity(directory);
 
         // 修改其他节点左右值
-        directoryDao.updateLeftAndRight(parentDirectory);
-        directoryDao.updateRight(parentDirectory);
+        parentDirectory.setUpdateTime(DateUtil.getCurrMillis());
+        directoryDao.saveEntityUpdateLeftAndRight(parentDirectory);
 
         return Result.success(DirectoryVO.convertFromEntity(directory));
     }
@@ -143,21 +144,38 @@ public class DirectoryService {
      * @param directoryId 目录ID
      * @return
      */
+    @Transactional
     public Result deleteDirectory(Long directoryId) {
+        // 获取点前目录信息
         CacheUser cacheUser = AuthorityUtil.getCurrCustomer();
         Directory directory = findByUserIdAndDirectoryID(cacheUser.getId(), directoryId);
         if (Objects.isNull(directory)) {
             return Result.fail(ResultStatus.ERROR_REQUEST, "未获取到目录信息！");
         }
 
-        directoryDao.delete(directory);
+        // 删除目录及子目录
+        directory.setUpdateTime(DateUtil.getCurrMillis());
+        directoryDao.deleteUpdateLeftAndRight(directory);
+
+        return Result.success();
+    }
+
+    /**
+     * 移动目录
+     *
+     * @param sourceId 源目录ID
+     * @param targetId 目标目录ID
+     * @return
+     */
+    @Transactional
+    public Result moveDirectory(Long sourceId, Long targetId) {
 
         return null;
     }
 
     /**
-     * 通过用户ID和目录ID获取目录信息
-     *
+     * 通过用户ID和目录ID获取目录信息<br />
+     *  加上用户ID参数，避免目录不是此用户下的进行误操作
      * @param userId      用户ID
      * @param directoryId 目录ID
      * @return

@@ -132,6 +132,38 @@ public class Directory extends BaseEntity {
     }
 
     /**
+     * 判断目录parent是否是此节点的父系节点
+     *
+     * @param parent 父节点
+     * @return true: 父系节点中的一个；false：不是父系节点
+     */
+    public boolean isParent(Directory parent) {
+        return this.leftNo > parent.getLeftNo() && this.rightNo < parent.getRightNo();
+    }
+
+    /**
+     * 是否包含子目录
+     *
+     * @return true:有子目录；false:没有子目录
+     */
+    public boolean hasChild() {
+        return this.rightNo - this.level > 1;
+    }
+
+    /**
+     * 获取子节点数量
+     *
+     * @return
+     */
+    public int getChildSize() {
+        if (hasChild()) {
+            return (this.rightNo - this.leftNo - 1) / 2;
+        }
+        return 0;
+    }
+
+
+    /**
      * 父级目录是否是根目录
      *
      * @param parentId 父级目录ID

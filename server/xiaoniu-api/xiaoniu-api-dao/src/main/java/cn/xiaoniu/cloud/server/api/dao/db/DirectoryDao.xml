@@ -2,31 +2,50 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 
 <mapper namespace="cn.xiaoniu.cloud.server.api.dao.db.DirectoryDao">
-    <update id="updateLeftAndRight">
+
+    <!-- 新增目录修改修改目录左右值 -->
+    <update id="saveEntityUpdateLeftAndRight">
         UPDATE t_directory td
-        SET td.left_no  = td.left_no + 2,
-            td.right_no = td.right_no + 2
+        SET td.left_no     = td.left_no + 2,
+            td.right_no    = td.right_no + 2,
+            td.update_time = #{parent.updateTime}
         WHERE td.user_id = #{parent.userId}
           AND td.left_no > #{parent.rightNo}
-          AND td.del = ${@cn.xiaoniu.cloud.server.util.constant.CommonConstant@NO}
-    </update>
+          AND td.del = ${@cn.xiaoniu.cloud.server.util.constant.CommonConstant@NO};
 
-    <update id="updateRight">
         UPDATE t_directory td
-        SET td.right_no = td.right_no + 2
+        SET td.right_no    = td.right_no + 2,
+            td.update_time = #{parent.updateTime}
         WHERE td.user_id = #{parent.userId}
           AND td.left_no <![CDATA[<= ]]> #{parent.leftNo}
           AND td.right_no >= #{parent.rightNo}
           AND td.del = ${@cn.xiaoniu.cloud.server.util.constant.CommonConstant@NO}
     </update>
 
-    <update id="delete">
+    <update id="deleteUpdateLeftAndRight">
         UPDATE t_directory td
-        SET td.del = ${@cn.xiaoniu.cloud.server.util.constant.CommonConstant@YES}
+        SET td.del         = ${@cn.xiaoniu.cloud.server.util.constant.CommonConstant@YES},
+            td.update_time = #{entity.updateTime}
         WHERE td.user_id = #{entity.userId}
           AND td.del = ${@cn.xiaoniu.cloud.server.util.constant.CommonConstant@NO}
-          AND td.left_no >= #{entity.left_no}
-          AND td.right_no <![CDATA[ <= ]]> #{entity.right.no}
+          AND td.left_no >= #{entity.leftNo}
+          AND td.right_no <![CDATA[ <= ]]> #{entity.rightNo};
+
+        UPDATE t_directory td
+        SET td.left_no     = td.left_no - (#{entity.rightNo} - #{entity.leftNo} + 1),
+            td.right_no    = td.right_no - (#{entity.rightNo} - #{entity.leftNo} + 1),
+            td.update_time = #{entity.updateTime}
+        WHERE td.user_id = #{entity.userId}
+          AND td.left_no > #{entity.rightNo}
+          AND td.del = ${@cn.xiaoniu.cloud.server.util.constant.CommonConstant@NO};
+
+        UPDATE t_directory td
+        SET td.right_no    = td.right_no - (#{entity.rightNo} - #{entity.leftNo} + 1),
+            td.update_time = #{entity.updateTime}
+        WHERE td.user_id = #{entity.userId}
+          AND td.left_no <![CDATA[<= ]]> #{entity.leftNo}
+          AND td.right_no >= #{entity.rightNo}
+          AND td.del = ${@cn.xiaoniu.cloud.server.util.constant.CommonConstant@NO}
     </update>
 
 </mapper>

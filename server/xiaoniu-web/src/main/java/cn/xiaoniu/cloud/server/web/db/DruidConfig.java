@@ -4,6 +4,8 @@ import cn.hutool.core.collection.CollUtil;
 import com.alibaba.druid.pool.DruidDataSource;
 import com.alibaba.druid.support.http.StatViewServlet;
 import com.alibaba.druid.support.http.WebStatFilter;
+import com.alibaba.druid.wall.WallConfig;
+import com.alibaba.druid.wall.WallFilter;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.ConfigurationProperties;
@@ -12,6 +14,8 @@ import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.boot.web.servlet.ServletRegistrationBean;
 import org.springframework.context.annotation.Bean;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -31,7 +35,26 @@ public class DruidConfig {
     @Bean
     @ConfigurationProperties(prefix = "spring.datasource")
     public DruidDataSource druidDataSource() {
-        return new DruidDataSource();
+        DruidDataSource druidDataSource = new DruidDataSource();
+        List filterList = new ArrayList();
+        filterList.add(wallFilter());
+        druidDataSource.setProxyFilters(filterList);
+        return druidDataSource;
+    }
+
+    @Bean
+    public WallFilter wallFilter() {
+        WallFilter wallFilter = new WallFilter();
+        wallFilter.setConfig(wallConfig());
+        return wallFilter;
+    }
+
+    @Bean
+    public WallConfig wallConfig() {
+        WallConfig config = new WallConfig();
+        config.setMultiStatementAllow(true);//允许一次执行多条语句
+        config.setNoneBaseStatementAllow(true);//允许非基本语句的其他语句
+        return config;
     }
 
     /**
