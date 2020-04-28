@@ -10,16 +10,14 @@
             td.right_no    = td.right_no + 2,
             td.update_time = #{parent.updateTime}
         WHERE td.user_id = #{parent.userId}
-          AND td.left_no > #{parent.rightNo}
-          AND td.del = ${@cn.xiaoniu.cloud.server.util.constant.CommonConstant@NO};
+          AND td.left_no > #{parent.rightNo};
 
         UPDATE t_directory td
         SET td.right_no    = td.right_no + 2,
             td.update_time = #{parent.updateTime}
         WHERE td.user_id = #{parent.userId}
           AND td.left_no <![CDATA[<= ]]> #{parent.leftNo}
-          AND td.right_no >= #{parent.rightNo}
-          AND td.del = ${@cn.xiaoniu.cloud.server.util.constant.CommonConstant@NO}
+          AND td.right_no >= #{parent.rightNo};
     </update>
 
     <update id="deleteUpdateLeftAndRight">
@@ -30,22 +28,6 @@
           AND td.del = ${@cn.xiaoniu.cloud.server.util.constant.CommonConstant@NO}
           AND td.left_no >= #{entity.leftNo}
           AND td.right_no <![CDATA[ <= ]]> #{entity.rightNo};
-
-        UPDATE t_directory td
-        SET td.left_no     = td.left_no - (#{entity.rightNo} - #{entity.leftNo} + 1),
-            td.right_no    = td.right_no - (#{entity.rightNo} - #{entity.leftNo} + 1),
-            td.update_time = #{entity.updateTime}
-        WHERE td.user_id = #{entity.userId}
-          AND td.left_no > #{entity.rightNo}
-          AND td.del = ${@cn.xiaoniu.cloud.server.util.constant.CommonConstant@NO};
-
-        UPDATE t_directory td
-        SET td.right_no    = td.right_no - (#{entity.rightNo} - #{entity.leftNo} + 1),
-            td.update_time = #{entity.updateTime}
-        WHERE td.user_id = #{entity.userId}
-          AND td.left_no <![CDATA[<= ]]> #{entity.leftNo}
-          AND td.right_no >= #{entity.rightNo}
-          AND td.del = ${@cn.xiaoniu.cloud.server.util.constant.CommonConstant@NO}
     </update>
 
 </mapper>
