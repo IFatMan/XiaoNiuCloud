@@ -38,7 +38,7 @@ public class DirectoryController {
             @ApiImplicitParam(name = "AccessToken", value = "登录令牌", required = true, paramType = "header"),
             @ApiImplicitParam(name = "parentDirectoryId", value = "父级文件夹ID", paramType = "query")
     })
-    public Result<DirectoryVO> findDirectory(@RequestParam(name = "parentDirectoryId", defaultValue = "0") Long parentDirectoryId) {
+    public Result<DirectoryVO> findDirectory(@RequestParam(name = "parentDirectoryId", required = false) Long parentDirectoryId) {
         return directoryService.findDirectory(parentDirectoryId);
     }
 

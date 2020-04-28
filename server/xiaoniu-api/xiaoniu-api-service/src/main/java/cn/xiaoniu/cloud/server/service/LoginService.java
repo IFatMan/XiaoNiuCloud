@@ -59,6 +59,13 @@ public class LoginService {
             loginDao.delCacheUser(user.getToken());
         }
 
+        // 4. 根目录ID
+        Directory directory = EntityUtil.select(Directory.class);
+        directory.setUserId(cacheUser.getId());
+        directory.setParentId(Directory.Constant.ROOT_PARENT_ID);
+        directory = directoryAutoDao.findLastOne(directory);
+        cacheUser.setRootDirectoryId(directory.getId());
+
         // 4. 生成Token,以token为Key，将缓存对象缓存到Redis
         String token = IdUtil.getUUID();
         cacheUser.setToken(token);
@@ -84,7 +91,7 @@ public class LoginService {
     public Result register(String name, String account, String pwd) {
         List<User> userList = userDao.findByFieldName("account", account);
         if (CollUtil.isNotEmpty(userList)) {
-            return Result.fail(ResultStatus.ERROR_REQUEST , "账号已存在！");
+            return Result.fail(ResultStatus.ERROR_REQUEST, "账号已存在！");
         }
 
         // 创建用户信息
@@ -95,7 +102,7 @@ public class LoginService {
         userDao.saveEntity(user);
 
         // 创建用户根目录
-        Directory directory = EntityUtil.newEntity(Directory.class, user.getId());
+        Directory directory = EntityUtil.newEntity(Directory.class);
         directory.setUserId(user.getId());
         directory.setType(Directory.Type.DIRECTORY);
         directory.setName(Directory.Constant.ROOT_NAME);
@@ -119,13 +126,13 @@ public class LoginService {
     @Transactional
     public Result updatePwd(String oldPwd, String newPwd) {
         CacheCustomer customer = AuthorityUtil.getCurrCustomer();
-        User  user = userDao.findById(customer.getId());
-        if(Objects.isNull(user)) {
-            return Result.fail(ResultStatus.ERROR_REQUEST , "用户不存在！");
+        User user = userDao.findById(customer.getId());
+        if (Objects.isNull(user)) {
+            return Result.fail(ResultStatus.ERROR_REQUEST, "用户不存在！");
         }
 
         if (!user.getPassword().equals(oldPwd)) {
-            return Result.fail(ResultStatus.ERROR_REQUEST , "密码不正确！");
+            return Result.fail(ResultStatus.ERROR_REQUEST, "密码不正确！");
         }
 
         user.setPassword(newPwd);

@@ -18,6 +18,11 @@ public class CacheUser extends CacheCustomer {
     private String token;
 
     /**
+     * 根目录ID
+     */
+    private Long rootDirectoryId;
+
+    /**
      * 转换
      *
      * @param user
@@ -38,5 +43,13 @@ public class CacheUser extends CacheCustomer {
 
     public void setToken(String token) {
         this.token = token;
+    }
+
+    public Long getRootDirectoryId() {
+        return rootDirectoryId;
+    }
+
+    public void setRootDirectoryId(Long rootDirectoryId) {
+        this.rootDirectoryId = rootDirectoryId;
     }
 }
