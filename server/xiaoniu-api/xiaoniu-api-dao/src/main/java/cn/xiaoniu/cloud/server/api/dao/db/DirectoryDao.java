@@ -26,5 +26,12 @@ public interface DirectoryDao {
      */
     int deleteUpdateLeftAndRight(@Param("entity") Directory entity);
 
-
+    /**
+     * 移动目录
+     *
+     * @param directory          要移动的目录
+     * @param newParentDirectory 新父级目录
+     */
+    int moveDirectory(@Param("entity") Directory directory,
+                      @Param("newParent") Directory newParentDirectory);
 }

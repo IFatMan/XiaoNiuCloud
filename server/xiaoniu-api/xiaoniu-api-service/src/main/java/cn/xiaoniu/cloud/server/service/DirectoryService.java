@@ -74,13 +74,13 @@ public class DirectoryService {
         CacheUser cacheUser = AuthorityUtil.getCurrCustomer();
 
         // 父级目录是否存在
-        Directory parentDirectory = findByUserIdAndDirectoryID(cacheUser.getId(), Directory.isRoot(parentId) ? cacheUser.getRootDirectoryId() : parentId);
+        Directory parentDirectory = findByUserIdAndDirectoryID(Directory.isRoot(parentId) ? cacheUser.getRootDirectoryId() : parentId);
         if (Objects.isNull(parentDirectory)) {
             return Result.fail(ResultStatus.ERROR_REQUEST, "未获取到父文件夹信息！");
         }
 
         // 文件无子目录
-        if (Objects.equals(parentDirectory.getType(), Directory.Type.FILE)) {
+        if (parentDirectory.isFile()) {
             return Result.fail(ResultStatus.ERROR_REQUEST, "当前目录非文件夹！");
         }
 
@@ -118,7 +118,7 @@ public class DirectoryService {
     @Transactional
     public Result<DirectoryVO> updateDirectoryName(Long directoryId, String directoryName) {
         CacheUser cacheUser = AuthorityUtil.getCurrCustomer();
-        Directory directory = findByUserIdAndDirectoryID(cacheUser.getId(), directoryId);
+        Directory directory = findByUserIdAndDirectoryID(directoryId);
         if (Objects.isNull(directory)) {
             return Result.fail(ResultStatus.ERROR_REQUEST, "未获取到此目录信息！");
         }
@@ -147,8 +147,7 @@ public class DirectoryService {
     @Transactional
     public Result deleteDirectory(Long directoryId) {
         // 获取点前目录信息
-        CacheUser cacheUser = AuthorityUtil.getCurrCustomer();
-        Directory directory = findByUserIdAndDirectoryID(cacheUser.getId(), directoryId);
+        Directory directory = findByUserIdAndDirectoryID(directoryId);
         if (Objects.isNull(directory)) {
             return Result.fail(ResultStatus.ERROR_REQUEST, "未获取到目录信息！");
         }
@@ -163,26 +162,42 @@ public class DirectoryService {
     /**
      * 移动目录
      *
-     * @param sourceId 源目录ID
-     * @param targetId 目标目录ID
+     * @param directoryId 移动目录ID
+     * @param newParentId 移动目录新父级目录ID
      * @return
      */
     @Transactional
-    public Result moveDirectory(Long sourceId, Long targetId) {
+    public Result moveDirectory(Long directoryId, Long newParentId) {
+        // 要移动目录ID
+        Directory directory = findByUserIdAndDirectoryID(directoryId);
+        if (Objects.isNull(directory)) {
+            return Result.fail(ResultStatus.ERROR_REQUEST, "为获取到移动目录信息！");
+        }
 
-        return null;
+        // 新父级目录
+        Directory newParentDirectory = findByUserIdAndDirectoryID(newParentId);
+        if (Objects.isNull(newParentDirectory)) {
+            return Result.fail(ResultStatus.ERROR_REQUEST, "未获取目标目录信息！");
+        }
+        if (newParentDirectory.isFile()) {
+            return Result.fail(ResultStatus.ERROR_REQUEST, "当前目录非文件夹！");
+        }
+
+        // 开始移动
+        directoryDao.moveDirectory(directory, newParentDirectory);
+
+        return Result.success();
     }
 
     /**
      * 通过用户ID和目录ID获取目录信息<br />
      *  加上用户ID参数，避免目录不是此用户下的进行误操作
-     * @param userId      用户ID
      * @param directoryId 目录ID
      * @return
      */
-    private Directory findByUserIdAndDirectoryID(Long userId, Long directoryId) {
+    private Directory findByUserIdAndDirectoryID(Long directoryId) {
         Directory directorySelect = EntityUtil.select(Directory.class);
-        directorySelect.setUserId(userId);
+        directorySelect.setUserId(AuthorityUtil.getCurrCustomer().getId());
         directorySelect.setId(directoryId);
 
         return directoryAutoDao.findLastOne(directorySelect);

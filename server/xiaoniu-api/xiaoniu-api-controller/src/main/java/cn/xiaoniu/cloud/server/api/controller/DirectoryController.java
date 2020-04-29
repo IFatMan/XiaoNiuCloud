@@ -115,10 +115,10 @@ public class DirectoryController {
     @PutMapping("/moveDirectory")
     @ApiImplicitParams(value = {
             @ApiImplicitParam(name = "AccessToken", value = "登录令牌", required = true, paramType = "header"),
-            @ApiImplicitParam(name = "sourceId", value = "源目录ID", required = true, paramType = "query"),
-            @ApiImplicitParam(name = "targetId", value = "目标目录ID", required = true, paramType = "query")
+            @ApiImplicitParam(name = "directoryId", value = "移动目录ID", required = true, paramType = "query"),
+            @ApiImplicitParam(name = "newParentId", value = "移动目录新父级目录ID", required = true, paramType = "query")
     })
-    public Result moveDirectory(@RequestParam("sourceId") Long sourceId, @RequestParam("targetId") Long targetId) {
-        return directoryService.moveDirectory(sourceId, targetId);
+    public Result moveDirectory(@RequestParam("directoryId") Long directoryId, @RequestParam("newParentId") Long newParentId) {
+        return directoryService.moveDirectory(directoryId, newParentId);
     }
 }

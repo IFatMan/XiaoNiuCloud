@@ -30,4 +30,55 @@
           AND td.right_no <![CDATA[ <= ]]> #{entity.rightNo};
     </update>
 
+    <update id="moveDirectory">
+        /* 从原有节点删除 */
+        UPDATE t_directory td
+        SET td.left_no     = td.left_no - (#{entity.rightNo} - #{entity.leftNo} + 1),
+            td.right_no    = td.right_no - (#{entity.rightNo} - #{entity.leftNo} + 1),
+            td.update_time = #{entity.updateTime}
+        WHERE td.user_id = #{entity.userId}
+          AND td.left_no > #{entity.rightNo};
+
+        UPDATE t_directory td
+        SET td.right_no    = td.right_no - (#{entity.rightNo} - #{entity.leftNo} + 1),
+            td.update_time = #{entity.updateTime}
+        WHERE td.user_id = #{entity.userId}
+          AND td.left_no <![CDATA[< ]]> #{entity.leftNo}
+          AND td.right_no > #{entity.rightNo};
+
+        /* 修改本节点及子节点 */
+        UPDATE t_directory td
+        SET td.left_no   = td.left_no - (#{entity.leftNo} - #{newParent.rightNo}),
+            td.right_no  = td.right_no - (#{entity.leftNo} - #{newParent.rightNo}),
+            td.level     = td.level + (#{newParent.level} - #{entity.level} + 1),
+            td.parent_id = #{newParent.id}
+        WHERE td.user_id = #{entity.userId}
+          AND td.left_no >= #{entity.leftNo}
+          AND td.right_no <![CDATA[ <= ]]> #{entity.rightNo};
+
+        /* 新增 */
+        UPDATE t_directory td
+        SET td.right_no    = td.right_no + (#{entity.rightNo} - #{entity.leftNo} + 1),
+            td.update_time = #{newParent.updateTime}
+        WHERE td.user_id = #{newParent.userId}
+          AND td.left_no <![CDATA[<= ]]> #{newParent.leftNo}
+          AND td.right_no >= #{newParent.rightNo};
+
+        UPDATE t_directory td
+        SET td.left_no     = td.left_no + (#{entity.rightNo} - #{entity.leftNo} + 1),
+            td.right_no    = td.right_no + (#{entity.rightNo} - #{entity.leftNo} + 1),
+            td.update_time = #{newParent.updateTime}
+        WHERE td.user_id = #{newParent.userId}
+          AND td.left_no > #{newParent.rightNo};
+
+        /* 减去 */
+        UPDATE t_directory td
+        SET td.left_no     = td.left_no - (#{entity.rightNo} - #{entity.leftNo} + 1),
+            td.right_no    = td.right_no - (#{entity.rightNo} - #{entity.leftNo} + 1),
+            td.update_time = #{newParent.updateTime}
+        WHERE td.user_id = #{newParent.userId}
+          AND td.left_no >= #{entity.leftNo} - (#{entity.leftNo} - #{newParent.rightNo})
+          AND td.right_no <![CDATA[ <= ]]> #{entity.reghtNo} - (#{entity.leftNo} - #{newParent.rightNo});
+    </update>
+
 </mapper>

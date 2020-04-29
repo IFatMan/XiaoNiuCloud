@@ -4,6 +4,8 @@ import cn.xiaoniu.cloud.server.web.entity.BaseEntity;
 import lombok.*;
 import lombok.experimental.Accessors;
 
+import java.util.Objects;
+
 /**
  * <p>用户目录 实体类</p>
  * <p>创建时间:2020-04-27</p>
@@ -160,6 +162,24 @@ public class Directory extends BaseEntity {
             return (this.rightNo - this.leftNo - 1) / 2;
         }
         return 0;
+    }
+
+    /**
+     * 判断当前目录是否是文件夹
+     *
+     * @return
+     */
+    public boolean isDirectory() {
+        return Objects.equals(this.type, Type.DIRECTORY);
+    }
+
+    /**
+     * 判断当前目录是否是文件
+     *
+     * @return
+     */
+    public boolean isFile() {
+        return Objects.equals(this.type, Type.FILE);
     }
 
 
