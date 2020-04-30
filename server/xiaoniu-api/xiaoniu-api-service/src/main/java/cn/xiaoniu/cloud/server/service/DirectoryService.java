@@ -174,6 +174,9 @@ public class DirectoryService {
             return Result.fail(ResultStatus.ERROR_REQUEST, "为获取到移动目录信息！");
         }
 
+        // 获取移动目录的所有子目录
+        List<Directory> child = directoryDao.findChild(directory);
+
         // 新父级目录
         Directory newParentDirectory = findByUserIdAndDirectoryID(newParentId);
         if (Objects.isNull(newParentDirectory)) {
@@ -184,7 +187,7 @@ public class DirectoryService {
         }
 
         // 开始移动
-        directoryDao.moveDirectory(directory, newParentDirectory);
+        directoryDao.moveDirectory(directory, child, newParentDirectory);
 
         return Result.success();
     }
