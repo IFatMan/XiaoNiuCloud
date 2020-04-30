@@ -3,6 +3,15 @@
 
 <mapper namespace="cn.xiaoniu.cloud.server.api.dao.db.DirectoryDao">
 
+    <!-- 获取所有子目录，包含参数目录及删除目录 -->
+    <select id="findChild" resultType="cn.xiaoniu.cloud.server.api.model.po.Directory">
+        SELECT *
+        FROM t_directory td
+        WHERE td.user_id = #{entity.userId}
+          AND td.left_no >= #{entity.leftNo}
+          AND td.right_no <![CDATA[ <= ]]> #{entity.rightNo}
+    </select>
+
     <!-- 新增目录修改修改目录左右值 -->
     <update id="saveEntityUpdateLeftAndRight">
         UPDATE t_directory td
@@ -61,21 +70,19 @@
         SET td.right_no    = td.right_no + (#{entity.rightNo} - #{entity.leftNo} + 1),
             td.update_time = #{newParent.updateTime}
         WHERE td.user_id = #{newParent.userId}
-          AND td.left_no <![CDATA[<= ]]> #{newParent.leftNo}
-          AND td.right_no >= #{newParent.rightNo};
+        AND td.left_no <![CDATA[< ]]> #{newParent.leftNo}
+        AND td.right_no > #{newParent.rightNo};
 
         UPDATE t_directory td
         SET td.left_no     = td.left_no + (#{entity.rightNo} - #{entity.leftNo} + 1),
             td.right_no    = td.right_no + (#{entity.rightNo} - #{entity.leftNo} + 1),
             td.update_time = #{newParent.updateTime}
         WHERE td.user_id = #{newParent.userId}
-          AND td.left_no > #{newParent.rightNo};
-
-          UPDATE  t_directory td
-          SET td.left_no     = td.left_no - (#{entity.rightNo} - #{entity.leftNo} + 1),
-              td.right_no    = td.right_no - (#{entity.rightNo} - #{entity.leftNo} + 1)
-          WHERE td.left_no >= #{entity.leftNo} - (2 * #{entity.leftNo} - #{newParent.rightNo} - #{entity.rightNo} -1)
-          AND td.right_no <![CDATA[<=]]> #{entity.rightNo} - (2 * #{entity.leftNo} - #{newParent.rightNo} - #{entity.rightNo} -1)
+        AND td.left_no > #{newParent.rightNo}
+        AND td.id NOT IN
+        <foreach collection="child" item="item" separator="," open="(" close=")">
+            #{item.id}
+        </foreach>;
     </update>
 
 </mapper>
