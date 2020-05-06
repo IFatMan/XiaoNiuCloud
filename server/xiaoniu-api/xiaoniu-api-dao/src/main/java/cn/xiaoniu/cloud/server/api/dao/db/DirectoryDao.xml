@@ -41,7 +41,7 @@
 
     <update id="moveDirectory">
         /* 从原有节点删除 */
-        UPDATE t_directory td
+        UPDATE t_directory_back td
         SET td.left_no     = td.left_no - (#{entity.rightNo} - #{entity.leftNo} + 1),
             td.right_no    = td.right_no - (#{entity.rightNo} - #{entity.leftNo} + 1),
             td.update_time = #{entity.updateTime}
@@ -52,22 +52,39 @@
             #{item.id}
         </foreach>;
 
-        UPDATE t_directory td
+        UPDATE t_directory_back td
         SET td.right_no    = td.right_no - (#{entity.rightNo} - #{entity.leftNo} + 1),
             td.update_time = #{entity.updateTime}
         WHERE td.user_id = #{entity.userId}
           AND td.left_no <![CDATA[< ]]> #{entity.leftNo}
           AND td.right_no > #{entity.rightNo};
 
+        <!-- /* 父节点右值 */
+        SELECT @PARENT_RIGHT:=#{newParent.rightNo};
+        <if test="newParent.leftNo > entity.rightNo">
+            SELECT @PARENT_RIGHT:= 2 * #{entity.rightNo} - #{newParent.rightNo} - #{entity.leftNo} + 1;
+        </if>
+
+        /* 修改本节点及子节点 */
+        UPDATE t_directory_back td
+        SET td.left_no = td.left_no - (#{entity.rightNo} - @PARENT_RIGHT + 1),
+        td.right_no = td.right_no - (#{entity.rightNo} - @PARENT_RIGHT+ 1),
+        td.level = td.level + (#{newParent.level} - #{entity.level} + 1),
+        td.parent_id = #{newParent.id}
+        WHERE td.id IN
+        <foreach collection="child" item="item" separator="," open="(" close=")">
+            #{item.id}
+        </foreach>;
+
         /* 新增 */
-        UPDATE t_directory td
+        UPDATE t_directory_back td
         SET td.right_no    = td.right_no + (#{entity.rightNo} - #{entity.leftNo} + 1),
             td.update_time = #{newParent.updateTime}
         WHERE td.user_id = #{newParent.userId}
         AND td.left_no <![CDATA[< ]]> ( #{newParent.leftNo} - (#{entity.rightNo} - #{entity.leftNo} + 1) )
         AND td.right_no > ( #{newParent.rightNo} - (#{entity.rightNo} - #{entity.leftNo} + 1));
 
-        <!-- UPDATE t_directory td
+        UPDATE t_directory_back td
         SET td.left_no     = td.left_no + (#{entity.rightNo} - #{entity.leftNo} + 1),
             td.right_no    = td.right_no + (#{entity.rightNo} - #{entity.leftNo} + 1),
             td.update_time = #{newParent.updateTime}
@@ -78,21 +95,10 @@
             #{item.id}
         </foreach>;
 
-        /* 修改本节点及子节点 */
-        UPDATE t_directory td
-        SET td.left_no = td.left_no - (#{entity.rightNo} - #{newParent.rightNo} + 1),
-        td.right_no = td.right_no - (#{entity.rightNo} - #{newParent.rightNo} + 1),
-        td.level = td.level + (#{newParent.level} - #{entity.level} + 1),
-        td.parent_id = #{newParent.id}
-        WHERE td.id IN
-        <foreach collection="child" item="item" separator="," open="(" close=")">
-            #{item.id}
-        </foreach>;
-
-        UPDATE t_directory td
-        SET td.right_no = td.right_no + (#{entity.rightNo} - #{entity.leftNo} + 1),
-        td.update_time = #{newParent.updateTime}
-        WHERE td.id = #{newParent.id}-->
+          UPDATE t_directory_back td
+          SET td.right_no = td.right_no + (#{entity.rightNo} - #{entity.leftNo} + 1),
+          td.update_time = #{newParent.updateTime}
+          WHERE td.id = #{newParent.id}-->
 
     </update>
 

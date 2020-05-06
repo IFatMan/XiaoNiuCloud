@@ -1,20 +1,20 @@
 package cn.xiaoniu.cloud.server.api.dao.db;
 
-import cn.xiaoniu.cloud.server.api.model.po.File;
+import cn.xiaoniu.cloud.server.api.model.po.FileSlice;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
 /**
- * <p>文件上传记录 DAO 接口</p>
+ * <p>文件分片记录 DAO 接口</p>
  * <p>创建时间:2020-05-06</p>
  * <p>公司信息:Developed By KongMing</p>
  *
  * @author auto generator
  */
 @Mapper
-public interface FileAutoDao {
+public interface FileSliceAutoDao {
 
     /**
      * 保存数据
@@ -22,7 +22,7 @@ public interface FileAutoDao {
      * @param entity
      * @return
      */
-    int saveEntity(@Param("entity") File entity);
+    int saveEntity(@Param("entity") FileSlice entity);
 
     /**
      * 批量保存数据
@@ -30,7 +30,7 @@ public interface FileAutoDao {
      * @param entities
      * @return
      */
-    int saveEntities(@Param("entities") List<File> entities);
+    int saveEntities(@Param("entities") List<FileSlice> entities);
 
     /**
      * 逻辑删除数据
@@ -46,7 +46,7 @@ public interface FileAutoDao {
      * @param entity
      * @return
      */
-    int deleteByEntity(@Param("entity") File entity);
+    int deleteByEntity(@Param("entity") FileSlice entity);
 
     /**
      * 物理删除数据
@@ -62,7 +62,7 @@ public interface FileAutoDao {
      * @param entity
      * @return
      */
-    int removeByEntity(@Param("entity") File entity);
+    int removeByEntity(@Param("entity") FileSlice entity);
 
     /**
      * 更新数据
@@ -70,7 +70,7 @@ public interface FileAutoDao {
      * @param entity
      * @return
      */
-    int updateEntityById(@Param("entity") File entity);
+    int updateEntityById(@Param("entity") FileSlice entity);
 
     /**
      * 更新数据
@@ -79,7 +79,7 @@ public interface FileAutoDao {
      * @param record
      * @return
      */
-    int updateEntityByPO(@Param("entity") File entity, @Param("record") File record);
+    int updateEntityByPO(@Param("entity") FileSlice entity, @Param("record") FileSlice record);
 
     /**
      * 获取数据
@@ -87,7 +87,7 @@ public interface FileAutoDao {
      * @param id
      * @return
      */
-    File findById(@Param("id") Long id);
+    FileSlice findById(@Param("id") Long id);
 
     /**
      * 获取一条数据
@@ -95,7 +95,7 @@ public interface FileAutoDao {
      * @param entity
      * @return
      */
-    File findOne(@Param("entity") File entity);
+    FileSlice findOne(@Param("entity") FileSlice entity);
 
     /**
      * 获取最新的一条数据 , 通过ID倒叙实现
@@ -103,7 +103,7 @@ public interface FileAutoDao {
      * @param entity
      * @return
      */
-    File findLastOne(@Param("entity") File entity);
+    FileSlice findLastOne(@Param("entity") FileSlice entity);
 
     /**
      * 根据指定字段名和值获取数据
@@ -112,7 +112,7 @@ public interface FileAutoDao {
      * @param fieldValue 字段值
      * @return
      */
-    <T> List<File> findByFieldName(@Param("fieldName") String fieldName, @Param("fieldValue") T fieldValue);
+    <T> List<FileSlice> findByFieldName(@Param("fieldName") String fieldName, @Param("fieldValue") T fieldValue);
 
     /**
      * 根据指定字段名和值获取最后一条数据
@@ -121,7 +121,7 @@ public interface FileAutoDao {
      * @param fieldValue 字段值
      * @return
      */
-    <T> File findLastOneByFieldName(@Param("fieldName") String fieldName, @Param("fieldValue") T fieldValue);
+    <T> FileSlice findLastOneByFieldName(@Param("fieldName") String fieldName, @Param("fieldValue") T fieldValue);
 
     /**
      * 获取数量
@@ -129,7 +129,7 @@ public interface FileAutoDao {
      * @param entity
      * @return
      */
-    long countByEntity(@Param("entity") File entity);
+    long countByEntity(@Param("entity") FileSlice entity);
 
     /**
      * 批量获取通过ID
@@ -137,7 +137,7 @@ public interface FileAutoDao {
      * @param ids
      * @return
      */
-    List<File> listByIdIn(@Param("ids") List<Long> ids);
+    List<FileSlice> listByIdIn(@Param("ids") List<Long> ids);
 
     /**
      * 列表获取数据
@@ -145,7 +145,7 @@ public interface FileAutoDao {
      * @param entity
      * @return
      */
-    List<File> listByEntity(@Param("entity") File entity);
+    List<FileSlice> listByEntity(@Param("entity") FileSlice entity);
 
     /**
      * 分页获取数据
@@ -153,5 +153,5 @@ public interface FileAutoDao {
      * @param entity
      * @return
      */
-    List<File> pageByEntity(@Param("entity") File entity);
+    List<FileSlice> pageByEntity(@Param("entity") FileSlice entity);
 }

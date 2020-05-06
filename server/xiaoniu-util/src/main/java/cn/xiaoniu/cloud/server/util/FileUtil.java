@@ -77,4 +77,9 @@ public final class FileUtil {
         return temp;
     }
 
+    public static long slice(Long size, Integer fileSliceSize) {
+        AssertUtil.isTrue(size != null && size > 0, "参数size不能小于0！");
+        AssertUtil.isTrue(fileSliceSize != null && fileSliceSize > 0, "参数fileSliceSize不能小于0！");
+        return size % fileSliceSize == 0 ? size % fileSliceSize : (size % fileSliceSize) + 1;
+    }
 }

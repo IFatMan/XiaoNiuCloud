@@ -111,14 +111,14 @@ public class DirectoryController {
      * @author 孔明
      * @date
      */
-    @Login
-    @PutMapping("/moveDirectory")
-    @ApiImplicitParams(value = {
-            @ApiImplicitParam(name = "AccessToken", value = "登录令牌", required = true, paramType = "header"),
-            @ApiImplicitParam(name = "directoryId", value = "移动目录ID", required = true, paramType = "query"),
-            @ApiImplicitParam(name = "newParentId", value = "移动目录新父级目录ID", required = true, paramType = "query")
-    })
-    public Result moveDirectory(@RequestParam("directoryId") Long directoryId, @RequestParam("newParentId") Long newParentId) {
-        return directoryService.moveDirectory(directoryId, newParentId);
-    }
+//    @Login
+//    @PutMapping("/moveDirectory")
+//    @ApiImplicitParams(value = {
+//            @ApiImplicitParam(name = "AccessToken", value = "登录令牌", required = true, paramType = "header"),
+//            @ApiImplicitParam(name = "directoryId", value = "移动目录ID", required = true, paramType = "query"),
+//            @ApiImplicitParam(name = "newParentId", value = "移动目录新父级目录ID", required = true, paramType = "query")
+//    })
+//    public Result moveDirectory(@RequestParam("directoryId") Long directoryId, @RequestParam("newParentId") Long newParentId) {
+//        return directoryService.moveDirectory(directoryId, newParentId);
+//    }
 }

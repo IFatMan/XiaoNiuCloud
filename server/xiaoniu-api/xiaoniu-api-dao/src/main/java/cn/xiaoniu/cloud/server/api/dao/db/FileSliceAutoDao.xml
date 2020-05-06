@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="cn.xiaoniu.cloud.server.api.dao.db.FileAutoDao">
+<mapper namespace="cn.xiaoniu.cloud.server.api.dao.db.FileSliceAutoDao">
 
     <!-- 保存数据 -->
     <insert id="saveEntity">
-        INSERT INTO t_file
+        INSERT INTO t_file_slice
         <trim suffixOverrides="," prefix="(" suffix=")">
             <if test="entity.id != null">
                 id,
@@ -21,20 +21,20 @@
             <if test="entity.md5 != null">
                 md5,
             </if>
-            <if test="entity.md5Code != null">
-                md5_code,
+            <if test="entity.index != null">
+                index,
             </if>
             <if test="entity.size != null">
                 size,
             </if>
-            <if test="entity.slice != null">
-                slice,
-            </if>
             <if test="entity.uploadSize != null">
                 upload_size,
             </if>
-            <if test="entity.state != null">
-                state,
+            <if test="entity.storagePath != null">
+                storage_path,
+            </if>
+            <if test="entity.status != null">
+                status,
             </if>
         </trim>
         <trim suffixOverrides="," prefix="VALUES(" suffix=")">
@@ -53,38 +53,38 @@
             <if test="entity.md5 != null">
                 #{entity.md5},
             </if>
-            <if test="entity.md5Code != null">
-                #{entity.md5Code},
+            <if test="entity.index != null">
+                #{entity.index},
             </if>
             <if test="entity.size != null">
                 #{entity.size},
             </if>
-            <if test="entity.slice != null">
-                #{entity.slice},
-            </if>
             <if test="entity.uploadSize != null">
                 #{entity.uploadSize},
             </if>
-            <if test="entity.state != null">
-                #{entity.state},
+            <if test="entity.storagePath != null">
+                #{entity.storagePath},
+            </if>
+            <if test="entity.status != null">
+                #{entity.status},
             </if>
         </trim>
     </insert>
 
     <!-- 批量保存数据 -->
     <insert id="saveEntities">
-        INSERT INTO t_file
+        INSERT INTO t_file_slice
         <trim suffixOverrides="," prefix="(" suffix=")">
             id,
             del,
             create_time,
             update_time,
             md5,
-            md5_code,
+            index,
             size,
-            slice,
             upload_size,
-            state,
+            storage_path,
+            status,
         </trim>
         <foreach collection="entities" item="entity" index="index" separator=",">
             <trim suffixOverrides="," prefix="(" suffix=")">
@@ -93,23 +93,23 @@
                 #{entity.createTime},
                 #{entity.updateTime},
                 #{entity.md5},
-                #{entity.md5Code},
+                #{entity.index},
                 #{entity.size},
-                #{entity.slice},
                 #{entity.uploadSize},
-                #{entity.state},
+                #{entity.storagePath},
+                #{entity.status},
             </trim>
         </foreach>
     </insert>
 
     <!-- 逻辑删除数据 -->
     <update id="deleteById">
-        UPDATE t_file SET del=1 WHERE id=#{id}
+        UPDATE t_file_slice SET del=1 WHERE id=#{id}
     </update>
 
     <!-- 逻辑删除数据 -->
     <update id="deleteByEntity">
-        UPDATE t_file SET del=1
+        UPDATE t_file_slice SET del=1
         <trim prefix="WHERE" prefixOverrides="AND">
             <if test="entity.id != null">
                 AND id = #{entity.id}
@@ -126,32 +126,32 @@
             <if test="entity.md5 != null">
                 AND md5 = #{entity.md5}
             </if>
-            <if test="entity.md5Code != null">
-                AND md5_code = #{entity.md5Code}
+            <if test="entity.index != null">
+                AND index = #{entity.index}
             </if>
             <if test="entity.size != null">
                 AND size = #{entity.size}
             </if>
-            <if test="entity.slice != null">
-                AND slice = #{entity.slice}
-            </if>
             <if test="entity.uploadSize != null">
                 AND upload_size = #{entity.uploadSize}
             </if>
-            <if test="entity.state != null">
-                AND state = #{entity.state}
+            <if test="entity.storagePath != null">
+                AND storage_path = #{entity.storagePath}
+            </if>
+            <if test="entity.status != null">
+                AND status = #{entity.status}
             </if>
         </trim>
     </update>
 
     <!-- 物理删除数据 -->
     <delete id="removeById">
-        DELETE FROM t_file WHERE id=#{id}
+        DELETE FROM t_file_slice WHERE id=#{id}
     </delete>
 
     <!-- 物理删除数据 -->
     <delete id="removeByEntity">
-        DELETE FROM t_file
+        DELETE FROM t_file_slice
         <trim prefix="WHERE" prefixOverrides="AND">
             <if test="entity != null and entity.id != null">
                 AND id = #{entity.id}
@@ -168,27 +168,27 @@
             <if test="entity != null and entity.md5 != null">
                 AND md5 = #{entity.md5}
             </if>
-            <if test="entity != null and entity.md5Code != null">
-                AND md5_code = #{entity.md5Code}
+            <if test="entity != null and entity.index != null">
+                AND index = #{entity.index}
             </if>
             <if test="entity != null and entity.size != null">
                 AND size = #{entity.size}
             </if>
-            <if test="entity != null and entity.slice != null">
-                AND slice = #{entity.slice}
-            </if>
             <if test="entity != null and entity.uploadSize != null">
                 AND upload_size = #{entity.uploadSize}
             </if>
-            <if test="entity != null and entity.state != null">
-                AND state = #{entity.state}
+            <if test="entity != null and entity.storagePath != null">
+                AND storage_path = #{entity.storagePath}
+            </if>
+            <if test="entity != null and entity.status != null">
+                AND status = #{entity.status}
             </if>
         </trim>
     </delete>
 
     <!-- 更新数据 -->
     <update id="updateEntityById">
-        UPDATE t_file t
+        UPDATE t_file_slice t
         <trim prefix="SET" suffixOverrides=",">
             <if test="entity != null and entity.createTime != null">
                 t.create_time = #{entity.createTime},
@@ -199,20 +199,20 @@
             <if test="entity != null and entity.md5 != null">
                 t.md5 = #{entity.md5},
             </if>
-            <if test="entity != null and entity.md5Code != null">
-                t.md5_code = #{entity.md5Code},
+            <if test="entity != null and entity.index != null">
+                t.index = #{entity.index},
             </if>
             <if test="entity != null and entity.size != null">
                 t.size = #{entity.size},
             </if>
-            <if test="entity != null and entity.slice != null">
-                t.slice = #{entity.slice},
-            </if>
             <if test="entity != null and entity.uploadSize != null">
                 t.upload_size = #{entity.uploadSize},
             </if>
-            <if test="entity != null and entity.state != null">
-                t.state = #{entity.state},
+            <if test="entity != null and entity.storagePath != null">
+                t.storage_path = #{entity.storagePath},
+            </if>
+            <if test="entity != null and entity.status != null">
+                t.status = #{entity.status},
             </if>
         </trim>
         WHERE t.id=#{entity.id}
@@ -220,7 +220,7 @@
 
     <!-- 更新数据 -->
     <update id="updateEntityByPO">
-        UPDATE t_file t
+        UPDATE t_file_slice t
         <trim prefix="SET" suffixOverrides=",">
             <if test="entity.createTime != null">
                 t.create_time = #{entity.createTime},
@@ -231,20 +231,20 @@
             <if test="entity.md5 != null">
                 t.md5 = #{entity.md5},
             </if>
-            <if test="entity.md5Code != null">
-                t.md5_code = #{entity.md5Code},
+            <if test="entity.index != null">
+                t.index = #{entity.index},
             </if>
             <if test="entity.size != null">
                 t.size = #{entity.size},
             </if>
-            <if test="entity.slice != null">
-                t.slice = #{entity.slice},
-            </if>
             <if test="entity.uploadSize != null">
                 t.upload_size = #{entity.uploadSize},
             </if>
-            <if test="entity.state != null">
-                t.state = #{entity.state},
+            <if test="entity.storagePath != null">
+                t.storage_path = #{entity.storagePath},
+            </if>
+            <if test="entity.status != null">
+                t.status = #{entity.status},
             </if>
         </trim>
         <trim prefix=" WHERE t.del=0 " prefixOverrides="AND" suffixOverrides=",">
@@ -263,26 +263,26 @@
             <if test="record.md5 != null">
                 AND t.md5 = #{record.md5}
             </if>
-            <if test="record.md5Code != null">
-                AND t.md5_code = #{record.md5Code}
+            <if test="record.index != null">
+                AND t.index = #{record.index}
             </if>
             <if test="record.size != null">
                 AND t.size = #{record.size}
             </if>
-            <if test="record.slice != null">
-                AND t.slice = #{record.slice}
-            </if>
             <if test="record.uploadSize != null">
                 AND t.upload_size = #{record.uploadSize}
             </if>
-            <if test="record.state != null">
-                AND t.state = #{record.state}
+            <if test="record.storagePath != null">
+                AND t.storage_path = #{record.storagePath}
+            </if>
+            <if test="record.status != null">
+                AND t.status = #{record.status}
             </if>
         </trim>
     </update>
 
     <!-- 获取数据 -->
-    <select id="findById" resultType="cn.xiaoniu.cloud.server.api.model.po.File">
+    <select id="findById" resultType="cn.xiaoniu.cloud.server.api.model.po.FileSlice">
         SELECT
             <trim suffixOverrides=",">
                 id,
@@ -290,18 +290,18 @@
                 create_time,
                 update_time,
                 md5,
-                md5_code,
+                index,
                 size,
-                slice,
                 upload_size,
-                state,
+                storage_path,
+                status,
             </trim>
-        FROM t_file
+        FROM t_file_slice
         WHERE id=#{id}
     </select>
 
     <!-- 获取一条数据 -->
-    <select id="findOne" resultType="cn.xiaoniu.cloud.server.api.model.po.File">
+    <select id="findOne" resultType="cn.xiaoniu.cloud.server.api.model.po.FileSlice">
         SELECT
             <trim suffixOverrides=",">
                 id,
@@ -309,13 +309,13 @@
                 create_time,
                 update_time,
                 md5,
-                md5_code,
+                index,
                 size,
-                slice,
                 upload_size,
-                state,
+                storage_path,
+                status,
             </trim>
-        FROM t_file
+        FROM t_file_slice
         <trim prefix=" WHERE del=0 ">
             <if test="entity != null and entity.id != null">
                 AND id = #{entity.id}
@@ -332,20 +332,20 @@
             <if test="entity != null and entity.md5 != null">
                 AND md5 = #{entity.md5}
             </if>
-            <if test="entity != null and entity.md5Code != null">
-                AND md5_code = #{entity.md5Code}
+            <if test="entity != null and entity.index != null">
+                AND index = #{entity.index}
             </if>
             <if test="entity != null and entity.size != null">
                 AND size = #{entity.size}
             </if>
-            <if test="entity != null and entity.slice != null">
-                AND slice = #{entity.slice}
-            </if>
             <if test="entity != null and entity.uploadSize != null">
                 AND upload_size = #{entity.uploadSize}
             </if>
-            <if test="entity != null and entity.state != null">
-                AND state = #{entity.state}
+            <if test="entity != null and entity.storagePath != null">
+                AND storage_path = #{entity.storagePath}
+            </if>
+            <if test="entity != null and entity.status != null">
+                AND status = #{entity.status}
             </if>
         </trim>
         <if test="entity != null and entity.orderBy !=null">
@@ -355,7 +355,7 @@
     </select>
 
     <!-- 获取一条数据 -->
-    <select id="findLastOne" resultType="cn.xiaoniu.cloud.server.api.model.po.File">
+    <select id="findLastOne" resultType="cn.xiaoniu.cloud.server.api.model.po.FileSlice">
         SELECT
         <trim suffixOverrides=",">
                 id,
@@ -363,13 +363,13 @@
                 create_time,
                 update_time,
                 md5,
-                md5_code,
+                index,
                 size,
-                slice,
                 upload_size,
-                state,
+                storage_path,
+                status,
         </trim>
-        FROM t_file
+        FROM t_file_slice
         <trim prefix=" WHERE del=0 ">
                 <if test="entity != null and entity.id != null">
                     AND id = #{entity.id}
@@ -386,27 +386,27 @@
                 <if test="entity != null and entity.md5 != null">
                     AND md5 = #{entity.md5}
                 </if>
-                <if test="entity != null and entity.md5Code != null">
-                    AND md5_code = #{entity.md5Code}
+                <if test="entity != null and entity.index != null">
+                    AND index = #{entity.index}
                 </if>
                 <if test="entity != null and entity.size != null">
                     AND size = #{entity.size}
                 </if>
-                <if test="entity != null and entity.slice != null">
-                    AND slice = #{entity.slice}
-                </if>
                 <if test="entity != null and entity.uploadSize != null">
                     AND upload_size = #{entity.uploadSize}
                 </if>
-                <if test="entity != null and entity.state != null">
-                    AND state = #{entity.state}
+                <if test="entity != null and entity.storagePath != null">
+                    AND storage_path = #{entity.storagePath}
+                </if>
+                <if test="entity != null and entity.status != null">
+                    AND status = #{entity.status}
                 </if>
         </trim>
         ORDER BY id DESC LIMIT 1
     </select>
 
     <!-- 根据指定字段名和值获取数据 -->
-    <select id="findByFieldName" resultType="cn.xiaoniu.cloud.server.api.model.po.File">
+    <select id="findByFieldName" resultType="cn.xiaoniu.cloud.server.api.model.po.FileSlice">
         SELECT
         <trim suffixOverrides=",">
                 id,
@@ -414,20 +414,20 @@
                 create_time,
                 update_time,
                 md5,
-                md5_code,
+                index,
                 size,
-                slice,
                 upload_size,
-                state,
+                storage_path,
+                status,
         </trim>
-        FROM t_file
+        FROM t_file_slice
         <trim prefix=" WHERE del=0 ">
             AND ${fieldName} = #{fieldValue}
         </trim>
     </select>
 
     <!-- 根据指定字段名和值获取最后一条数据 -->
-    <select id="findLastOneByFieldName" resultType="cn.xiaoniu.cloud.server.api.model.po.File">
+    <select id="findLastOneByFieldName" resultType="cn.xiaoniu.cloud.server.api.model.po.FileSlice">
         SELECT
         <trim suffixOverrides=",">
                 id,
@@ -435,13 +435,13 @@
                 create_time,
                 update_time,
                 md5,
-                md5_code,
+                index,
                 size,
-                slice,
                 upload_size,
-                state,
+                storage_path,
+                status,
         </trim>
-        FROM t_file
+        FROM t_file_slice
         <trim prefix=" WHERE del=0 ">
             AND ${fieldName} = #{fieldValue}
         </trim>
@@ -450,7 +450,7 @@
 
     <!-- 获取数量 -->
     <select id="countByEntity" resultType="java.lang.Long">
-        SELECT COUNT(0) FROM t_file
+        SELECT COUNT(0) FROM t_file_slice
         <trim prefix=" WHERE del=0 ">
             <if test="entity != null and entity.id != null">
                 AND id = #{entity.id}
@@ -467,26 +467,26 @@
             <if test="entity != null and entity.md5 != null">
                 AND md5 = #{entity.md5}
             </if>
-            <if test="entity != null and entity.md5Code != null">
-                AND md5_code = #{entity.md5Code}
+            <if test="entity != null and entity.index != null">
+                AND index = #{entity.index}
             </if>
             <if test="entity != null and entity.size != null">
                 AND size = #{entity.size}
             </if>
-            <if test="entity != null and entity.slice != null">
-                AND slice = #{entity.slice}
-            </if>
             <if test="entity != null and entity.uploadSize != null">
                 AND upload_size = #{entity.uploadSize}
             </if>
-            <if test="entity != null and entity.state != null">
-                AND state = #{entity.state}
+            <if test="entity != null and entity.storagePath != null">
+                AND storage_path = #{entity.storagePath}
+            </if>
+            <if test="entity != null and entity.status != null">
+                AND status = #{entity.status}
             </if>
         </trim>
     </select>
 
     <!-- 批量获取通过ID -->
-    <select id="listByIdIn" parameterType="java.util.List" resultType="cn.xiaoniu.cloud.server.api.model.po.File">
+    <select id="listByIdIn" parameterType="java.util.List" resultType="cn.xiaoniu.cloud.server.api.model.po.FileSlice">
         SELECT
         <trim suffixOverrides=",">
                 id,
@@ -494,13 +494,13 @@
                 create_time,
                 update_time,
                 md5,
-                md5_code,
+                index,
                 size,
-                slice,
                 upload_size,
-                state,
+                storage_path,
+                status,
         </trim>
-        FROM t_file
+        FROM t_file_slice
         <trim prefix=" WHERE del=0 ">
             AND id IN
             <foreach collection="ids" item="id" index="index" open="(" close=")" separator=",">
@@ -510,7 +510,7 @@
     </select>
 
     <!-- 获取数量 -->
-    <select id="listByEntity" resultType="cn.xiaoniu.cloud.server.api.model.po.File">
+    <select id="listByEntity" resultType="cn.xiaoniu.cloud.server.api.model.po.FileSlice">
         SELECT
         <trim suffixOverrides=",">
                 id,
@@ -518,13 +518,13 @@
                 create_time,
                 update_time,
                 md5,
-                md5_code,
+                index,
                 size,
-                slice,
                 upload_size,
-                state,
+                storage_path,
+                status,
         </trim>
-        FROM t_file
+        FROM t_file_slice
         <trim prefix=" WHERE del=0 ">
                 <if test="entity != null and entity.id != null">
                     AND id = #{entity.id}
@@ -541,20 +541,20 @@
                 <if test="entity != null and entity.md5 != null">
                     AND md5 = #{entity.md5}
                 </if>
-                <if test="entity != null and entity.md5Code != null">
-                    AND md5_code = #{entity.md5Code}
+                <if test="entity != null and entity.index != null">
+                    AND index = #{entity.index}
                 </if>
                 <if test="entity != null and entity.size != null">
                     AND size = #{entity.size}
                 </if>
-                <if test="entity != null and entity.slice != null">
-                    AND slice = #{entity.slice}
-                </if>
                 <if test="entity != null and entity.uploadSize != null">
                     AND upload_size = #{entity.uploadSize}
                 </if>
-                <if test="entity != null and entity.state != null">
-                    AND state = #{entity.state}
+                <if test="entity != null and entity.storagePath != null">
+                    AND storage_path = #{entity.storagePath}
+                </if>
+                <if test="entity != null and entity.status != null">
+                    AND status = #{entity.status}
                 </if>
         </trim>
         <if test="entity != null and entity.orderBy !=null">
@@ -563,7 +563,7 @@
     </select>
 
     <!-- 分页获取数据 -->
-    <select id="pageByEntity" resultType="cn.xiaoniu.cloud.server.api.model.po.File">
+    <select id="pageByEntity" resultType="cn.xiaoniu.cloud.server.api.model.po.FileSlice">
         SELECT
             <trim suffixOverrides=",">
                 id,
@@ -571,13 +571,13 @@
                 create_time,
                 update_time,
                 md5,
-                md5_code,
+                index,
                 size,
-                slice,
                 upload_size,
-                state,
+                storage_path,
+                status,
             </trim>
-        FROM t_file
+        FROM t_file_slice
             <trim prefix=" WHERE del=0 ">
             <if test="entity.id != null">
                 AND id = #{entity.id}
@@ -594,20 +594,20 @@
             <if test="entity.md5 != null">
                 AND md5 = #{entity.md5}
             </if>
-            <if test="entity.md5Code != null">
-                AND md5_code = #{entity.md5Code}
+            <if test="entity.index != null">
+                AND index = #{entity.index}
             </if>
             <if test="entity.size != null">
                 AND size = #{entity.size}
             </if>
-            <if test="entity.slice != null">
-                AND slice = #{entity.slice}
-            </if>
             <if test="entity.uploadSize != null">
                 AND upload_size = #{entity.uploadSize}
             </if>
-            <if test="entity.state != null">
-                AND state = #{entity.state}
+            <if test="entity.storagePath != null">
+                AND storage_path = #{entity.storagePath}
+            </if>
+            <if test="entity.status != null">
+                AND status = #{entity.status}
             </if>
             </trim>
         <if test="entity.orderBy !=null">
