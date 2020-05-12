@@ -137,8 +137,8 @@ public class RedisDataSourceHolder implements InitializingBean {
         objectMapper.setVisibility(PropertyAccessor.ALL, JsonAutoDetect.Visibility.ANY);
         objectMapper.enableDefaultTyping(ObjectMapper.DefaultTyping.NON_FINAL);
         objectMapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
-
         jackson2JsonRedisSerializer.setObjectMapper(objectMapper);
+
         redisTemplate.setKeySerializer(new StringRedisSerializer());
         redisTemplate.setValueSerializer(jackson2JsonRedisSerializer);
         redisTemplate.afterPropertiesSet();

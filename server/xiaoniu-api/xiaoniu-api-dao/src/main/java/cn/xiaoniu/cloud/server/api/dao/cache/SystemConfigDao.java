@@ -22,7 +22,7 @@ public class SystemConfigDao {
     @RedisSource(RedisSourceName.API)
     public String getFileStoragePath() {
         String key = StringUtils.join(Constant.CONFIG_PREFIX, Constant.FILE_STORAGE_PATH);
-        return get(key);
+        return RedisDataSourceHolder.execute(redisUtil -> redisUtil.get(key));
     }
 
     /**
@@ -31,9 +31,10 @@ public class SystemConfigDao {
      * @return
      */
     @RedisSource(RedisSourceName.API)
-    public Integer getFileSliceSize() {
+    public Long getFileSliceSize() {
         String key = StringUtils.join(Constant.CONFIG_PREFIX, Constant.FILE_SLICE_SIZE);
-        return get(key);
+        Integer result = RedisDataSourceHolder.execute(redisUtil -> redisUtil.get(key));
+        return Long.valueOf(result);
     }
 
     /**
@@ -44,7 +45,7 @@ public class SystemConfigDao {
     @RedisSource(RedisSourceName.API)
     public void setFileStoragePath(String fileStoragePath) {
         String key = StringUtils.join(Constant.CONFIG_PREFIX, Constant.FILE_STORAGE_PATH);
-        set(key, fileStoragePath);
+        RedisDataSourceHolder.execute(redis -> redis.set(key, fileStoragePath));
     }
 
     /**
@@ -55,17 +56,8 @@ public class SystemConfigDao {
     @RedisSource(RedisSourceName.API)
     public void setFileSliceSize(Long fileSliceSize) {
         String key = StringUtils.join(Constant.CONFIG_PREFIX, Constant.FILE_SLICE_SIZE);
-        set(key, fileSliceSize);
+        RedisDataSourceHolder.execute(redis -> redis.set(key, fileSliceSize));
     }
-
-    private <T> T get(String key) {
-        return RedisDataSourceHolder.execute(redisUtil -> redisUtil.get(key));
-    }
-
-    private <T> void set(String key, T value) {
-        RedisDataSourceHolder.execute(redis -> redis.set(key, value));
-    }
-
 
     private static final class Constant {
 

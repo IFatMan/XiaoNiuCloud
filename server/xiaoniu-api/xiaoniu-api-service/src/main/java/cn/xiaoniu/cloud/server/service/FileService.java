@@ -34,25 +34,25 @@ public class FileService {
      * @return
      */
     public Result<FileUploadVO> isUpload(String md5, Long size) {
+        Long fileSliceSize = systemConfigDao.getFileSliceSize();
+        long sliceSize = FileUtil.slice(size, fileSliceSize);
+
         long md5Code = FileUtil.md5Code(md5);
         File select = File.builder().md5Code(md5Code).md5(md5).build();
         File file = fileAutoDao.findOne(select);
         if (Objects.nonNull(file)) {
-            return Result.success(FileUploadVO.hasUpload(file.getState()));
+            return Result.success(FileUploadVO.hasUpload(file.getState(), sliceSize));
         }
-
-        Integer fileSliceSize = systemConfigDao.getFileSliceSize();
-        long slice = FileUtil.slice(size, fileSliceSize);
 
         file = EntityUtil.newEntity(File.class);
         file.setMd5(md5);
         file.setMd5Code(md5Code);
         file.setSize(size);
-        file.setSlice(slice);
+        file.setSlice(sliceSize);
         file.setUploadSize(0L);
         file.setState(File.State.READY_UPLOAD);
         fileAutoDao.saveEntity(file);
 
-        return Result.success(FileUploadVO.notUpload());
+        return Result.success(FileUploadVO.notUpload(sliceSize));
     }
 }
