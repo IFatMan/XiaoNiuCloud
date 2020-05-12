@@ -27,8 +27,8 @@
             <if test="entity.size != null">
                 size,
             </if>
-            <if test="entity.slice != null">
-                slice,
+            <if test="entity.sliceSize != null">
+                slice_size,
             </if>
             <if test="entity.uploadSize != null">
                 upload_size,
@@ -59,8 +59,8 @@
             <if test="entity.size != null">
                 #{entity.size},
             </if>
-            <if test="entity.slice != null">
-                #{entity.slice},
+            <if test="entity.sliceSize != null">
+                #{entity.sliceSize},
             </if>
             <if test="entity.uploadSize != null">
                 #{entity.uploadSize},
@@ -82,7 +82,7 @@
             md5,
             md5_code,
             size,
-            slice,
+            slice_size,
             upload_size,
             state,
         </trim>
@@ -95,7 +95,7 @@
                 #{entity.md5},
                 #{entity.md5Code},
                 #{entity.size},
-                #{entity.slice},
+                #{entity.sliceSize},
                 #{entity.uploadSize},
                 #{entity.state},
             </trim>
@@ -132,8 +132,8 @@
             <if test="entity.size != null">
                 AND size = #{entity.size}
             </if>
-            <if test="entity.slice != null">
-                AND slice = #{entity.slice}
+            <if test="entity.sliceSize != null">
+                AND slice_size = #{entity.sliceSize}
             </if>
             <if test="entity.uploadSize != null">
                 AND upload_size = #{entity.uploadSize}
@@ -174,8 +174,8 @@
             <if test="entity != null and entity.size != null">
                 AND size = #{entity.size}
             </if>
-            <if test="entity != null and entity.slice != null">
-                AND slice = #{entity.slice}
+            <if test="entity != null and entity.sliceSize != null">
+                AND slice_size = #{entity.sliceSize}
             </if>
             <if test="entity != null and entity.uploadSize != null">
                 AND upload_size = #{entity.uploadSize}
@@ -205,8 +205,8 @@
             <if test="entity != null and entity.size != null">
                 t.size = #{entity.size},
             </if>
-            <if test="entity != null and entity.slice != null">
-                t.slice = #{entity.slice},
+            <if test="entity != null and entity.sliceSize != null">
+                t.slice_size = #{entity.sliceSize},
             </if>
             <if test="entity != null and entity.uploadSize != null">
                 t.upload_size = #{entity.uploadSize},
@@ -237,8 +237,8 @@
             <if test="entity.size != null">
                 t.size = #{entity.size},
             </if>
-            <if test="entity.slice != null">
-                t.slice = #{entity.slice},
+            <if test="entity.sliceSize != null">
+                t.slice_size = #{entity.sliceSize},
             </if>
             <if test="entity.uploadSize != null">
                 t.upload_size = #{entity.uploadSize},
@@ -269,8 +269,8 @@
             <if test="record.size != null">
                 AND t.size = #{record.size}
             </if>
-            <if test="record.slice != null">
-                AND t.slice = #{record.slice}
+            <if test="record.sliceSize != null">
+                AND t.slice_size = #{record.sliceSize}
             </if>
             <if test="record.uploadSize != null">
                 AND t.upload_size = #{record.uploadSize}
@@ -292,7 +292,7 @@
                 md5,
                 md5_code,
                 size,
-                slice,
+                slice_size,
                 upload_size,
                 state,
             </trim>
@@ -311,7 +311,7 @@
                 md5,
                 md5_code,
                 size,
-                slice,
+                slice_size,
                 upload_size,
                 state,
             </trim>
@@ -329,17 +329,17 @@
             <if test="entity != null and entity.updateTime != null">
                 AND update_time = #{entity.updateTime}
             </if>
-            <if test="entity != null and entity.md5 != null">
-                AND md5 = #{entity.md5}
-            </if>
             <if test="entity != null and entity.md5Code != null">
                 AND md5_code = #{entity.md5Code}
+            </if>
+            <if test="entity != null and entity.md5 != null">
+                AND md5 = #{entity.md5}
             </if>
             <if test="entity != null and entity.size != null">
                 AND size = #{entity.size}
             </if>
-            <if test="entity != null and entity.slice != null">
-                AND slice = #{entity.slice}
+            <if test="entity != null and entity.sliceSize != null">
+                AND slice_size = #{entity.sliceSize}
             </if>
             <if test="entity != null and entity.uploadSize != null">
                 AND upload_size = #{entity.uploadSize}
@@ -365,7 +365,7 @@
                 md5,
                 md5_code,
                 size,
-                slice,
+                slice_size,
                 upload_size,
                 state,
         </trim>
@@ -392,8 +392,8 @@
                 <if test="entity != null and entity.size != null">
                     AND size = #{entity.size}
                 </if>
-                <if test="entity != null and entity.slice != null">
-                    AND slice = #{entity.slice}
+                <if test="entity != null and entity.sliceSize != null">
+                    AND slice_size = #{entity.sliceSize}
                 </if>
                 <if test="entity != null and entity.uploadSize != null">
                     AND upload_size = #{entity.uploadSize}
@@ -416,7 +416,7 @@
                 md5,
                 md5_code,
                 size,
-                slice,
+                slice_size,
                 upload_size,
                 state,
         </trim>
@@ -437,7 +437,7 @@
                 md5,
                 md5_code,
                 size,
-                slice,
+                slice_size,
                 upload_size,
                 state,
         </trim>
@@ -473,8 +473,8 @@
             <if test="entity != null and entity.size != null">
                 AND size = #{entity.size}
             </if>
-            <if test="entity != null and entity.slice != null">
-                AND slice = #{entity.slice}
+            <if test="entity != null and entity.sliceSize != null">
+                AND slice_size = #{entity.sliceSize}
             </if>
             <if test="entity != null and entity.uploadSize != null">
                 AND upload_size = #{entity.uploadSize}
@@ -496,7 +496,7 @@
                 md5,
                 md5_code,
                 size,
-                slice,
+                slice_size,
                 upload_size,
                 state,
         </trim>
@@ -520,7 +520,7 @@
                 md5,
                 md5_code,
                 size,
-                slice,
+                slice_size,
                 upload_size,
                 state,
         </trim>
@@ -547,8 +547,8 @@
                 <if test="entity != null and entity.size != null">
                     AND size = #{entity.size}
                 </if>
-                <if test="entity != null and entity.slice != null">
-                    AND slice = #{entity.slice}
+                <if test="entity != null and entity.sliceSize != null">
+                    AND slice_size = #{entity.sliceSize}
                 </if>
                 <if test="entity != null and entity.uploadSize != null">
                     AND upload_size = #{entity.uploadSize}
@@ -573,7 +573,7 @@
                 md5,
                 md5_code,
                 size,
-                slice,
+                slice_size,
                 upload_size,
                 state,
             </trim>
@@ -600,8 +600,8 @@
             <if test="entity.size != null">
                 AND size = #{entity.size}
             </if>
-            <if test="entity.slice != null">
-                AND slice = #{entity.slice}
+            <if test="entity.sliceSize != null">
+                AND slice_size = #{entity.sliceSize}
             </if>
             <if test="entity.uploadSize != null">
                 AND upload_size = #{entity.uploadSize}

@@ -46,4 +46,21 @@ public class FileSlice extends BaseEntity {
      * 分片状态（1：上传中，2：上传完成）
      */
     private Integer status;
+
+    /**
+     * 排序规则
+     */
+    public static final class OrderBy {
+
+        /**
+         * 通过index字段倒序排序
+         */
+        public static final String INDEX_DESC = " index DESC ";
+
+        /**
+         * 通过index字段正序排序
+         */
+        public static final String INDEX_ASC = " index ASC ";
+
+    }
 }
