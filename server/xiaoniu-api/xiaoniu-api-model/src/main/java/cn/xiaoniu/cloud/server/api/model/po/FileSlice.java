@@ -1,6 +1,7 @@
 package cn.xiaoniu.cloud.server.api.model.po;
 
 import cn.xiaoniu.cloud.server.web.entity.BaseEntity;
+import cn.xiaoniu.cloud.server.web.exception.ThrowsException;
 import lombok.*;
 import lombok.experimental.Accessors;
 
@@ -33,11 +34,11 @@ public class FileSlice extends BaseEntity {
     /**
      * 分片大小
      */
-    private Integer size;
+    private Long size;
     /**
      * 分片已上传文件大小（单位byte）
      */
-    private Integer uploadSize;
+    private Long uploadSize;
     /**
      * 存储路径
      */
@@ -61,6 +62,30 @@ public class FileSlice extends BaseEntity {
          * 通过index字段正序排序
          */
         public static final String INDEX_ASC = " index ASC ";
+
+        private OrderBy() {
+            throw ThrowsException.privateConstructorException();
+        }
+    }
+
+    /**
+     * 分片上传状态
+     */
+    public static final class State {
+
+        /**
+         * 上传中
+         */
+        public static final Integer UPLOADING = 1;
+
+        /**
+         * 上传完成
+         */
+        public static final Integer UPLOAD_FINISH = 2;
+
+        private State() {
+            throw ThrowsException.privateConstructorException();
+        }
 
     }
 }

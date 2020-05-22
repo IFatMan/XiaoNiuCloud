@@ -43,11 +43,6 @@ public class DirectoryVO implements Serializable {
      */
     @ApiModelProperty("文件ID（当type=1时有值）")
     private Long fileId;
-    /**
-     * 文件名（当type=1时有值）
-     */
-    @ApiModelProperty("文件名（当type=1时有值）")
-    private String fileName;
 
     /**
      * 转换

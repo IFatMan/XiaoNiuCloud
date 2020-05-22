@@ -17,8 +17,8 @@ public class ThrowsException {
      * @author 孔明
      * @date 2019-11-27 14:11:04
      */
-    public static void oauthException(String msg) {
-        throw new OAuthException(msg);
+    public static OAuthException oauthException(String msg) {
+        return new OAuthException(msg);
     }
 
     /**
@@ -29,8 +29,17 @@ public class ThrowsException {
      * @author 孔明
      * @date 2019-11-27 14:12:51
      */
-    public static void requestParamException(String msg) {
-        throw new RequestParamException(msg);
+    public static RequestParamException requestParamException(String msg) {
+        return new RequestParamException(msg);
+    }
+
+    /**
+     * 私有构造器创建异常
+     *
+     * @return
+     */
+    public static PrivateConstructorException privateConstructorException() {
+        return new PrivateConstructorException();
     }
 
 }

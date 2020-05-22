@@ -329,11 +329,11 @@
             <if test="entity != null and entity.updateTime != null">
                 AND update_time = #{entity.updateTime}
             </if>
-            <if test="entity != null and entity.md5Code != null">
-                AND md5_code = #{entity.md5Code}
-            </if>
             <if test="entity != null and entity.md5 != null">
                 AND md5 = #{entity.md5}
+            </if>
+            <if test="entity != null and entity.md5Code != null">
+                AND md5_code = #{entity.md5Code}
             </if>
             <if test="entity != null and entity.size != null">
                 AND size = #{entity.size}

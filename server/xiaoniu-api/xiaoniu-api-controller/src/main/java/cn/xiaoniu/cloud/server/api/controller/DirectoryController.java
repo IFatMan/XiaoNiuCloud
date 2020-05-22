@@ -62,7 +62,7 @@ public class DirectoryController {
         if (directoryName.length() > Directory.Constant.MAX_DIRECTORY_NAME_LENGTH) {
             return Result.fail(ResultStatus.ERROR_REQUEST, "文件夹名称最大20个字符！");
         }
-        return directoryService.createDirectory(parentId, directoryName);
+        return directoryService.createFolder(parentId, directoryName);
     }
 
     /**

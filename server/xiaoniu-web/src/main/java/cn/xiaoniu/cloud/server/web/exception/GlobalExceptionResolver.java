@@ -125,9 +125,12 @@ public class GlobalExceptionResolver {
      * @author 孔明
      * @date 2019-11-27 13:49:35
      */
-    @ExceptionHandler(Exception.class)
+    @ExceptionHandler(value = {
+            Exception.class,
+            PrivateConstructorException.class
+    })
     public Result handlerException(Exception e) {
-        Log.error("系统未知异常:", e);
+        Log.error("系统异常:", e);
         return Result.fail(ResultStatus.ERROR_UNKNOW, "服务器开小差啦,请稍后重试");
     }
 

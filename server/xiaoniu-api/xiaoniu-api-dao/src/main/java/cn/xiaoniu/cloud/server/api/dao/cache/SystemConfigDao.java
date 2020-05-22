@@ -31,10 +31,9 @@ public class SystemConfigDao {
      * @return
      */
     @RedisSource(RedisSourceName.API)
-    public Long getFileSliceSize() {
+    public Integer getFileSliceSize() {
         String key = StringUtils.join(Constant.CONFIG_PREFIX, Constant.FILE_SLICE_SIZE);
-        Integer result = RedisDataSourceHolder.execute(redisUtil -> redisUtil.get(key));
-        return Long.valueOf(result);
+        return RedisDataSourceHolder.execute(redisUtil -> redisUtil.get(key));
     }
 
     /**

@@ -104,7 +104,7 @@ public class LoginService {
         // 创建用户根目录
         Directory directory = EntityUtil.newEntity(Directory.class);
         directory.setUserId(user.getId());
-        directory.setType(Directory.Type.DIRECTORY);
+        directory.setType(Directory.Type.FOLDER);
         directory.setName(Directory.Constant.ROOT_NAME);
         directory.setParentId(Directory.Constant.ROOT_PARENT_ID);
         directory.setLevel(Directory.Constant.ROOT_LEVEL);

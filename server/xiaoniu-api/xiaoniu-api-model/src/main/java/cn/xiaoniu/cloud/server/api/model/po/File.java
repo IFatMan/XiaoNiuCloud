@@ -6,7 +6,7 @@ import lombok.experimental.Accessors;
 
 /**
  * <p>文件上传记录 实体类</p>
- * <p>创建时间:2020-05-12</p>
+ * <p>创建时间:2020-05-13</p>
  * <p>公司信息:Developed By KongMing </p>
  *
  * @author auto generator
@@ -46,4 +46,29 @@ public class File extends BaseEntity {
      * 状态（1：准备上传；2：上传中；3：合并中；4：上传完成）
      */
     private Integer state;
+
+
+    public static class State {
+
+        /**
+         * 准备上传
+         */
+        public static final Integer READY = 1;
+
+        /**
+         * 上传中
+         */
+        public static final Integer UPLOADING = 2;
+
+        /**
+         * 合并中
+         */
+        public static final Integer MERGING = 3;
+
+        /**
+         * 上传完成
+         */
+        public static final Integer FINSH = 4;
+
+    }
 }

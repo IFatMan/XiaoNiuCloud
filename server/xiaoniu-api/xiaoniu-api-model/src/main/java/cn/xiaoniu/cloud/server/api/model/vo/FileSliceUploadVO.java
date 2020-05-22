@@ -18,14 +18,17 @@ import java.io.Serializable;
 @ApiModel("文件分片上传进度")
 public class FileSliceUploadVO implements Serializable {
 
+    @ApiModelProperty(name = "分片ID")
+    private Long id;
+
     @ApiModelProperty(name = "分片索引")
     private Integer index;
 
     @ApiModelProperty(name = "分片大小")
-    private Integer size;
+    private Long size;
 
     @ApiModelProperty(name = "已上传大小")
-    private Integer uploadSize;
+    private Long uploadSize;
 
     @ApiModelProperty(name = "分片状态（1：上传中，2：上传完成）")
     private Integer state;
@@ -38,6 +41,7 @@ public class FileSliceUploadVO implements Serializable {
      */
     public static FileSliceUploadVO convertFromPOJO(FileSlice slice) {
         FileSliceUploadVO vo = new FileSliceUploadVO();
+        vo.setId(slice.getId());
         vo.setIndex(slice.getIndex());
         vo.setSize(slice.getSize());
         vo.setUploadSize(slice.getUploadSize());

@@ -1,8 +1,10 @@
 package cn.xiaoniu.cloud.server.api.model.po;
 
 import cn.xiaoniu.cloud.server.web.entity.BaseEntity;
+import cn.xiaoniu.cloud.server.web.exception.ThrowsException;
 import lombok.*;
 import lombok.experimental.Accessors;
+import org.apache.commons.lang3.StringUtils;
 
 import java.util.Objects;
 
@@ -39,7 +41,7 @@ public class Directory extends BaseEntity {
     /**
      * 文件类型（10:图片；20:视频；30:文档；40:音乐；50:种子；60:其他）
      */
-    private Long fileType;
+    private Integer fileType;
     /**
      * 文件ID（当type=1时有值）
      */
@@ -102,6 +104,7 @@ public class Directory extends BaseEntity {
         public static final Integer MAX_DIRECTORY_NAME_LENGTH = 20;
 
         private Constant() {
+            throw ThrowsException.privateConstructorException();
         }
     }
 
@@ -110,6 +113,7 @@ public class Directory extends BaseEntity {
      */
     public static class Type {
         private Type() {
+            throw ThrowsException.privateConstructorException();
         }
 
         /**
@@ -120,8 +124,102 @@ public class Directory extends BaseEntity {
         /**
          * 目录
          */
-        public static final Integer DIRECTORY = 2;
+        public static final Integer FOLDER = 2;
 
+    }
+
+    /**
+     * 文件类型
+     */
+    public static final class FileType {
+
+        /**
+         * 文档Mime
+         */
+        private static final String[] documentMimes = {
+                "application/msword",
+                "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+                "application/vnd.openxmlformats-officedocument.wordprocessingml.template",
+                "application/vnd.ms-word.document.macroEnabled.12",
+                "application/vnd.ms-word.template.macroEnabled.12",
+                "application/vnd.ms-excel",
+                "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+                "application/vnd.openxmlformats-officedocument.spreadsheetml.template",
+                "application/vnd.ms-excel.sheet.macroEnabled.12",
+                "application/vnd.ms-excel.template.macroEnabled.12",
+                "application/vnd.ms-excel.addin.macroEnabled.12",
+                "application/vnd.ms-excel.sheet.binary.macroEnabled.12",
+                "application/vnd.ms-powerpoint",
+                "application/vnd.openxmlformats-officedocument.presentationml.presentation",
+                "application/vnd.openxmlformats-officedocument.presentationml.template",
+                "application/vnd.openxmlformats-officedocument.presentationml.slideshow",
+                "application/vnd.ms-powerpoint.addin.macroEnabled.12",
+                "application/vnd.ms-powerpoint.presentation.macroEnabled.12",
+                "application/vnd.ms-powerpoint.slideshow.macroEnabled.12",
+        };
+
+        /**
+         * 图片
+         */
+        public static final Integer PICTURE = 10;
+
+        /**
+         * 视频
+         */
+        public static final Integer VIDEO = 20;
+
+        /**
+         * 文档
+         */
+        public static final Integer DOCUMENT = 30;
+
+        /**
+         * 音乐
+         */
+        public static final Integer MUSIC = 40;
+
+        /**
+         * 种子
+         */
+        public static final Integer SEED = 50;
+
+        /**
+         * 其他
+         */
+        public static final Integer OTHER = 60;
+
+        private FileType() {
+            throw ThrowsException.privateConstructorException();
+        }
+
+        public static Integer getType(final String contentType) {
+            String mime = contentType.toLowerCase();
+            if (StringUtils.isBlank(mime)) {
+                return OTHER;
+            }
+            if (mime.contains("image")) {
+                return PICTURE;
+            } else if (mime.contains("audio/mp3")) {
+                return MUSIC;
+            } else if (mime.contains("audio") || mime.contains("video")) {
+                return VIDEO;
+            } else if (isDocument(contentType)) {
+                return DOCUMENT;
+            } else if (mime.contains("application/x-bittorrent")) {
+                return SEED;
+            } else {
+                return OTHER;
+            }
+        }
+
+        private static boolean isDocument(String contentType) {
+            for (String documentMime : documentMimes) {
+                if (contentType.contains(documentMime)) {
+                    return true;
+                }
+            }
+            return false;
+        }
     }
 
     /**
@@ -169,8 +267,18 @@ public class Directory extends BaseEntity {
      *
      * @return
      */
-    public boolean isDirectory() {
-        return Objects.equals(this.type, Type.DIRECTORY);
+    public boolean isFolder() {
+        return Objects.equals(this.type, Type.FOLDER);
+    }
+
+    /**
+     * 判断是否是文件夹类型
+     *
+     * @param type 目录类型
+     * @return
+     */
+    public static boolean isFolder(Integer type) {
+        return Objects.equals(type, Type.FOLDER);
     }
 
     /**
@@ -180,6 +288,16 @@ public class Directory extends BaseEntity {
      */
     public boolean isFile() {
         return Objects.equals(this.type, Type.FILE);
+    }
+
+    /**
+     * 判断是否是文件类型
+     *
+     * @param type 目录类型
+     * @return
+     */
+    public static boolean isFile(Integer type) {
+        return Objects.equals(type, Type.FILE);
     }
 
 

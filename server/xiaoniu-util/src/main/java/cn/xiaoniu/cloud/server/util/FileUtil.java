@@ -1,7 +1,5 @@
 package cn.xiaoniu.cloud.server.util;
 
-import org.apache.http.annotation.Contract;
-
 /**
  * @author 孔明
  * @date 2020/4/26 10:30
@@ -93,5 +91,15 @@ public final class FileUtil {
             return 1;
         }
         return size % fileSliceSize == 0 ? size / fileSliceSize : (size % fileSliceSize) + 1;
+    }
+
+    public static long getSliceSize(Integer index, Long fileSliceSize, Long fileSize) {
+        AssertUtil.isTrue(index != null && index > 0, "参数index不能小于0！");
+        AssertUtil.isTrue(fileSliceSize != null && fileSliceSize > 0, "参数fileSliceSize不能小于0！");
+        AssertUtil.isTrue(fileSize != null && fileSize > 0, "参数fileSize不能小于0！");
+        if (index * fileSliceSize < fileSize) {
+            return fileSliceSize;
+        }
+        return fileSize - ((index - 1) * fileSliceSize);
     }
 }
